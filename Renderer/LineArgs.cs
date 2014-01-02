@@ -13,6 +13,15 @@ namespace Renderer
 	    private Color color = Color.Black;
 	    private List<Point> points = new List<Point>();
 
+        public override string ToString()
+        {
+            var s = new StringBuilder().AppendFormat("W{0}{1}", this.LineWidth, this.LineColor);
+
+            foreach (var pt in this.Points)
+                s.Append(pt.ToString());
+            return s.ToString();
+        }
+
         public LineArgs()
         {
         }
@@ -58,17 +67,6 @@ namespace Renderer
         {
             get { return this.width; }
             set { this.width = value; }
-        }
-
-        public override string ToString()
-        {
-            StringBuilder s = new StringBuilder("W");
-            s.Append(this.LineWidth.ToString());
-            s.Append(this.LineColor.ToString());
-
-            foreach(var pt in this.Points)
-                s.Append(pt.ToString());
-            return s.ToString();
         }
     }
 }

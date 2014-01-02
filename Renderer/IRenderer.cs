@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core;
 
 namespace Renderer
 {
@@ -26,9 +27,9 @@ namespace Renderer
 	    bool PutRect(int left, int top, int right, int bottom, Color cr);
 	    bool PutImage(ImageArgs r);
 	    bool PutLine(LineArgs r);
-	    //bool PutText(TextArgs r);
+	    bool PutText(TextArgs r);
 	    bool ResizeBackBuffer(int width, int height);
-	    //void SetReporter(Otl::IReporter* er);
+	    void SetReporter(IReporter er);
 	    void SetVisibleFrameRate(bool bSet);	// out to window caption
     }
 }
