@@ -9,17 +9,17 @@ namespace Renderer
 {
     public class TextArgs
     {
-        //private bool isDrawBoundary = false;
-        private int left = 0;
-        private int top = 0;
-        private int right = 0;
-        private int bottom = 0;
-        private int format = 0;
-        //private int lineWidth = 1;
-        private string text = "";
-        private Font font = null;
-        private Color lineColor = Color.Black;
-        private Color textColor = Color.Black;
+        public bool isDrawBoundary = false;
+        public int left = 0;
+        public int top = 0;
+        public int right = 0;
+        public int bottom = 0;
+        public int format = 0;
+        public int lineWidth = 1;
+        public string text = "";
+        public Font font = null;
+        public Color lineColor = Color.Black;
+        public Color textColor = Color.Black;
 
         public override string ToString()
         {
@@ -37,6 +37,16 @@ namespace Renderer
                     text, font.ToString(), textColor.ToString(), r.ToString(), format.ToString("X"));
             }
             return s.ToString();
+        }
+
+        public bool IsEmpty()
+        {
+            return (left == 0 && right == 0) || (top == 0 && bottom == 0);
+        }
+
+        public bool IsValid()
+        {
+            return font != null && text != "";
         }
     }
 }

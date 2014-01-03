@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+
+using SharpDX;
+using SharpDX.Direct3D9;
+using Color = SharpDX.Color;
+
+using Core;
 
 namespace Renderer
 {
-    interface IMethod
+    public interface IMethod
     {
         bool OnBeginClip(Rectangle r);
         bool OnBeginDraw();
@@ -19,7 +25,7 @@ namespace Renderer
         string OnGetIdentifier();
         //IImage* OnGetImage(string path, Color key, string identifier);
         //IImage* OnGetImage(int width, int height, Color fill, string identifier);
-        bool OnInitialize(IntPtr hWnd);
+        bool OnInitialize(Form mainWindow);
         bool OnPutImage(ImageArgs r);
         bool OnPutLine(LineArgs r);
         bool OnPutRect(Color cr);
@@ -27,5 +33,7 @@ namespace Renderer
         bool OnPutText(TextArgs r);
         bool OnResizeBackBuffer(int width, int height);
         bool OnRestoreDevice(int width, int height);
+
+        void SetReporter(IReporter r);
     }
 }

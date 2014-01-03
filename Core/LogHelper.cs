@@ -22,91 +22,91 @@ namespace Core
         public void Abort(string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Abort, -1, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Abort, -1, String.Format(fmt, objs));
         }
 
         public void Abort(int code, string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Abort, code, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Abort, code, String.Format(fmt, objs));
         }
 
         public void Assert(string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Assert, -1, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Assert, -1, String.Format(fmt, objs));
         }
 
         public void Assert(int code, string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Assert, code, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Assert, code, String.Format(fmt, objs));
         }
 
         public void Error(string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Error, -1, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Error, -1, String.Format(fmt, objs));
         }
 
         public void Error(int code, string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Error, code, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Error, code, String.Format(fmt, objs));
         }
 
         public void Log(string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Log, 0, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Log, 0, String.Format(fmt, objs));
         }
 
         public void Log(int code, string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Log, code, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Log, code, String.Format(fmt, objs));
         }
 
         public void Print(string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.StdOut, 0, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.StdOut, 0, String.Format(fmt, objs));
         }
 
         public void Print(int code, string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.StdOut, code, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.StdOut, code, String.Format(fmt, objs));
         }
 
         public void Success(string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Success, 0, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Success, 0, String.Format(fmt, objs));
         }
 
         public void Success(int code, string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Success, code, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Success, code, String.Format(fmt, objs));
         }
 
         public void Warning(string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Warning, 0, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Warning, 0, String.Format(fmt, objs));
         }
 
         public void Warning(int code, string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(ReportType.Warning, code, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(ReportType.Warning, code, String.Format(fmt, objs));
         }
 
         public void WriteIndirect(ReportType t, int code, string fmt, params object[] objs)
         {
             if(reporter != null)
-                reporter.WriteLog(t, code, new StringBuilder().AppendFormat(fmt, objs).ToString());
+                reporter.WriteLog(t, code, String.Format(fmt, objs));
         }
 
         public void SetReporter(IReporter r)

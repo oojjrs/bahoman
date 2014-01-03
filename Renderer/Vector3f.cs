@@ -14,7 +14,7 @@ namespace Renderer
 
         public override string ToString()
         {
-            return new StringBuilder().AppendFormat("VECTOR3F(X{0}Y{1}Z{2})", x, y, z).ToString();
+            return String.Format("VECTOR3F(X{0}Y{1}Z{2})", x, y, z);
         }
 
         public Vector3f()

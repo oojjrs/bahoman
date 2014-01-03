@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+
+using SharpDX;
+using SharpDX.Direct3D9;
+using Color = SharpDX.Color;
 
 using Core;
 
@@ -10,25 +14,25 @@ namespace Renderer
 {
     class Engine : IRenderer
     {
-#region Variables
+        #region Variables
         bool isInit = false;             // 초기화되었는가
         bool isLostDevice = false;
         bool isReadyBuffer = false;      // 그리기 준비가 되었다(BeginDraw에서 활성화, EndDraw에서 비활성화)
         bool isVisibleFrameRate = false;
         int backBufferHeight = 0;
         int backBufferWidth = 0;
-        IntPtr mainWindowHandle = IntPtr.Zero;
+        Form mainWindow = null;
         readonly IMethod api = null;
-        //int tickCount = 0;
+        int tickCount = 0;
         LogHelper log = new LogHelper();
-#endregion
+        #endregion
 
-#region From IRenderer
+        #region From IRenderer
         public bool BeginClip(Rectangle viewport)
         {
             if (isInit == false)
             {
-                log.Assert("BeginClip({0}) : NOT INITIALIZED", viewport.ToString());
+                log.Assert("BeginClip({0}) : NOT INITIALIZED", viewport);
                 return false;
             }
 
@@ -37,7 +41,7 @@ namespace Renderer
 
             if (isReadyBuffer == false)
             {
-                log.Assert("BeginClip({0}) : NOT READY BUFFER", viewport.ToString());
+                log.Assert("BeginClip({0}) : NOT READY BUFFER", viewport);
                 return false;
             }
 
@@ -46,7 +50,7 @@ namespace Renderer
 
         public bool BeginDraw()
         {
-            if(isInit == false)
+            if (isInit == false)
             {
                 log.Assert("BeginDraw() : NOT INITIALIZED");
                 return false;
@@ -65,7 +69,7 @@ namespace Renderer
                 return false;
 
             isReadyBuffer = true;
-            //tickCount = GetTickCount();
+            tickCount = Environment.TickCount;
             return true;
         }
 
@@ -73,7 +77,7 @@ namespace Renderer
         {
             if (isInit == false)
             {
-                log.Assert("Clear({0}) : NOT INITIALIZED", color.ToString());
+                log.Assert("Clear({0}) : NOT INITIALIZED", color);
                 return false;
             }
 
@@ -82,7 +86,7 @@ namespace Renderer
 
             if (isReadyBuffer)
             {
-                log.Warning("Clear({0}) : LET INVALIDATE BUFFER", color.ToString());
+                log.Warning("Clear({0}) : LET INVALIDATE BUFFER", color);
                 if (this.EndDraw() == false)
                     return false;
             }
@@ -154,7 +158,7 @@ namespace Renderer
                 return false;
             }
 
-            return this.OnFlip();
+            return this.OnFlip(null, null, null, null);
         }
 
         public bool Flip(int x, int y)
@@ -174,7 +178,7 @@ namespace Renderer
                 return false;
             }
 
-            return this.OnFlip();
+            return this.OnFlip(x, y, null, null);
         }
 
         public bool Flip(int x, int y, int cx, int cy)
@@ -194,15 +198,10 @@ namespace Renderer
                 return false;
             }
 
-            return this.OnFlip();
+            return this.OnFlip(x, y, cx, cy);
         }
 
-        public string GetIdentifier()
-        {
-            return api.OnGetIdentifier();
-        }
-
-        public bool Initialize(IntPtr hMainWindow)
+        public bool Initialize(Form mainWindow)
         {
             if (isInit)
             {
@@ -210,8 +209,8 @@ namespace Renderer
                 return true;
             }
 
-            mainWindowHandle = hMainWindow;
-            if (api.OnInitialize(hMainWindow) == false)
+            this.mainWindow = mainWindow;
+            if (api.OnInitialize(this.mainWindow) == false)
             {
                 this.Uninitialize();
                 return false;
@@ -225,7 +224,7 @@ namespace Renderer
         {
             if (isInit == false)
             {
-                log.Assert("PutImage({0}) : NOT INITIALIZED", r.ToString());
+                log.Assert("PutImage({0}) : NOT INITIALIZED", r);
                 return false;
             }
 
@@ -234,7 +233,7 @@ namespace Renderer
 
             if (isReadyBuffer == false)
             {
-                log.Assert("PutImage({0}) : NOT READY BUFFER", r.ToString());
+                log.Assert("PutImage({0}) : NOT READY BUFFER", r);
                 return false;
             }
 
@@ -245,7 +244,7 @@ namespace Renderer
         {
             if (isInit == false)
             {
-                log.Assert("PutLine({0}) : NOT INITIALIZED", r.ToString());
+                log.Assert("PutLine({0}) : NOT INITIALIZED", r);
                 return false;
             }
 
@@ -254,13 +253,13 @@ namespace Renderer
 
             if (isReadyBuffer == false)
             {
-                log.Assert("PutLine({0}) : NOT READY BUFFER", r.ToString());
+                log.Assert("PutLine({0}) : NOT READY BUFFER", r);
                 return false;
             }
 
             if (r.PointCount < 2)
             {
-                log.Assert("PutLine({0}) : NOT ENOUGH DATA", r.ToString());
+                log.Assert("PutLine({0}) : NOT ENOUGH DATA", r);
                 return false;
             }
 
@@ -271,7 +270,7 @@ namespace Renderer
         {
             if (isInit == false)
             {
-                log.Assert("PutRect({0}) : NOT INITIALIZED", cr.ToString());
+                log.Assert("PutRect({0}) : NOT INITIALIZED", cr);
                 return false;
             }
 
@@ -280,7 +279,7 @@ namespace Renderer
 
             if (isReadyBuffer == false)
             {
-                log.Assert("PutRect({0}) : NOT READY BUFFER", cr.ToString());
+                log.Assert("PutRect({0}) : NOT READY BUFFER", cr);
                 return false;
             }
 
@@ -292,7 +291,7 @@ namespace Renderer
             var r = new Rectangle(left, top, right, bottom);
             if (isInit == false)
             {
-                log.Assert("PutRect({0}{1}) : NOT INITIALIZED", r.ToString(), cr.ToString());
+                log.Assert("PutRect({0}{1}) : NOT INITIALIZED", r, cr);
                 return false;
             }
 
@@ -301,7 +300,7 @@ namespace Renderer
 
             if (isReadyBuffer == false)
             {
-                log.Assert("PutRect({0}{1}) : NOT READY BUFFER", r.ToString(), cr.ToString());
+                log.Assert("PutRect({0}{1}) : NOT READY BUFFER", r, cr);
                 return false;
             }
 
@@ -312,7 +311,7 @@ namespace Renderer
         {
             if (isInit == false)
             {
-                log.Assert("PutText({0}) : NOT INITIALIZED", r.ToString());
+                log.Assert("PutText({0}) : NOT INITIALIZED", r);
                 return false;
             }
 
@@ -321,35 +320,35 @@ namespace Renderer
 
             if (isReadyBuffer == false)
             {
-                log.Assert("PutText({0}) : NOT READY BUFFER", r.ToString());
+                log.Assert("PutText({0}) : NOT READY BUFFER", r);
                 return false;
             }
 
-            //if (r.IsEmpty())
-            //    return true;
+            if (r.IsEmpty())
+                return true;
 
-            //if (r.IsValid() == false)
-            //{
-            //    log.Assert("PutText(%s) : INVALID DATA", r.ToString());
-            //    return false;
-            //}
+            if (r.IsValid() == false)
+            {
+                log.Assert("PutText({0}) : INVALID DATA", r);
+                return false;
+            }
 
             if (api.OnPutText(r) == false)
                 return false;
 
-            //if (r.isDrawBoundary)
-            //{
-            //    var s = new LineArgs();
-            //    s.AddPoint(r.left, r.top);
-            //    s.AddPoint(r.right, r.top);
-            //    s.AddPoint(r.right, r.bottom);
-            //    s.AddPoint(r.left, r.bottom);
-            //    s.AddPoint(r.left, r.top);
-            //    s.SetColor(r.lineColor);
-            //    s.SetWidth(r.lineWidth);
-            //    if (api.OnPutLine(s) == false)
-            //        return false;
-            //}
+            if (r.isDrawBoundary)
+            {
+                var s = new LineArgs();
+                s.AddPoint(r.left, r.top);
+                s.AddPoint(r.right, r.top);
+                s.AddPoint(r.right, r.bottom);
+                s.AddPoint(r.left, r.bottom);
+                s.AddPoint(r.left, r.top);
+                s.LineColor = r.lineColor;
+                s.LineWidth = r.lineWidth;
+                if (api.OnPutLine(s) == false)
+                    return false;
+            }
             return true;
         }
 
@@ -385,45 +384,116 @@ namespace Renderer
         public void SetReporter(IReporter er)
         {
             log.SetReporter(er);
+            api.SetReporter(er);
         }
 
         public void SetVisibleFrameRate(bool bSet)	// out to window caption
         {
             if (isInit == false)
             {
-                log.Assert("SetVisibleFrameRate({0}) : NOT INITIALIZED", bSet ? "true" : "false");
+                log.Assert("SetVisibleFrameRate({0}) : NOT INITIALIZED", bSet);
                 return;
             }
 
             isVisibleFrameRate = bSet;
         }
-#endregion
+        #endregion
 
-        Engine(IMethod method)
+        #region From Engine
+        private Engine(IMethod method)
         {
             api = method;
         }
 
-        bool IsVisibleFrameRate()
+        private bool OnFlip(int? px, int? py, int? pcx, int? pcy)
         {
-            return isVisibleFrameRate;
+            // Note : 버퍼를 화면에 출력할 때 원본 버퍼의 길이 비율이 윈도우 길이 비율에 따라 깨지지 않도록 조절한다
+            var r = new Rectangle(mainWindow.Left, mainWindow.Top, mainWindow.Width, mainWindow.Height);
+            var rcCov = r;
+            if (pcx.HasValue || pcy.HasValue)
+            {
+                var size = rcCov.Size;
+                if (pcx.HasValue)
+                    size.Width = rcCov.Left + pcx.Value;
+
+                if (pcy.HasValue)
+                    size.Height = rcCov.Top + pcy.Value;
+
+                rcCov.Size = size;
+            }
+            else
+            {
+                float fWidthRate = (float)(r.Width) / backBufferWidth;
+                float fHeightRate = (float)(r.Height) / backBufferHeight;
+
+                // Note : 세로가 더 긴 경우
+                float fRate = fWidthRate;
+                if (fWidthRate > fHeightRate)
+                    fRate = fHeightRate;
+
+                if (fRate < 1.0f)
+                {
+                    var size = new Size2((int)(backBufferWidth * fRate), (int)(backBufferHeight * fRate));
+                    rcCov.Size = size;
+                }
+                else
+                {
+                    var size = new Size2(backBufferWidth, backBufferHeight);
+                    rcCov.Size = size;
+                }
+
+                var point = new Point((r.Right - rcCov.Right) / 2, (r.Bottom - rcCov.Bottom) / 2);
+                rcCov.Location = point;
+            }
+
+            var location = rcCov.Location;
+            if (px.HasValue)
+                location.X = px.Value - rcCov.Left;
+
+            if (py.HasValue)
+                location.Y = py.Value - rcCov.Top;
+            rcCov.Location = location;
+
+            bool bResult = api.OnFlip(rcCov);
+            if (bResult)
+            {
+                if (this.IsVisibleFrameRate)
+                {
+                    int tc = Environment.TickCount - tickCount;
+                    if (tc > 0)
+                        mainWindow.Text = String.Format("Frame Rate = {0} FPS", 1000 / tc);
+                }
+            }
+            else
+            {
+                bResult = this.RestoreDevice();
+            }
+            return bResult;
         }
 
-        bool OnFlip()
-        {
-            return false;
-        }
-
-        bool RestoreDevice()
+        private bool RestoreDevice()
         {
             isLostDevice = !api.OnRestoreDevice(backBufferWidth, backBufferHeight);
             return !isLostDevice;
         }
 
-        void Uninitialize()
+        private void Uninitialize()
         {
-            mainWindowHandle = IntPtr.Zero;
+            mainWindow = null;
             isInit = false;
         }
+        #endregion
+
+        #region Properties
+        public string Identifier
+        {
+            get { return api.OnGetIdentifier(); }
+        }
+
+        private bool IsVisibleFrameRate
+        {
+            get { return isVisibleFrameRate; }
+        }
+        #endregion
     }
 }

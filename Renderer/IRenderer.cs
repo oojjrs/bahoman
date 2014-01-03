@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+
+using SharpDX;
+using SharpDX.Direct3D9;
+using Color = SharpDX.Color;
+
 using Core;
 
 namespace Renderer
@@ -19,10 +24,10 @@ namespace Renderer
 	    bool Flip(int x, int y);
 	    bool Flip(int x, int y, int cx, int cy);
 	    //IFont GetFont(Font font);
-	    string GetIdentifier();
+        string Identifier { get; }
         //IImage GetImage(string path, Color key, string identifier);
         //IImage GetImage(int width, int height, Color fill, string identifier);
-	    bool Initialize(IntPtr hMainWindow);
+	    bool Initialize(Form mainWindow);
 	    bool PutImage(ImageArgs r);
 	    bool PutLine(LineArgs r);
         bool PutRect(Color cr);
