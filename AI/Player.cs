@@ -4,7 +4,8 @@ namespace AI
 {
     class Player
     {
-        public string determine(State state,Team team,BasketballCourt basketballcourt){
+        public string Determine(State state, Team team, BasketballCourt basketballCourt)
+        {
             return "";
         }
     }

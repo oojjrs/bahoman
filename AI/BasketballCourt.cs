@@ -2,29 +2,29 @@
 {
     class BasketballCourt
     {
-        private int homescore;
-        private int awayscore;
+        private int homeScore;
+        private int awayScore;
 
         public int AddHomeScore(int point)
         {
-            homescore = homescore + point;
-            return homescore;
+            homeScore = homeScore + point;
+            return homeScore;
         }
 
         public int AddAwayScore(int point)
         {
-            awayscore = awayscore + point;
-            return awayscore;
+            awayScore = awayScore + point;
+            return awayScore;
         }
 
         public int HomeScore
         {
-            get { return this.homescore; }
+            get { return this.homeScore; }
         }
 
-        public int awayScore
+        public int AwayScore
         {
-            get { return this.homescore; }
+            get { return this.awayScore; }
         }
 
     }

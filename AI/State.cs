@@ -10,15 +10,16 @@ namespace AI
         public State()
         {
         }
-        enum states
-        {
-            attack,
-            defence,
 
-            freethrow,
-            jumpball,
-            outofbound,
-            strategytime
+        enum States
+        {
+            Attack,
+            Defence,
+
+            FreeThrow,
+            JumpBall,
+            OutOfBound,
+            StrategyTime
         }
     }
 }
