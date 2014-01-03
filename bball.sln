@@ -1,5 +1,4 @@
 ﻿
-MinimumVisualStudioVersion = 10.0.40219.1
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bball", "bball\bball.csproj", "{F43DF898-F17B-4686-80AB-79E27FD43799}"
