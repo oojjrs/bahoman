@@ -15,5 +15,8 @@ namespace Renderer
 
     public class Renderer
     {
+        //public static IRenderer GetInterface(Type t)
+        //{
+        //}
     }
 }

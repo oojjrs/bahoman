@@ -41,7 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine.cs" />
     <Compile Include="ImageArgs.cs" />
+    <Compile Include="IMethod.cs" />
     <Compile Include="IRenderer.cs" />
     <Compile Include="LineArgs.cs" />
     <Compile Include="Renderer.cs" />
