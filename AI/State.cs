@@ -5,21 +5,26 @@ using System.Text;
 
 namespace AI
 {
+    public enum States
+    {
+        Attack,
+        Defence,
+
+        FreeThrow,
+        JumpBall,
+        OutOfBound,
+        StrategyTime
+    }
+
     class State
     {
         public State()
         {
         }
 
-        enum States
+        public States GetCurrentState()
         {
-            Attack,
-            Defence,
-
-            FreeThrow,
-            JumpBall,
-            OutOfBound,
-            StrategyTime
+            return States.Attack;
         }
     }
 }
