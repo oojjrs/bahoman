@@ -24,8 +24,8 @@ namespace AI
         }
 
 
-        private Boolean hasBall = false;
-        private PlayerState currentState = PlayerState.Free;
+        //private Boolean hasBall = false;
+        //private PlayerState currentState = PlayerState.Free;
 
         public string Determine(State state, Team team, BasketballCourt basketballCourt)
         {
