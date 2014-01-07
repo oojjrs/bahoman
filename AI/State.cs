@@ -9,7 +9,9 @@ namespace AI
     {
         Dribble,
         Shoot,
-        Pass
+        Pass,
+        Rebound,
+        Free
     }
     
     public class State

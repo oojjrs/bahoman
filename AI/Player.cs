@@ -38,7 +38,7 @@ namespace AI
                 else
                 {
                     //그냥 드리블 해서 골대로 이동
-                    //MoveToRing()
+                    //MoveToRing(can moveable)
                     return PlayerState.Dribble;
                 }
             }
