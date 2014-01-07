@@ -5,26 +5,23 @@ using System.Text;
 
 namespace AI
 {
-    class State
+    enum PlayerState
     {
-        public State()
-        {
-
-        }
-
-        virtual public void Enter()
-        {
-
-        }
-
-        virtual public void Excute() 
-        { 
-
-        }
-
-        virtual public void Exit()
-        {
-
-        }
+        Dribble,
+        Shoot,
+        Pass
+    }
+    
+    public class State
+    {
+        //public enum States
+        //{
+        //    Attack,
+        //    Defence,
+        //    FreeThrow,
+        //    JumpBall,
+        //    OutOfBound,
+        //    StrategyTime
+        //}
     }
 }
