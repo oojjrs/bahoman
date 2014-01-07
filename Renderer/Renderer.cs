@@ -6,17 +6,28 @@ using System.Threading.Tasks;
 
 namespace Renderer
 {
-    enum Type
+    public enum Type
     {
         //Software,
         Direct3D9,
         Stream,
     }
 
-    public class Renderer
+    public static class Container
     {
-        //public static IRenderer GetInterface(Type t)
-        //{
-        //}
+        private static IRenderer viaDX = new Engine(new MethodDX9());
+        private static IRenderer viaText = new Engine(new MethodStream());
+
+        public static IRenderer GetInterface(Type t)
+        {
+            switch (t)
+            {
+                case Type.Direct3D9:
+                    return viaDX;
+                case Type.Stream:
+                    return viaText;
+            }
+            return viaDX;
+        }
     }
 }

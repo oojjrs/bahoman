@@ -6,7 +6,6 @@ using System.Windows.Forms;
 
 using SharpDX;
 using SharpDX.Direct3D9;
-using Color = SharpDX.Color;
 
 using Core;
 
@@ -28,7 +27,7 @@ namespace Renderer
         #endregion
 
         #region From IRenderer
-        public bool BeginClip(Rectangle viewport)
+        public bool BeginClip(System.Drawing.Rectangle viewport)
         {
             if (isInit == false)
             {
@@ -73,7 +72,7 @@ namespace Renderer
             return true;
         }
 
-        public bool Clear(Color color)
+        public bool Clear(MyColor color)
         {
             if (isInit == false)
             {
@@ -266,7 +265,7 @@ namespace Renderer
             return api.OnPutLine(r);
         }
 
-        public bool PutRect(Color cr)
+        public bool PutRect(MyColor cr)
         {
             if (isInit == false)
             {
@@ -286,9 +285,9 @@ namespace Renderer
             return api.OnPutRect(cr);
         }
 
-        public bool PutRect(int left, int top, int right, int bottom, Color cr)
+        public bool PutRect(int left, int top, int right, int bottom, MyColor cr)
         {
-            var r = new Rectangle(left, top, right, bottom);
+            var r = new System.Drawing.Rectangle(left, top, right, bottom);
             if (isInit == false)
             {
                 log.Assert("PutRect({0}{1}) : NOT INITIALIZED", r, cr);
@@ -400,7 +399,7 @@ namespace Renderer
         #endregion
 
         #region From Engine
-        private Engine(IMethod method)
+        public Engine(IMethod method)
         {
             api = method;
         }
@@ -408,7 +407,7 @@ namespace Renderer
         private bool OnFlip(int? px, int? py, int? pcx, int? pcy)
         {
             // Note : 버퍼를 화면에 출력할 때 원본 버퍼의 길이 비율이 윈도우 길이 비율에 따라 깨지지 않도록 조절한다
-            var r = new Rectangle(mainWindow.Left, mainWindow.Top, mainWindow.Width, mainWindow.Height);
+            var r = new System.Drawing.Rectangle(mainWindow.Left, mainWindow.Top, mainWindow.Width, mainWindow.Height);
             var rcCov = r;
             if (pcx.HasValue || pcy.HasValue)
             {
@@ -433,16 +432,16 @@ namespace Renderer
 
                 if (fRate < 1.0f)
                 {
-                    var size = new Size2((int)(backBufferWidth * fRate), (int)(backBufferHeight * fRate));
+                    var size = new System.Drawing.Size((int)(backBufferWidth * fRate), (int)(backBufferHeight * fRate));
                     rcCov.Size = size;
                 }
                 else
                 {
-                    var size = new Size2(backBufferWidth, backBufferHeight);
+                    var size = new System.Drawing.Size(backBufferWidth, backBufferHeight);
                     rcCov.Size = size;
                 }
 
-                var point = new Point((r.Right - rcCov.Right) / 2, (r.Bottom - rcCov.Bottom) / 2);
+                var point = new System.Drawing.Point((r.Right - rcCov.Right) / 2, (r.Bottom - rcCov.Bottom) / 2);
                 rcCov.Location = point;
             }
 

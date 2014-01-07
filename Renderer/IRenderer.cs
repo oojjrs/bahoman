@@ -7,17 +7,16 @@ using System.Windows.Forms;
 
 using SharpDX;
 using SharpDX.Direct3D9;
-using Color = SharpDX.Color;
 
 using Core;
 
 namespace Renderer
 {
-    interface IRenderer
+    public interface IRenderer
     {
-	    bool BeginClip(Rectangle Viewport);	// viewport 영역만 보이고 나머지가 클리핑된다
+	    bool BeginClip(System.Drawing.Rectangle Viewport);	// viewport 영역만 보이고 나머지가 클리핑된다
 	    bool BeginDraw();
-	    bool Clear(Color color);
+	    bool Clear(MyColor color);
 	    bool EndClip();
 	    bool EndDraw();
 	    bool Flip();
@@ -30,8 +29,8 @@ namespace Renderer
 	    bool Initialize(Form mainWindow);
 	    bool PutImage(ImageArgs r);
 	    bool PutLine(LineArgs r);
-        bool PutRect(Color cr);
-        bool PutRect(int left, int top, int right, int bottom, Color cr);
+        bool PutRect(MyColor cr);
+        bool PutRect(int left, int top, int right, int bottom, MyColor cr);
         bool PutText(TextArgs r);
 	    bool ResizeBackBuffer(int width, int height);
 	    void SetReporter(IReporter er);

@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Core;
 
 namespace Renderer
 {
     public class LineArgs
     {
 	    private int width = 1;
-	    private Color color = Color.Black;
-	    private List<Point> points = new List<Point>();
+	    private MyColor color = new MyColor();
+        private List<System.Drawing.Point> points = new List<System.Drawing.Point>();
 
         public override string ToString()
         {
@@ -31,7 +32,7 @@ namespace Renderer
             this.LineWidth = width;
         }
 
-        public LineArgs(int width, Color color)
+        public LineArgs(int width, MyColor color)
         {
             this.LineColor = color;
             this.LineWidth = width;
@@ -39,15 +40,15 @@ namespace Renderer
 
         public void AddPoint(int x, int y)
         {
-            this.AddPoint(new Point(x, y));
+            this.AddPoint(new System.Drawing.Point(x, y));
         }
 
-        public void AddPoint(Point pt)
+        public void AddPoint(System.Drawing.Point pt)
         {
             this.points.Add(pt);
         }
 
-        public Color LineColor
+        public MyColor LineColor
         {
             get { return this.color; }
             set { this.color = value; }
@@ -58,7 +59,7 @@ namespace Renderer
             get { return this.points.Count; }
         }
 
-        public List<Point> Points
+        public List<System.Drawing.Point> Points
         {
             get { return this.points; }
         }

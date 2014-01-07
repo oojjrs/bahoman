@@ -51,7 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DX9.cs" />
+    <Compile Include="MethodStream.cs" />
+    <Compile Include="MyConvert.cs" />
+    <Compile Include="MethodDX9.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="ImageArgs.cs" />
     <Compile Include="IMethod.cs" />

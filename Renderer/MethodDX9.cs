@@ -6,7 +6,6 @@ using System.Windows.Forms;
 
 using SharpDX;
 using SharpDX.Direct3D9;
-using Color = SharpDX.Color;
 
 using Core;
 
@@ -16,15 +15,15 @@ namespace Renderer
     {
         Form mainWindow = null;
         LogHelper log = null;
-        Rectangle rcSrc;
+        SharpDX.Rectangle rcSrc;
         Device device = null;
         Sprite sprite = null;
         Line line = null;
         Stack<Viewport> stackViewport = new Stack<Viewport>();
-        Stack<Rectangle> stackScissor = new Stack<Rectangle>();
+        Stack<SharpDX.Rectangle> stackScissor = new Stack<SharpDX.Rectangle>();
 
         #region From IMethod
-        public bool OnBeginClip(Rectangle r)
+        public bool OnBeginClip(System.Drawing.Rectangle r)
         {
             try
             {
@@ -41,7 +40,7 @@ namespace Renderer
                 }
 
                 var rcOld = device.ScissorRect;
-                device.ScissorRect = r;
+                device.ScissorRect = MyConvert.ToDX(r);
 
                 stackViewport.Push(vpOld);
                 stackScissor.Push(rcOld);
@@ -69,11 +68,11 @@ namespace Renderer
             return true;
         }
 
-        public bool OnClear(Color color)
+        public bool OnClear(MyColor color)
         {
             try
             {
-                device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, color, 1.0f, 0);
+                device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, MyConvert.ToDX(color), 1.0f, 0);
             }
             catch (SharpDXException e)
             {
@@ -125,11 +124,11 @@ namespace Renderer
             return true;
         }
 
-        public bool OnFlip(Rectangle rcDest)
+        public bool OnFlip(System.Drawing.Rectangle rcDest)
         {
             try
             {
-                device.Present(rcSrc, rcDest);
+                device.Present(rcSrc, MyConvert.ToDX(rcDest));
             }
             catch (SharpDXException e)
             {
@@ -184,14 +183,13 @@ namespace Renderer
                 // Note : SetWidth 는 Begin ~ End 사이에서 하면 안 된다
                 line.Width = r.LineWidth;
 
-                //List<Vector2> vVectors;
-                //foreach (var pt in r.Points)
-                //    vVectors.Add(new Vector2(pt.X, pt.Y));
+                List<Vector2> v = new List<Vector2>();
+                foreach (var pt in r.Points)
+                    v.Add(new Vector2(pt.X, pt.Y));
 
                 // Note : Begin ~ End 는 생략이 가능하다. Draw 내부에서 자동으로 호출해준다
                 //          여러 선을 한꺼번에 그릴 경우에는 오버헤드를 피하기 위해 명시적으로 선언해줄 필요가 있다
-                // Note : MyColor 들고 온 다음에 하자
-                //line.Draw(vVectors, r.LineColor);
+                line.Draw(v.ToArray(), MyConvert.ToDX(r.LineColor));
             }
             catch (SharpDXException e)
             {
@@ -201,7 +199,7 @@ namespace Renderer
             return true;
         }
 
-        public bool OnPutRect(Color cr)
+        public bool OnPutRect(MyColor cr)
         {
             try
             {
@@ -209,8 +207,7 @@ namespace Renderer
                 var desc = surface.Description;
                 var rc = this.GetClipRect(new Rectangle(0, 0, desc.Width, desc.Height));
 
-                // Note : 여기도 컬러 -_-
-                device.ColorFill(surface, rc, cr);
+                device.ColorFill(surface, rc, MyConvert.ToDX(cr));
             }
             catch (SharpDXException e)
             {
@@ -220,10 +217,14 @@ namespace Renderer
             return true;
         }
 
-        public bool OnPutRect(Rectangle rc, Color cr)
+        public bool OnPutRect(System.Drawing.Rectangle rc, MyColor cr)
         {
             try
             {
+                var surface = device.GetRenderTarget(0);
+                var rc2 = this.GetClipRect(MyConvert.ToDX(rc));
+
+                device.ColorFill(surface, rc2, MyConvert.ToDX(cr));
             }
             catch (SharpDXException e)
             {
@@ -237,6 +238,11 @@ namespace Renderer
         {
             try
             {
+                var vp = device.Viewport;
+                var rc = new Rectangle(vp.X + r.left, vp.Y + r.top, vp.X + r.right, vp.Y + r.bottom);
+                var font = new SharpDX.Direct3D9.Font(device, r.font);
+
+                font.DrawText(null, r.text, rc, MyConvert.ToDX(r.format), MyConvert.ToDX(r.textColor));
             }
             catch (SharpDXException e)
             {
@@ -250,6 +256,20 @@ namespace Renderer
         {
             try
             {
+                this.ReleaseDevice();
+
+                var pp = new PresentParameters(width, height);
+                pp.Windowed = true;
+                pp.SwapEffect = SwapEffect.Discard; // for window mode
+                pp.BackBufferFormat = Format.Unknown;
+                pp.EnableAutoDepthStencil = true;
+                pp.AutoDepthStencilFormat = Format.D16;
+
+                device = new Device(new Direct3D(), 0, DeviceType.Hardware, mainWindow.Handle, CreateFlags.HardwareVertexProcessing, pp);
+                device.SetRenderState(RenderState.ScissorTestEnable, true); // for clip rect
+
+                sprite = new Sprite(device);
+                line = new Line(device);
             }
             catch (SharpDXException e)
             {
@@ -264,6 +284,8 @@ namespace Renderer
         {
             try
             {
+                if (this.OnResizeBackBuffer(width, height) == false)
+                    return false;
             }
             catch (SharpDXException e)
             {
@@ -279,14 +301,26 @@ namespace Renderer
         }
         #endregion
 
-        private Rectangle GetClipRect(Rectangle r)
+        private void ReleaseDevice()
         {
-            Viewport vp = device.Viewport;
-            Rectangle rc = device.ScissorRect;
+            line.Dispose();
+            line = null;
+
+            sprite.Dispose();
+            sprite = null;
+
+            device.Dispose();
+            device = null;
+        }
+
+        private SharpDX.Rectangle GetClipRect(SharpDX.Rectangle r)
+        {
+            var vp = device.Viewport;
+            var rc = device.ScissorRect;
 
             r.Inflate(vp.X, vp.Y);
             r.Intersects(rc);
             return r;
         }
-}
+    }
 }
