@@ -9,7 +9,7 @@ namespace Renderer
 {
     class MethodStream : IMethod
     {
-        LogHelper log = null;
+        LogHelper log = new LogHelper();
 
         #region From IMethod
         public bool OnBeginClip(System.Drawing.Rectangle r)

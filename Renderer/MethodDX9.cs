@@ -14,7 +14,7 @@ namespace Renderer
     class MethodDX9 : IMethod
     {
         Form mainWindow = null;
-        LogHelper log = null;
+        LogHelper log = new LogHelper();
         SharpDX.Rectangle rcSrc;
         Device device = null;
         Sprite sprite = null;
@@ -72,7 +72,7 @@ namespace Renderer
         {
             try
             {
-                device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, MyConvert.ToDX(color), 1.0f, 0);
+                device.Clear(ClearFlags.Target, MyConvert.ToDX(color), 1.0f, 0);
             }
             catch (SharpDXException e)
             {
@@ -259,11 +259,11 @@ namespace Renderer
                 this.ReleaseDevice();
 
                 var pp = new PresentParameters(width, height);
-                pp.Windowed = true;
-                pp.SwapEffect = SwapEffect.Discard; // for window mode
-                pp.BackBufferFormat = Format.Unknown;
-                pp.EnableAutoDepthStencil = true;
-                pp.AutoDepthStencilFormat = Format.D16;
+                //pp.Windowed = true;
+                //pp.SwapEffect = SwapEffect.Discard; // for window mode
+                //pp.BackBufferFormat = Format.Unknown;
+                //pp.EnableAutoDepthStencil = true;
+                //pp.AutoDepthStencilFormat = Format.D16;
 
                 device = new Device(new Direct3D(), 0, DeviceType.Hardware, mainWindow.Handle, CreateFlags.HardwareVertexProcessing, pp);
                 device.SetRenderState(RenderState.ScissorTestEnable, true); // for clip rect
@@ -303,14 +303,23 @@ namespace Renderer
 
         private void ReleaseDevice()
         {
-            line.Dispose();
-            line = null;
+            if (line != null)
+            {
+                line.Dispose();
+                line = null;
+            }
 
-            sprite.Dispose();
-            sprite = null;
+            if (sprite != null)
+            {
+                sprite.Dispose();
+                sprite = null;
+            }
 
-            device.Dispose();
-            device = null;
+            if (device != null)
+            {
+                device.Dispose();
+                device = null;
+            }
         }
 
         private SharpDX.Rectangle GetClipRect(SharpDX.Rectangle r)

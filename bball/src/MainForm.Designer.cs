@@ -34,7 +34,7 @@
             // 
             // frameUpdateTimer
             // 
-            this.frameUpdateTimer.Enabled = true;
+            this.frameUpdateTimer.Interval = 30;
             this.frameUpdateTimer.Tick += new System.EventHandler(this.frameUpdateTimer_Tick);
             // 
             // MainForm
@@ -46,6 +46,7 @@
             this.Name = "MainForm";
             this.Text = "MainForm";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.ResumeLayout(false);
 

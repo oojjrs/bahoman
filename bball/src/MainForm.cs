@@ -56,5 +56,10 @@ namespace bball
         {
             this.Invalidate();
         }
+
+        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        {
+            renderer.ResizeBackBuffer(this.Width, this.Height);
+        }
     }
 }
