@@ -1,4 +1,9 @@
-﻿namespace AI
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace bball.src
 {
     class BasketballCourt
     {
@@ -26,6 +31,5 @@
         {
             get { return this.awayScore; }
         }
-
     }
 }
