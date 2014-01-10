@@ -34,6 +34,7 @@
             // 
             // frameUpdateTimer
             // 
+            this.frameUpdateTimer.Enabled = true;
             this.frameUpdateTimer.Interval = 30;
             this.frameUpdateTimer.Tick += new System.EventHandler(this.frameUpdateTimer_Tick);
             // 
@@ -41,6 +42,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1090, 654);
             this.DoubleBuffered = true;
             this.Name = "MainForm";

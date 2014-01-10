@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -14,10 +15,10 @@ namespace bball
         private void OnDraw(IRenderer r)
         {
             ImageArgs ia = new ImageArgs();
-            ia.image = renderer.GetImage("res/court.png", new MyColor(), "court");
-            //ia.sx = 0.7f;
-            //ia.sy = 0.7f;
+            ia.image = r.GetImage("res/court.png", new MyColor(), "court");
             r.PutImage(ia);
+
+            pm.OnDraw(r);
         }
     }
 }

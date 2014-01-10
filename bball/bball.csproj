@@ -74,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Court.cs" />
+    <Compile Include="src\GlobalVariables.cs" />
     <Compile Include="src\BasketballCourt.cs" />
     <Compile Include="src\Log.cs" />
     <Compile Include="src\MainForm.cs">
@@ -92,6 +94,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="src\Player.cs" />
+    <Compile Include="src\PlayerManager.cs" />
     <Compile Include="src\Program.cs" />
   </ItemGroup>
   <ItemGroup>

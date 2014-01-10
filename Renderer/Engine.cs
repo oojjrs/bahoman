@@ -298,7 +298,7 @@ namespace Renderer
 
         public bool PutRect(int left, int top, int right, int bottom, MyColor cr)
         {
-            var r = new System.Drawing.Rectangle(left, top, right, bottom);
+            var r = new System.Drawing.Rectangle(left, top, right - left, bottom - top);
             if (isInit == false)
             {
                 log.Assert("PutRect({0}{1}) : NOT INITIALIZED", r, cr);

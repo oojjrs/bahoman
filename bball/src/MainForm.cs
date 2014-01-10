@@ -15,6 +15,7 @@ namespace bball
     public partial class MainForm : Form
     {
         private IRenderer renderer = Renderer.Container.GetInterface(Renderer.Type.Direct3D9);
+        private PlayerManager pm = new PlayerManager();
 
         public MainForm()
         {
@@ -33,15 +34,16 @@ namespace bball
 
             renderer.Initialize(this);
             renderer.SetReporter(Log.Instance);
-            renderer.ResizeBackBuffer(1290, 968);
+            renderer.ResizeBackBuffer(GlobalVariables.CourtWidth, GlobalVariables.CourtHeight);
+
+            pm.Initialize();
         }
 
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.Clear(Color.White);
             e.Graphics.Dispose();
 
-            if (renderer.Clear(new MyColor(Color.LightGray)))
+            if (renderer.Clear(new MyColor(Color.Blue)))
             {
                 if (renderer.BeginDraw())
                 {
