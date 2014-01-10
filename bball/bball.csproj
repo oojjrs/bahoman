@@ -131,9 +131,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AI\AI.csproj">
+      <Project>{11720E78-627C-498A-B8DE-C9CD8C3E6F6B}</Project>
+      <Name>AI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{490400e0-71ec-4a04-95dc-111a7f56cc27}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Physics\Physics.csproj">
+      <Project>{11757E34-7D68-436F-86EE-BA241122CE69}</Project>
+      <Name>Physics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Renderer\Renderer.csproj">
       <Project>{236cca21-ede8-410e-9b97-14aad348875a}</Project>

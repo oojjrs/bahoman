@@ -9,5 +9,6 @@ namespace Physics
         {
             return (float)Math.Sqrt(Math.Pow(startpoint.X - targetpoint.X, 2) + Math.Pow(startpoint.Y - targetpoint.Y, 2));
         }
+
     }
 }

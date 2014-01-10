@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace bball.src
+namespace bball
 {
     class BasketballCourt
     {
