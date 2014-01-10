@@ -200,6 +200,17 @@ namespace Renderer
             return this.OnFlip(x, y, cx, cy);
         }
 
+        public IImage GetImage(string path, MyColor key, string identifier)
+        {
+            if (isInit == false)
+            {
+                log.Assert("GetImage({0}, {1}, {2}) : NOT INITIALIZED", path, key, identifier);
+                return null;
+            }
+
+            return api.OnGetImage(path, key, identifier);
+        }
+
         public bool Initialize(Form mainWindow)
         {
             if (isInit)

@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IImage.cs" />
     <Compile Include="MethodStream.cs" />
     <Compile Include="MyConvert.cs" />
     <Compile Include="MethodDX9.cs" />

@@ -7,6 +7,21 @@ using Core;
 
 namespace Renderer
 {
+    class StreamImage : IImage
+    {
+        string identifier;
+
+        public string GetIdentifier()
+        {
+            return identifier;
+        }
+
+        public StreamImage(string id)
+        {
+            identifier = id;
+        }
+    }
+
     class MethodStream : IMethod
     {
         LogHelper log = new LogHelper();
@@ -51,6 +66,12 @@ namespace Renderer
         public string OnGetIdentifier()
         {
             return "Renderer via Stream";
+        }
+
+        public IImage OnGetImage(string path, MyColor key, string identifier)
+        {
+            log.Log("OnGetImage({0}, {1}, {2})", path, key, identifier);
+            return new StreamImage(identifier);
         }
 
         public bool OnInitialize(System.Windows.Forms.Form mainWindow)

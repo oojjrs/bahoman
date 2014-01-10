@@ -11,6 +11,32 @@ using Core;
 
 namespace Renderer
 {
+    class DXImage : IImage
+    {
+        Texture texture = null;
+
+        public string GetIdentifier()
+        {
+            return texture.DebugName;
+        }
+
+        public DXImage(Texture t, string identifier)
+        {
+            texture = t;
+            texture.DebugName = identifier;
+        }
+
+        ~DXImage()
+        {
+            texture.Dispose();
+        }
+
+        public Texture Texture
+        {
+            get { return texture; }
+        }
+    }
+
     class MethodDX9 : IMethod
     {
         Form mainWindow = null;
@@ -72,7 +98,7 @@ namespace Renderer
         {
             try
             {
-                device.Clear(ClearFlags.Target, MyConvert.ToDX(color), 1.0f, 0);
+                device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, MyConvert.ToDX(color), 1.0f, 0);
             }
             catch (SharpDXException e)
             {
@@ -143,6 +169,22 @@ namespace Renderer
             return "DirectX 9.0c with SharpDX";
         }
 
+        public IImage OnGetImage(string path, MyColor key, string identifier)
+        {
+            try
+            {
+                var image = System.Drawing.Image.FromFile(path);
+
+                var texture = Texture.FromFile(device, path, image.Width, image.Height, 1, Usage.None, Format.Unknown, Pool.Default, Filter.Default, Filter.Default, key.ToInteger());
+                return new DXImage(texture, identifier);
+            }
+            catch (SharpDXException e)
+            {
+                log.Error(e.ToString());
+                return null;
+            }
+        }
+
         public bool OnInitialize(Form mainWindow)
         {
             this.mainWindow = mainWindow;
@@ -156,16 +198,10 @@ namespace Renderer
                 Matrix matOld = sprite.Transform;
                 sprite.Transform = Matrix.Scaling(r.sx, r.sy, r.sz) * Matrix.Translation(r.px, r.py, r.pz);
 
-                // Note : 다음의 함수는 그래픽 카드에 따라 이미지를 2의 배수승 크기로 자동 stretch 할 수도 있다
-                //          텍스처를 0~1 범위로 맵핑하기 위해서는 옛날 카드들이 2의 배수승 크기가 되지 않으면
-                //          곤란한 경우가 있었기 때문에 크기를 강제로 맞춘다고 한다.
-                //          따라서 240x240 이미지는 256x256 까지 늘어날 것이고 그것을 방지하려면 애초에 이미지를 키워라
-                //var image = (Image*)r.image;
-                //var texture = image.Get();
-
                 // Note : C#용 컬러 구조체에 대해 다시 생각해보자
-                //sprite.Draw(texture, ColorBGRA.FromRgba(0xFFFFFFFF));
-                //sprite.Flush();
+                var image = r.image as DXImage;
+                sprite.Draw(image.Texture, ColorBGRA.FromRgba(0xFFFFFFFF));
+                sprite.Flush();
                 sprite.Transform = matOld;
             }
             catch (SharpDXException e)
@@ -259,11 +295,11 @@ namespace Renderer
                 this.ReleaseDevice();
 
                 var pp = new PresentParameters(width, height);
-                //pp.Windowed = true;
-                //pp.SwapEffect = SwapEffect.Discard; // for window mode
-                //pp.BackBufferFormat = Format.Unknown;
-                //pp.EnableAutoDepthStencil = true;
-                //pp.AutoDepthStencilFormat = Format.D16;
+                pp.Windowed = true;
+                pp.SwapEffect = SwapEffect.Discard; // for window mode
+                pp.BackBufferFormat = Format.Unknown;
+                pp.EnableAutoDepthStencil = true;
+                pp.AutoDepthStencilFormat = Format.D16;
 
                 device = new Device(new Direct3D(), 0, DeviceType.Hardware, mainWindow.Handle, CreateFlags.HardwareVertexProcessing, pp);
                 device.SetRenderState(RenderState.ScissorTestEnable, true); // for clip rect

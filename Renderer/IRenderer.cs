@@ -22,10 +22,7 @@ namespace Renderer
 	    bool Flip();
 	    bool Flip(int x, int y);
 	    bool Flip(int x, int y, int cx, int cy);
-	    //IFont GetFont(Font font);
-        string Identifier { get; }
-        //IImage GetImage(string path, Color key, string identifier);
-        //IImage GetImage(int width, int height, Color fill, string identifier);
+        IImage GetImage(string path, MyColor key, string identifier);
 	    bool Initialize(Form mainWindow);
 	    bool PutImage(ImageArgs r);
 	    bool PutLine(LineArgs r);
@@ -35,5 +32,7 @@ namespace Renderer
 	    bool ResizeBackBuffer(int width, int height);
 	    void SetReporter(IReporter er);
 	    void SetVisibleFrameRate(bool bSet);	// out to window caption
+
+        string Identifier { get; }
     }
 }

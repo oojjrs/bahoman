@@ -33,11 +33,12 @@ namespace bball
 
             renderer.Initialize(this);
             renderer.SetReporter(Log.Instance);
-            renderer.ResizeBackBuffer(this.Width, this.Height);
+            renderer.ResizeBackBuffer(1290, 968);
         }
 
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.Clear(Color.White);
             e.Graphics.Dispose();
 
             if (renderer.Clear(new MyColor(Color.LightGray)))
@@ -55,11 +56,6 @@ namespace bball
         private void frameUpdateTimer_Tick(object sender, EventArgs e)
         {
             this.Invalidate();
-        }
-
-        private void MainForm_ResizeEnd(object sender, EventArgs e)
-        {
-            renderer.ResizeBackBuffer(this.Width, this.Height);
         }
     }
 }

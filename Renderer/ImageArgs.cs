@@ -17,7 +17,7 @@ namespace Renderer
         public int px = 0;	// pos
         public int py = 0;
         public int pz = 0;
-        //IImage* image;
+        public IImage image = null;
 
         public override string ToString()
         {

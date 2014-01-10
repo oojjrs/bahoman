@@ -19,11 +19,8 @@ namespace Renderer
         bool OnEndClip();
         bool OnEndDraw();
         bool OnFlip(System.Drawing.Rectangle rcDest);
-        //IFont* OnGetFont(string name, int size, string identifier);
-        //IFont* OnGetFont(const LOGFONTW& r, string identifier);
         string OnGetIdentifier();
-        //IImage* OnGetImage(string path, Color key, string identifier);
-        //IImage* OnGetImage(int width, int height, Color fill, string identifier);
+        IImage OnGetImage(string path, MyColor key, string identifier);
         bool OnInitialize(Form mainWindow);
         bool OnPutImage(ImageArgs r);
         bool OnPutLine(LineArgs r);
