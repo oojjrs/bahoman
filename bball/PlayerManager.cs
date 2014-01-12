@@ -18,11 +18,5 @@ namespace bball
             players.Add(new Player(0, 0, TeamType.Home, r));
             return true;
         }
-
-        public void OnDraw(IRenderer r)
-        {
-            foreach (var p in players)
-                p.OnDraw(r);
-        }
     }
 }
