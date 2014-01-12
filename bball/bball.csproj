@@ -95,7 +95,9 @@
     </Compile>
     <Compile Include="src\Player.cs" />
     <Compile Include="src\PlayerManager.cs" />
+    <Compile Include="src\Position.cs" />
     <Compile Include="src\Program.cs" />
+    <Compile Include="src\Team.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="res\bball.resx">

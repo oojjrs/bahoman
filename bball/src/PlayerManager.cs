@@ -15,8 +15,7 @@ namespace bball
 
         public bool Initialize()
         {
-            players.Add(new Player(0, 0, Color.Blue));
-
+            players.Add(new Player(0, 0, TeamType.Home));
             return true;
         }
 
