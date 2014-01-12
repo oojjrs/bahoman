@@ -18,5 +18,14 @@ namespace bball
             players.Add(new Player(0, 0, TeamType.Home, r));
             return true;
         }
+
+        public void UpdateState()
+        {
+            foreach (var player in players)
+            { 
+                player.Thinking();
+                player.Action();
+            }
+        }
     }
 }

@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.frameUpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.GlobalTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // frameUpdateTimer
+            // GlobalTimer
             // 
-            this.frameUpdateTimer.Enabled = true;
-            this.frameUpdateTimer.Interval = 30;
-            this.frameUpdateTimer.Tick += new System.EventHandler(this.frameUpdateTimer_Tick);
+            this.GlobalTimer.Enabled = true;
+            this.GlobalTimer.Interval = 30;
+            this.GlobalTimer.Tick += new System.EventHandler(this.GlobalTimer_Tick);
             // 
             // MainForm
             // 
@@ -55,6 +55,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer frameUpdateTimer;
+        private System.Windows.Forms.Timer GlobalTimer;
     }
 }

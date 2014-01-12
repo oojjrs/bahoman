@@ -57,7 +57,7 @@ namespace bball
             }
         }
 
-        private void frameUpdateTimer_Tick(object sender, EventArgs e)
+        private void GlobalTimer_Tick(object sender, EventArgs e)
         {
             this.Invalidate();
         }
