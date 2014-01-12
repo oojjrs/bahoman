@@ -15,8 +15,9 @@ namespace bball
     public partial class MainForm : Form
     {
         private IRenderer renderer = Renderer.Container.GetInterface(Renderer.Type.Direct3D9);
-        private Court court = null;
+        private Court court = new Court();
         private PlayerManager pm = new PlayerManager();
+        private Ball ball = new Ball();
 
         public MainForm()
         {
@@ -37,8 +38,10 @@ namespace bball
             renderer.SetReporter(Log.Instance);
             renderer.ResizeBackBuffer(GlobalVariables.CourtWidth, GlobalVariables.CourtHeight);
 
-            court = new Court(renderer);
+            court.Image = renderer.GetImage("res/court.png", new MyColor(), "court");
             pm.Initialize(renderer);
+            ball.Image = renderer.GetImage("res/Ball.png", new MyColor(), "Ball");
+            ball.Location = new Point(-50, 0);
         }
 
         private void GlobalTimer_Tick(object sender, EventArgs e)

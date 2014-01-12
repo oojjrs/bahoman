@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ball.cs" />
     <Compile Include="Court.cs" />
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="BasketballCourt.cs" />
@@ -103,12 +104,12 @@
     <Compile Include="Team.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainFormDraw.resx">
-      <DependentUpon>MainFormDraw.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="res\bball.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>bball.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +159,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Player.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Ball.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

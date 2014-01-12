@@ -7,11 +7,9 @@ using Renderer;
 
 namespace bball
 {
-    class Object : IDrawable
+    abstract class Object : IDrawable
     {
-        public virtual void OnDraw(IRenderer r)
-        {
-        }
+        public abstract void OnDraw(IRenderer r);
 
         public Object()
         {

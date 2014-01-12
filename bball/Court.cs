@@ -13,11 +13,13 @@ namespace bball
     {
         private IImage image = null;
 
+        #region From IDrawable
         public override void OnDraw(IRenderer r)
         {
             ImageArgs ia = new ImageArgs(image);
             r.PutImage(ia);
         }
+        #endregion
 
         public static Point GetCoordinate(int x, int y)
         {
@@ -31,14 +33,10 @@ namespace bball
             return pt;
         }
 
-        public Court(IRenderer r)
+        public IImage Image
         {
-            this.SetImage(r.GetImage("res/court.png", new MyColor(), "court"));
-        }
-
-        public void SetImage(IImage image)
-        {
-            this.image = image;
+            get { return image; }
+            set { image = value; }
         }
     }
 }
