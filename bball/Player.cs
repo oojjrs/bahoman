@@ -6,6 +6,7 @@ using System.Text;
 using Core;
 using Renderer;
 using AI;
+using System.Windows.Forms;
 
 namespace bball
 {
@@ -42,14 +43,18 @@ namespace bball
 
         public void Thinking()
         {
-
+            currentState = PlayerAI.Determine(currentState, playerPosition);
         }
 
         public void Action()
         {
             if (currentState == PlayerState.Dribble)
             {
-                    
+                playerPosition = new Point(playerPosition.X + 1, playerPosition.Y);
+            }
+            else if (currentState == PlayerState.Shoot)
+            {
+                MessageBox.Show("Ω∏¿Ã¥Ÿ");
             }
         }
 

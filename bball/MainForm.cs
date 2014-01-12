@@ -43,6 +43,7 @@ namespace bball
 
         private void GlobalTimer_Tick(object sender, EventArgs e)
         {
+            pm.UpdateState();
             if (renderer.Clear(new MyColor(Color.Blue)))
             {
                 if (renderer.BeginDraw())

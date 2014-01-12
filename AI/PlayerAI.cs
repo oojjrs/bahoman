@@ -4,23 +4,18 @@ using Physics;
 
 namespace AI
 {
-    class PlayerAI
+    public class PlayerAI
     {
-        private Point ringpoint = new Point(50, 50);
+        private static Point ringposition = new Point(550, 0);
         //private Boolean hasBall = false;
-        public PlayerState GetCurrentPlayerState()
-        {
-            //공을 가지고 있으면
-            return PlayerState.Dribble;
-        }
 
-        private int GetShootingPoint(Point playerpoint,Point ringpoint)
+        private static int GetShootingPoint(Point playerpoint,Point ringpoint)
         {
             //슛을 쏠지 말지 결정하는 팩터들을 수치화
             float distancefromRing = PhysicsEngine.GetDistance(playerpoint,ringpoint);
             
             //일단 골대 근처에 있으면 100점으로 리턴
-            if (10 > (int)distancefromRing)
+            if (40 > (int)distancefromRing)
             {
                 return 100;
             }
@@ -30,12 +25,12 @@ namespace AI
             }
         }
 
-        public PlayerState Determine(State currentstate, Point playerposition)
+        public static PlayerState Determine(PlayerState currentstate, Point playerposition)
         {
-            if (GetCurrentPlayerState() == PlayerState.Dribble)
+            if (currentstate == PlayerState.Dribble)
             {
                 //슛이 가능한지 현재 위치 확인
-                if (GetShootingPoint(playerposition, ringpoint) > 80)
+                if (GetShootingPoint(playerposition, ringposition) > 80)
                 {
                     //현재 상태를 슛상태로 변환
                     return PlayerState.Shoot;
@@ -46,12 +41,12 @@ namespace AI
                     return PlayerState.Dribble;
                 }
             }
-            else if (GetCurrentPlayerState() == PlayerState.Shoot)
+            else if (currentstate == PlayerState.Shoot)
             {
                 //Shooting()
                 //슛상태일때는 슛하고 리바운드 혹은 수비 준비 해야지;
-                float distancefromRing = PhysicsEngine.GetDistance(playerposition, ringpoint);
-                if (distancefromRing < 10)
+                float distancefromRing = PhysicsEngine.GetDistance(playerposition, ringposition);
+                if (distancefromRing < 50)
                 {
                     return PlayerState.Rebound;
                 }
@@ -60,6 +55,18 @@ namespace AI
                     return PlayerState.Free;
                 }
                 
+            }
+            else if (currentstate == PlayerState.Rebound)
+            {
+                //Rebound()
+                //리바운드
+                throw new Exception { };
+            }
+            else if (currentstate == PlayerState.Free)
+            {
+                //Move
+                //슛상태일때는 슛하고 리바운드 혹은 수비 준비 해야지;
+                throw new Exception { };
             }
             else
             {
