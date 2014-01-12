@@ -196,10 +196,17 @@ namespace Renderer
             try
             {
                 Matrix matOld = sprite.Transform;
+                var image = r.image as DXImage;
+
+                if (r.correctToCenter)
+                {
+                    var desc = image.Texture.GetLevelDescription(0);
+                    r.px = r.px - desc.Width / 2;
+                    r.py = r.py - desc.Height / 2;
+                }
+
                 sprite.Transform = Matrix.Scaling(r.sx, r.sy, r.sz) * Matrix.Translation(r.px, r.py, r.pz);
 
-                // Note : C#용 컬러 구조체에 대해 다시 생각해보자
-                var image = r.image as DXImage;
                 sprite.Draw(image.Texture, ColorBGRA.FromRgba(0xFFFFFFFF));
                 sprite.Flush();
                 sprite.Transform = matOld;

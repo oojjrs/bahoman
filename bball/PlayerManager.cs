@@ -13,9 +13,9 @@ namespace bball
     {
         List<Player> players = new List<Player>();
 
-        public bool Initialize()
+        public bool Initialize(IRenderer r)
         {
-            players.Add(new Player(0, 0, TeamType.Home));
+            players.Add(new Player(0, 0, TeamType.Home, r));
             return true;
         }
 

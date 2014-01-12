@@ -9,36 +9,37 @@ using AI;
 
 namespace bball
 {
-    class Player
+    class Player : Object
     {
         private Point playerPosition = new Point(0,0);
         private PlayerState currentState = new PlayerState();
         private TeamType teamType = new TeamType();
         //private PlayerState nextState = new PlayerState();
+        private IImage image = null;
 
-        public Player(int x, int y, TeamType teamtype)
+        #region From IDrawable
+        public override void OnDraw(IRenderer r)
+        {
+            var pt = Court.GetCoordinate(playerPosition);
+            ImageArgs ia = new ImageArgs();
+            ia.px = pt.X;
+            ia.py = pt.Y;
+            ia.image = image;
+            ia.correctToCenter = true;
+            r.PutImage(ia);
+        }
+        #endregion
+
+        public Player(int x, int y, TeamType teamtype, IRenderer r)
         {
             playerPosition = new Point(x, y);
             teamType = teamtype;
+            this.SetImage(r.GetImage("res/Player.png", new MyColor(), "Player"));
         }
 
-        public void OnDraw(IRenderer r) // 나중에 인터페이스로
+        public void SetImage(IImage image)
         {
-            Rectangle rc = Position.GetPlayerPosition(playerPosition);
-            MyColor color = new MyColor();
-            if (teamType == TeamType.Home)
-            {
-                color = new MyColor(Color.Blue);
-            }
-            else if (teamType == TeamType.Away)
-            {
-                color = new MyColor(Color.Red);
-            }
-            else
-            {
-                color = new MyColor(Color.Black);
-            }
-            r.PutRect(rc.Left, rc.Top, rc.Right, rc.Bottom, color);
+            this.image = image;
         }
 
         public void Thinking()

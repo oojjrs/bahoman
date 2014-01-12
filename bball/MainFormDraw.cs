@@ -14,11 +14,7 @@ namespace bball
     {
         private void OnDraw(IRenderer r)
         {
-            ImageArgs ia = new ImageArgs();
-            ia.image = r.GetImage("res/court.png", new MyColor(), "court");
-            r.PutImage(ia);
-
-            pm.OnDraw(r);
+            OutputManager.OutputAll(r);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Renderer
         public int px = 0;	// pos
         public int py = 0;
         public int pz = 0;
+        public bool correctToCenter = false;
         public IImage image = null;
 
         public override string ToString()
@@ -26,8 +27,8 @@ namespace Renderer
                 name = "NoImage";
             else
                 name = image.GetIdentifier();
-            return String.Format("{9}(P({0},{1},{2})R({3},{4},{5})S({6},{7},{8}))",
-                px, py, pz, rx, ry, rz, sx, sy, sz, name);
+            return String.Format("{9}(P({0},{1},{2})R({3},{4},{5})S({6},{7},{8}),CC({10}))",
+                px, py, pz, rx, ry, rz, sx, sy, sz, name, correctToCenter);
         }
     }
 }

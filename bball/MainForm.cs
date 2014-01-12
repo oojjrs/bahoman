@@ -15,6 +15,7 @@ namespace bball
     public partial class MainForm : Form
     {
         private IRenderer renderer = Renderer.Container.GetInterface(Renderer.Type.Direct3D9);
+        private Court court = null;
         private PlayerManager pm = new PlayerManager();
 
         public MainForm()
@@ -36,7 +37,8 @@ namespace bball
             renderer.SetReporter(Log.Instance);
             renderer.ResizeBackBuffer(GlobalVariables.CourtWidth, GlobalVariables.CourtHeight);
 
-            pm.Initialize();
+            court = new Court(renderer);
+            pm.Initialize(renderer);
         }
 
         private void MainForm_Paint(object sender, PaintEventArgs e)
