@@ -196,16 +196,16 @@ namespace Renderer
             try
             {
                 Matrix matOld = sprite.Transform;
-                var image = r.image as DXImage;
+                var image = r.Image as DXImage;
 
-                if (r.correctToCenter)
+                if (r.CorrectToCenter)
                 {
                     var desc = image.Texture.GetLevelDescription(0);
-                    r.px = r.px - desc.Width / 2;
-                    r.py = r.py - desc.Height / 2;
+                    r.PosX = r.PosX - desc.Width / 2;
+                    r.PosY = r.PosY - desc.Height / 2;
                 }
 
-                sprite.Transform = Matrix.Scaling(r.sx, r.sy, r.sz) * Matrix.Translation(r.px, r.py, r.pz);
+                sprite.Transform = MyExtractor.GetScaleMatrix(r) * MyExtractor.GetTranslationMatrix(r);
 
                 sprite.Draw(image.Texture, ColorBGRA.FromRgba(0xFFFFFFFF));
                 sprite.Flush();

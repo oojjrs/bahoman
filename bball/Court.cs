@@ -15,9 +15,7 @@ namespace bball
 
         public override void OnDraw(IRenderer r)
         {
-            ImageArgs ia = new ImageArgs();
-            ia.image = image;
-
+            ImageArgs ia = new ImageArgs(image);
             r.PutImage(ia);
         }
 

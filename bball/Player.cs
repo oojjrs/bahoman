@@ -21,11 +21,9 @@ namespace bball
         public override void OnDraw(IRenderer r)
         {
             var pt = Court.GetCoordinate(playerPosition);
-            ImageArgs ia = new ImageArgs();
-            ia.px = pt.X;
-            ia.py = pt.Y;
-            ia.image = image;
-            ia.correctToCenter = true;
+            ImageArgs ia = new ImageArgs(image);
+            ia.SetPos(pt.X, pt.Y);
+            ia.CorrectToCenter = true;
             r.PutImage(ia);
         }
         #endregion
