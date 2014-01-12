@@ -41,10 +41,8 @@ namespace bball
             pm.Initialize(renderer);
         }
 
-        private void MainForm_Paint(object sender, PaintEventArgs e)
+        private void GlobalTimer_Tick(object sender, EventArgs e)
         {
-            e.Graphics.Dispose();
-
             if (renderer.Clear(new MyColor(Color.Blue)))
             {
                 if (renderer.BeginDraw())
@@ -55,11 +53,6 @@ namespace bball
                         renderer.Flip();
                 }
             }
-        }
-
-        private void GlobalTimer_Tick(object sender, EventArgs e)
-        {
-            this.Invalidate();
         }
     }
 }
