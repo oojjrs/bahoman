@@ -21,8 +21,13 @@ namespace Renderer
 
         public override string ToString()
         {
-            return String.Format("ImageName(P({0},{1},{2})R({3},{4},{5})S({6},{7},{8}))",
-                rx, ry, rz, sx, sy, sz, px, py, pz);
+            string name;
+            if (image == null)
+                name = "NoImage";
+            else
+                name = image.GetIdentifier();
+            return String.Format("{9}(P({0},{1},{2})R({3},{4},{5})S({6},{7},{8}))",
+                px, py, pz, rx, ry, rz, sx, sy, sz, name);
         }
     }
 }
