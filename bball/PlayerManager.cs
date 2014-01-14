@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 
 using Core;
 using Renderer;
@@ -15,7 +13,8 @@ namespace bball
 
         public bool Initialize(IRenderer r)
         {
-            players.Add(new Player(0, 0, TeamType.Home, r));
+            Team homeTeam = new Team(TeamType.Home);
+            players.Add(new Player(0, 0, homeTeam, r));
             return true;
         }
 

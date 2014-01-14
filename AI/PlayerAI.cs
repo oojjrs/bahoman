@@ -27,7 +27,11 @@ namespace AI
 
         public static PlayerState Determine(PlayerState currentstate, Point playerposition)
         {
-            if (currentstate == PlayerState.Dribble)
+            if (currentstate == PlayerState.Free)
+            {
+                return PlayerState.Free;
+            } 
+            else if (currentstate == PlayerState.Dribble)
             {
                 //슛이 가능한지 현재 위치 확인
                 if (GetShootingPoint(playerposition, ringposition) > 80)

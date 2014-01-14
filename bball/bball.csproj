@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Ball.cs" />
     <Compile Include="Court.cs" />
+    <Compile Include="DetermineFactor.cs" />
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="Log.cs" />

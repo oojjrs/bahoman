@@ -4,15 +4,36 @@ namespace bball
 {
     public enum TeamType
     {
-        Home,Away
+        Home, Away
     }
+    
+    public enum TeamState
+    {
+        Attack, Defence, StrategyTime
+    }
+
     class Team
     {
-        //private string hometeam = "";
-        //public string HomeTeam
-        //{
-        //    get { return this.hometeam; }
-        //    set { this.color = value; }
-        //}
+        private TeamType teamType;
+        private TeamState teamState;
+
+        public Team(TeamType teamtype)
+        {
+            teamType = teamtype;
+        }
+
+        public TeamType TeamType
+        {
+            get { return this.teamType; }
+            set { this.teamType = value; }
+
+        }
+
+        public TeamState TeamState
+        {
+            get { return this.teamState; }
+            set { this.teamState = value; }
+
+        }
     }
 }

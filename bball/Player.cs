@@ -1,7 +1,5 @@
 using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 
 using Core;
 using Renderer;
@@ -12,10 +10,10 @@ namespace bball
 {
     class Player : Object
     {
-        private Point playerPosition = new Point(0,0);
+        private Point playerPosition = new Point();
         private PlayerState currentState = new PlayerState();
-        private TeamType teamType = new TeamType();
-        //private PlayerState nextState = new PlayerState();
+        //private Team team = new Team();
+        //private PlayerState prevState = new PlayerState();
         private IImage image = null;
 
         #region From IDrawable
@@ -29,10 +27,10 @@ namespace bball
         }
         #endregion
 
-        public Player(int x, int y, TeamType teamtype, IRenderer r)
+        public Player(int x, int y, Team team, IRenderer r)
         {
             playerPosition = new Point(x, y);
-            teamType = teamtype;
+            //teamType = teamtype;
             this.SetImage(r.GetImage("res/Player.png", new MyColor(), "Player"));
         }
 
@@ -63,10 +61,6 @@ namespace bball
             get
             {
                 return playerPosition;
-                //return GetPlayerPotion(playerposition);
-                //var pt = rc.Location;
-                //pt.Offset(15, 15);
-                //return pt;
             }
         }
     }
