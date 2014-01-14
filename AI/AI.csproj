@@ -47,6 +47,10 @@
     <Compile Include="State.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{490400E0-71EC-4A04-95DC-111A7F56CC27}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Physics\Physics.csproj">
       <Project>{11757E34-7D68-436F-86EE-BA241122CE69}</Project>
       <Name>Physics</Name>

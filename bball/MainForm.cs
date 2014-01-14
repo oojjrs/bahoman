@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 using Core;
 using Renderer;
+using AI;
 
 namespace bball
 {
@@ -37,6 +38,8 @@ namespace bball
             renderer.Initialize(this);
             renderer.SetReporter(Log.Instance);
             renderer.ResizeBackBuffer(Court.Width, Court.Height);
+
+            PlayerAI.SetReporter(Log.Instance);
 
             court.Image = renderer.GetImage("res/court.png", new MyColor(), "court");
             pm.Initialize(renderer);

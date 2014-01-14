@@ -12,7 +12,7 @@ namespace bball
 {
     class Log : IReporter
     {
-        private static Log instance = new Log();
+        private static readonly Log instance = new Log();
         private string path = "";
         private List<string> logs = new List<string>();
 

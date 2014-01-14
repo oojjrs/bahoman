@@ -2,11 +2,14 @@
 using System.Drawing;
 using Physics;
 
+using Core;
+
 namespace AI
 {
-    public class PlayerAI
+    public static class PlayerAI
     {
         private static Point ringposition = new Point(550, 0);
+        private static LogHelper log = new LogHelper();
         //private Boolean hasBall = false;
 
         private static int GetShootingPoint(Point playerpoint,Point ringpoint)
@@ -76,6 +79,11 @@ namespace AI
             {
                 throw new Exception{};
             }
+        }
+
+        public static void SetReporter(IReporter er)
+        {
+            log.SetReporter(er);
         }
     }
 }
