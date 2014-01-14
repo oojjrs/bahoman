@@ -7,9 +7,9 @@ namespace AI
     public class DetermineFactor
     {
         private Point playerPosition = new Point();
-        private Point targetPosition = new Point();
         private PlayerState currentState = new PlayerState();
         private TeamState teamState = new TeamState();
+        private TargetInfo targetInfo = new TargetInfo();
 
         public Point PlayerPosition
         {
@@ -18,10 +18,10 @@ namespace AI
 
         }
 
-        public Point TargetPosition
+        public TargetInfo TargetInfo
         {
-            get { return this.targetPosition; }
-            set { this.targetPosition = value; }
+            get { return targetInfo; }
+            set { targetInfo = value; }
         }
 
         public PlayerState CurrentState

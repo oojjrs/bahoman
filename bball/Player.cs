@@ -44,7 +44,11 @@ namespace bball
             var factor = new DetermineFactor();
             factor.CurrentState = currentState;
             factor.PlayerPosition = playerPosition;
-            factor.TargetPosition = new Point(550, 0);
+
+            var targetInfo = new TargetInfo();
+            targetInfo.Position = new Point(550, 0);
+            targetInfo.TargetType = TargetInfo.Type.Goal;
+            factor.TargetInfo = targetInfo;
 
             currentState = PlayerAI.Determine(factor);
         }

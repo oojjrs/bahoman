@@ -36,31 +36,44 @@ namespace AI
             else if (factor.CurrentState == PlayerState.Dribble)
             {
                 //슛이 가능한지 현재 위치 확인
-                if (GetShootingPoint(factor.PlayerPosition, factor.TargetPosition) > 80)
+                if (factor.TargetInfo.TargetType == TargetInfo.Type.Goal)
                 {
-                    //현재 상태를 슛상태로 변환
-                    return PlayerState.Shoot;
+                    if (GetShootingPoint(factor.PlayerPosition, factor.TargetInfo.Position) > 80)
+                    {
+                        //현재 상태를 슛상태로 변환
+                        return PlayerState.Shoot;
+                    }
+                    else
+                    {
+                        //그냥 드리블 해서 골대로 이동
+                        return PlayerState.Dribble;
+                    }
                 }
                 else
                 {
-                    //그냥 드리블 해서 골대로 이동
-                    return PlayerState.Dribble;
+                    throw new Exception { };
                 }
             }
             else if (factor.CurrentState == PlayerState.Shoot)
             {
                 //Shooting()
                 //슛상태일때는 슛하고 리바운드 혹은 수비 준비 해야지;
-                float distancefromRing = PhysicsEngine.GetDistance(factor.PlayerPosition, factor.TargetPosition);
-                if (distancefromRing < 50)
+                if (factor.TargetInfo.TargetType == TargetInfo.Type.Goal)
                 {
-                    return PlayerState.Rebound;
+                    float distancefromRing = PhysicsEngine.GetDistance(factor.PlayerPosition, factor.TargetInfo.Position);
+                    if (distancefromRing < 50)
+                    {
+                        return PlayerState.Rebound;
+                    }
+                    else
+                    {
+                        return PlayerState.Free;
+                    }
                 }
                 else
                 {
-                    return PlayerState.Free;
+                    throw new Exception { };
                 }
-                
             }
             else if (factor.CurrentState == PlayerState.Rebound)
             {
