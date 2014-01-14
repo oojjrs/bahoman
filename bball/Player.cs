@@ -41,7 +41,12 @@ namespace bball
 
         public void Thinking()
         {
-            currentState = PlayerAI.Determine(currentState, playerPosition);
+            var factor = new DetermineFactor();
+            factor.CurrentState = currentState;
+            factor.PlayerPosition = playerPosition;
+            factor.TargetPosition = new Point(550, 0);
+
+            currentState = PlayerAI.Determine(factor);
         }
 
         public void Action()

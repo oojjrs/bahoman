@@ -8,7 +8,6 @@ namespace AI
 {
     public static class PlayerAI
     {
-        private static Point ringposition = new Point(550, 0);
         private static LogHelper log = new LogHelper();
         //private Boolean hasBall = false;
 
@@ -28,16 +27,16 @@ namespace AI
             }
         }
 
-        public static PlayerState Determine(PlayerState currentstate, Point playerposition)
+        public static PlayerState Determine(DetermineFactor factor)
         {
-            if (currentstate == PlayerState.Free)
+            if (factor.CurrentState == PlayerState.Free)
             {
                 return PlayerState.Free;
             } 
-            else if (currentstate == PlayerState.Dribble)
+            else if (factor.CurrentState == PlayerState.Dribble)
             {
                 //슛이 가능한지 현재 위치 확인
-                if (GetShootingPoint(playerposition, ringposition) > 80)
+                if (GetShootingPoint(factor.PlayerPosition, factor.TargetPosition) > 80)
                 {
                     //현재 상태를 슛상태로 변환
                     return PlayerState.Shoot;
@@ -48,11 +47,11 @@ namespace AI
                     return PlayerState.Dribble;
                 }
             }
-            else if (currentstate == PlayerState.Shoot)
+            else if (factor.CurrentState == PlayerState.Shoot)
             {
                 //Shooting()
                 //슛상태일때는 슛하고 리바운드 혹은 수비 준비 해야지;
-                float distancefromRing = PhysicsEngine.GetDistance(playerposition, ringposition);
+                float distancefromRing = PhysicsEngine.GetDistance(factor.PlayerPosition, factor.TargetPosition);
                 if (distancefromRing < 50)
                 {
                     return PlayerState.Rebound;
@@ -63,13 +62,13 @@ namespace AI
                 }
                 
             }
-            else if (currentstate == PlayerState.Rebound)
+            else if (factor.CurrentState == PlayerState.Rebound)
             {
                 //Rebound()
                 //리바운드
                 throw new Exception { };
             }
-            else if (currentstate == PlayerState.Free)
+            else if (factor.CurrentState == PlayerState.Free)
             {
                 //Move
                 //슛상태일때는 슛하고 리바운드 혹은 수비 준비 해야지;
