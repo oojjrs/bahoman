@@ -2,13 +2,13 @@
 using System.Drawing;
 using AI;
 
-namespace bball
+namespace AI
 {
     class DetermineFactor
     {
         private Point playerPosition = new Point();
         private PlayerState currentState = new PlayerState();
-        private TeamType teamType = new TeamType();
+        private TeamState teamState = new TeamState();
 
         public Point PlayerPosition
         {
@@ -22,10 +22,10 @@ namespace bball
             set { this.currentState = value; }
 
         }
-        public TeamType TeamType
+        public TeamState TeamState
         {
-            get { return this.teamType; }
-            set { this.teamType = value; }
+            get { return this.teamState; }
+            set { this.teamState = value; }
 
         }
     }

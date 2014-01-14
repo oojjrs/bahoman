@@ -7,15 +7,11 @@ namespace bball
         Home, Away
     }
     
-    public enum TeamState
-    {
-        Attack, Defence, StrategyTime
-    }
 
     class Team
     {
         private TeamType teamType;
-        private TeamState teamState;
+        //private TeamState teamState;
 
         public Team(TeamType teamtype)
         {
@@ -29,11 +25,11 @@ namespace bball
 
         }
 
-        public TeamState TeamState
-        {
-            get { return this.teamState; }
-            set { this.teamState = value; }
+        //public TeamState TeamState
+        //{
+        //    get { return this.teamState; }
+        //    set { this.teamState = value; }
 
-        }
+        //}
     }
 }
