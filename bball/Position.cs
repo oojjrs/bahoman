@@ -8,7 +8,7 @@ namespace bball
     {
         public static Rectangle GetPlayerPosition(Point playerposition)
         {
-            var pos = Court.GetCoordinate(playerposition.X, playerposition.Y);
+            var pos = Court.LogicalCoordToPhysicalCoord(playerposition.X, playerposition.Y);
             return new  Rectangle(pos.X - 15, pos.Y - 15, 30, 30);
         }
     }

@@ -21,7 +21,7 @@ namespace bball
         #region From IDrawable
         public override void OnDraw(IRenderer r)
         {
-            var pt = Court.GetCoordinate(playerPosition);
+            var pt = Court.LogicalCoordToPhysicalCoord(playerPosition);
             ImageArgs ia = new ImageArgs(image);
             ia.SetPos(pt.X, pt.Y);
             ia.CorrectToCenter = true;

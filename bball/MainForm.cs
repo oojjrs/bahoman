@@ -36,7 +36,7 @@ namespace bball
 
             renderer.Initialize(this);
             renderer.SetReporter(Log.Instance);
-            renderer.ResizeBackBuffer(GlobalVariables.CourtWidth, GlobalVariables.CourtHeight);
+            renderer.ResizeBackBuffer(Court.Width, Court.Height);
 
             court.Image = renderer.GetImage("res/court.png", new MyColor(), "court");
             pm.Initialize(renderer);

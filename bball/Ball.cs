@@ -15,7 +15,7 @@ namespace bball
 
         public override void OnDraw(IRenderer r)
         {
-            var pt = Court.GetCoordinate(pos);
+            var pt = Court.LogicalCoordToPhysicalCoord(pos);
             var ia = new ImageArgs(image);
             ia.CorrectToCenter = true;
             ia.SetPos(pt.X, pt.Y);
