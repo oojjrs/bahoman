@@ -61,12 +61,12 @@ namespace bball
 
         public static int Width
         {
-            get { return 1280; }
+            get { return 1290; }
         }
 
         public static int Height
         {
-            get { return 960; }
+            get { return 968; }
         }
 
         public int HomeScore
