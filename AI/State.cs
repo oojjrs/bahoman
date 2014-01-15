@@ -8,14 +8,24 @@ namespace AI
         Shoot,
         Pass,
         Rebound,
-        Free
+        Free,
+        FindBall
     }
     public enum TeamState
     {
         Attack, 
         Defence, 
-        StrategyTime
+        StrategyTime,
+        LooseBall
     }
+    public enum GameState
+    {
+        JumpBall,
+        OutOfBound,
+        StrategyTime,
+        FreeThrow
+    }
+
     public class State
     {
         //public enum States

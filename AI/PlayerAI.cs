@@ -29,6 +29,11 @@ namespace AI
 
         public static PlayerState Determine(DetermineFactor factor)
         {
+            if (factor.TeamState == TeamState.LooseBall)
+            {
+                return PlayerState.FindBall;
+            }
+
             if (factor.CurrentState == PlayerState.Free)
             {
                 return PlayerState.Free;
