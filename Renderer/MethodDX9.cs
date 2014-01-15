@@ -201,8 +201,8 @@ namespace Renderer
                 if (r.CorrectToCenter)
                 {
                     var desc = image.Texture.GetLevelDescription(0);
-                    r.PosX = r.PosX - desc.Width / 2;
-                    r.PosY = r.PosY - desc.Height / 2;
+                    r.PosX = r.PosX - (int)(desc.Width * r.ScaleX / 2);
+                    r.PosY = r.PosY - (int)(desc.Height * r.ScaleY / 2);
                 }
 
                 sprite.Transform = MyExtractor.GetScaleMatrix(r) * MyExtractor.GetTranslationMatrix(r);

@@ -64,6 +64,11 @@ namespace Renderer
             rz = radZ;
         }
 
+        public void SetScale(float xyz)
+        {
+            this.SetScale(xyz, xyz, xyz);
+        }
+
         public void SetScale(float x, float y)
         {
             this.SetScale(x, y, 0.0f);
@@ -71,9 +76,9 @@ namespace Renderer
 
         public void SetScale(float x, float y, float z)
         {
-            sx = x;
-            sy = y;
-            sz = z;
+            this.ScaleX = x;
+            this.ScaleY = y;
+            this.ScaleZ = z;
         }
 
         public int PosX
