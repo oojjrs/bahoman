@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Renderer
+namespace Physics
 {
     public class Vector3f
     {
@@ -82,7 +81,7 @@ namespace Renderer
 
         public static Vector3f operator +(Vector3f v1)
         {
-            return new Vector3f(+v1.X, +v1.Y,+v1.Z);
+            return new Vector3f(+v1.X, +v1.Y, +v1.Z);
         }
 
         public static Vector3f operator +(Vector3f v1, Vector3f v2)
@@ -92,7 +91,7 @@ namespace Renderer
 
         public static Vector3f operator -(Vector3f v1)
         {
-            return new Vector3f(-v1.X, -v1.Y,-v1.Z);
+            return new Vector3f(-v1.X, -v1.Y, -v1.Z);
         }
 
         public static Vector3f operator -(Vector3f v1, Vector3f v2)
@@ -117,7 +116,7 @@ namespace Renderer
 
         public Vector3f Reverse()
         {
-            return new Vector3f(-x, -y,-z);
+            return new Vector3f(-x, -y, -z);
         }
 
         public float Length()
@@ -212,11 +211,32 @@ namespace Renderer
 
         public static Vector3f NormalizeRet(Vector3f v1)
         {
-            Vector3f temp = new Vector3f(v1.X, v1.Y,v1.Z);
+            Vector3f temp = new Vector3f(v1.X, v1.Y, v1.Z);
 
             Normalize(temp);
 
             return temp;
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)((X + Y + Z) % int.MaxValue);
+        }
+
+
+        public override bool Equals(object obj)
+        {
+            Vector3f v2 = obj as Vector3f;
+
+            if (v2 != null)
+                return v2 == this;
+            else
+                return false;
+        }
+
+        public bool Equals(Vector3f v2)
+        {
+            return this == v2;
         }
 
         public float X
