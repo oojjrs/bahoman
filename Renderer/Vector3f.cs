@@ -72,7 +72,7 @@ namespace Renderer
             if ((object)v1 == null || (object)v2 == null)
                 return false;
 
-            return Math.Abs(v1.X - v2.X) <= double.Epsilon && Math.Abs(v1.Y - v2.Y) <= double.Epsilon;
+            return Math.Abs(v1.X - v2.X) <= float.Epsilon && Math.Abs(v1.Y - v2.Y) <= float.Epsilon;
         }
 
         public static bool operator !=(Vector3f v1, Vector3f v2)
@@ -190,7 +190,7 @@ namespace Renderer
         {
             float length = Length();
 
-            if (length > double.Epsilon)
+            if (length > float.Epsilon)
             {
                 X /= length;
                 Y /= length;
