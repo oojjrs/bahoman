@@ -27,7 +27,6 @@ namespace bball
         private Point beganPos;
         private Point targetPos;
         private IImage image = null;
-        private int oldTick = 0;
         private float scaleRate;
         private State state;
 
