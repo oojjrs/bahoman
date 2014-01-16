@@ -69,6 +69,16 @@ namespace bball
             get { return 968; }
         }
 
+        public static Point LeftGoalPos
+        {
+            get { return new Point(-550, 0); }
+        }
+
+        public static Point RightGoalPos
+        {
+            get { return new Point(550, 0); }
+        }
+
         public int HomeScore
         {
             get { return this.homeScore; }

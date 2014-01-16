@@ -47,7 +47,7 @@ namespace bball
                 factor.CurrentState = currentState;
                 factor.PlayerPosition = playerPosition;
                 var targetInfo = new TargetInfo();
-                targetInfo.Position = new Point(550, 0);
+                targetInfo.Position = Court.RightGoalPos;
                 targetInfo.TargetType = TargetInfo.Type.Goal;
                 factor.TargetInfo = targetInfo;
                 factor.TeamState = TeamState.LooseBall;
