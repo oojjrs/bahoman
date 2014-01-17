@@ -61,6 +61,11 @@ namespace bball
             //ball.CurrentState = Ball.State.Shooting;
         }
 
+        public Point GetBallPosition()
+        {
+            return ball.Location;
+        }
+
         public static Point LogicalCoordToPhysicalCoord(int x, int y)
         {
             return Court.LogicalCoordToPhysicalCoord(new Point(x, y));
