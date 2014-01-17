@@ -17,7 +17,7 @@ namespace bball
         private IImage image = null;
         private int homeScore;
         private int awayScore;
-        private Ball ball = new Ball();
+        Ball ball = null;
 
         #endregion
 
@@ -38,6 +38,7 @@ namespace bball
         #region Methods
         private Court()
         {
+            ball = new Ball();
         }
 
         public static Court Instance
@@ -56,6 +57,8 @@ namespace bball
         {
             ball.Image = ballimage;
             ball.Location = new Point(-150, 0);
+            //ball.TargetLocation = Court.RightGoalPos;
+            //ball.CurrentState = Ball.State.Shooting;
         }
 
         public static Point LogicalCoordToPhysicalCoord(int x, int y)
