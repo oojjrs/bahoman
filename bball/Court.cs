@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using Core;
+using Physics;
 using Renderer;
 
 namespace bball
@@ -60,6 +61,14 @@ namespace bball
             pt.X = pt.X + Court.Width / 2;
             pt.Y = pt.Y + Court.Height / 2;
             return pt;
+        }
+
+        public static Vector3f LogicalCoordToPhysicalCoord(Vector3f pos)
+        {
+            var np = new Vector3f(pos.X, pos.Y, pos.Z);
+            np.X += Court.Width / 2;
+            np.Z += Court.Width / 2;
+            return pos;
         }
 
         public int AddHomeScore(int point)

@@ -7,8 +7,9 @@ using Renderer;
 
 namespace bball
 {
-    interface IDrawable
+    interface IOutputModel
     {
         void OnDraw(IRenderer r);
+        void OnUpdate();
     }
 }
