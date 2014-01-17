@@ -334,10 +334,10 @@ namespace Renderer
                 return false;
             }
 
-            if (r.IsEmpty())
+            if (r.IsEmpty)
                 return true;
 
-            if (r.IsValid() == false)
+            if (r.IsValid == false)
             {
                 log.Assert("PutText({0}) : INVALID DATA", r);
                 return false;
@@ -346,17 +346,9 @@ namespace Renderer
             if (api.OnPutText(r) == false)
                 return false;
 
-            if (r.isDrawBoundary)
+            if (r.IsDrawBoundary)
             {
-                var s = new LineArgs();
-                s.AddPoint(r.left, r.top);
-                s.AddPoint(r.right, r.top);
-                s.AddPoint(r.right, r.bottom);
-                s.AddPoint(r.left, r.bottom);
-                s.AddPoint(r.left, r.top);
-                s.LineColor = r.lineColor;
-                s.LineWidth = r.lineWidth;
-                if (api.OnPutLine(s) == false)
+                if (api.OnPutLine(r.BoundaryLine) == false)
                     return false;
             }
             return true;

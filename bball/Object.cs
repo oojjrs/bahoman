@@ -7,9 +7,10 @@ using Renderer;
 
 namespace bball
 {
-    abstract class Object : IDrawable
+    abstract class Object : IOutputModel
     {
         public abstract void OnDraw(IRenderer r);
+        public abstract void OnUpdate();
 
         public Object()
         {

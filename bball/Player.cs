@@ -18,6 +18,7 @@ namespace bball
         private IImage image = null;
 
         #region From IDrawable
+
         public override void OnDraw(IRenderer r)
         {
             var pt = Court.LogicalCoordToPhysicalCoord(playerPosition);
@@ -26,6 +27,13 @@ namespace bball
             ia.CorrectToCenter = true;
             r.PutImage(ia);
         }
+
+        public override void OnUpdate()
+        {
+            this.Thinking();
+            this.Action();
+        }
+
         #endregion
 
         public Player(int x, int y, Team team, IRenderer r)
@@ -39,7 +47,7 @@ namespace bball
             this.image = image;
         }
 
-        public void Thinking()
+        private void Thinking()
         {
             if (Environment.TickCount - lastThinkTick > 10)
             {
@@ -55,7 +63,7 @@ namespace bball
             }
         }
 
-        public void Action()
+        private void Action()
         {
             if (currentState == PlayerState.Dribble)
             {

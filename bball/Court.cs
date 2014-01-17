@@ -27,6 +27,10 @@ namespace bball
             r.PutImage(ia);
         }
 
+        public override void OnUpdate()
+        {
+        }
+
         #endregion
 
         #region Methods

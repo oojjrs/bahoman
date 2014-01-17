@@ -45,11 +45,14 @@ namespace bball
             pm.Initialize(renderer);
             ball.Image = renderer.GetImage("res/Ball.png", new MyColor(), "Ball");
             ball.Location = new Point(-50, 0);
+            //ball.TargetLocation = Court.RightGoalPos;
+            //ball.CurrentState = Ball.State.Shooting;
         }
 
         private void GlobalTimer_Tick(object sender, EventArgs e)
         {
-            pm.UpdateState();
+            OutputManager.UpdateAll();
+
             if (renderer.Clear(new MyColor(Color.Blue)))
             {
                 if (renderer.BeginDraw())

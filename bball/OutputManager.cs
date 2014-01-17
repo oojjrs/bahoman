@@ -9,9 +9,9 @@ namespace bball
 {
     class OutputManager
     {
-        private static List<IDrawable> objects = new List<IDrawable>();
+        private static List<IOutputModel> objects = new List<IOutputModel>();
 
-        public static void Add(IDrawable obj)
+        public static void Add(IOutputModel obj)
         {
             foreach (var o in objects)
             {
@@ -28,9 +28,15 @@ namespace bball
                 o.OnDraw(r);
         }
 
-        public static void Remove(IDrawable obj)
+        public static void Remove(IOutputModel obj)
         {
             objects.Remove(obj);
+        }
+
+        public static void UpdateAll()
+        {
+            foreach (var o in objects)
+                o.OnUpdate();
         }
     }
 }

@@ -282,10 +282,10 @@ namespace Renderer
             try
             {
                 var vp = device.Viewport;
-                var rc = new Rectangle(vp.X + r.left, vp.Y + r.top, vp.X + r.right, vp.Y + r.bottom);
-                var font = new SharpDX.Direct3D9.Font(device, r.font);
+                var rc = new Rectangle(vp.X + r.Left, vp.Y + r.Top, vp.X + r.Right, vp.Y + r.Bottom);
+                var font = new SharpDX.Direct3D9.Font(device, r.Font);
 
-                font.DrawText(null, r.text, rc, MyConvert.ToDX(r.format), MyConvert.ToDX(r.textColor));
+                font.DrawText(null, r.Text, rc, MyConvert.ToDX(r.Format), MyConvert.ToDX(r.TextColor));
             }
             catch (SharpDXException e)
             {
