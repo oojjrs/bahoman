@@ -17,6 +17,7 @@ namespace bball
         private IImage image = null;
         private int homeScore;
         private int awayScore;
+        private Ball ball = new Ball();
 
         #endregion
 
@@ -49,6 +50,12 @@ namespace bball
                 }
                 return instance;
             }
+        }
+
+        public void CreateBall(IImage ballimage)
+        {
+            ball.Image = ballimage;
+            ball.Location = new Point(-150, 0);
         }
 
         public static Point LogicalCoordToPhysicalCoord(int x, int y)

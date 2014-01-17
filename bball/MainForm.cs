@@ -18,7 +18,7 @@ namespace bball
         private IRenderer renderer = Renderer.Container.GetInterface(Renderer.Type.Direct3D9);
         private Court court = Court.Instance;
         private PlayerManager pm = new PlayerManager();
-        private Ball ball = new Ball();
+        //private Ball ball = new Ball();
 
         public MainForm()
         {
@@ -42,9 +42,8 @@ namespace bball
             PlayerAI.SetReporter(Log.Instance);
 
             court.Image = renderer.GetImage("res/court.png", new MyColor(), "court");
+            court.CreateBall(renderer.GetImage("res/Ball.png", new MyColor(), "Ball"));
             pm.Initialize(renderer);
-            ball.Image = renderer.GetImage("res/Ball.png", new MyColor(), "Ball");
-            ball.Location = new Point(-50, 0);
             //ball.TargetLocation = Court.RightGoalPos;
             //ball.CurrentState = Ball.State.Shooting;
         }
