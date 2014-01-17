@@ -9,10 +9,10 @@ using Renderer;
 
 namespace bball
 {
-    class Court : Object
+    sealed class Court : Object
     {
         #region Variables
-
+        private static Court instance = null;
         private IImage image = null;
         private int homeScore;
         private int awayScore;
@@ -30,6 +30,21 @@ namespace bball
         #endregion
 
         #region Methods
+        private Court()
+        {
+        }
+
+        public static Court Instance
+        {
+            get
+            {
+                if (instance==null)
+                {
+                    instance = new Court();
+                }
+                return instance;
+            }
+        }
 
         public static Point LogicalCoordToPhysicalCoord(int x, int y)
         {

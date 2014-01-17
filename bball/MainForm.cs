@@ -16,7 +16,7 @@ namespace bball
     public partial class MainForm : Form
     {
         private IRenderer renderer = Renderer.Container.GetInterface(Renderer.Type.Direct3D9);
-        private Court court = new Court();
+        private Court court = Court.Instance;
         private PlayerManager pm = new PlayerManager();
         private Ball ball = new Ball();
 
