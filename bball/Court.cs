@@ -56,7 +56,7 @@ namespace bball
         public void CreateBall(IImage ballimage)
         {
             ball.Image = ballimage;
-            ball.Location = new Point(-150, 0);
+            ball.Location = new Point(-10, 0);
             //ball.TargetLocation = Court.RightGoalPos;
             //ball.CurrentState = Ball.State.Shooting;
         }
@@ -136,6 +136,11 @@ namespace bball
         {
             get { return image; }
             set { image = value; }
+        }
+
+        public Ball Ball
+        {
+            get { return ball; }
         }
 
         #endregion

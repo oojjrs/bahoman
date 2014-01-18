@@ -5,6 +5,7 @@ using Core;
 using Renderer;
 using AI;
 using System.Windows.Forms;
+using Physics;
 
 namespace bball
 {
@@ -16,6 +17,7 @@ namespace bball
         //private Team team = new Team();
         //private PlayerState prevState = new PlayerState();
         private IImage image = null;
+        private Court court = Court.Instance;
 
         #region From IDrawable
 
@@ -24,6 +26,7 @@ namespace bball
             var pt = Court.LogicalCoordToPhysicalCoord(playerPosition);
             ImageArgs ia = new ImageArgs(image);
             ia.SetPos(pt.X, pt.Y);
+            ia.SetScale((float)0.5);
             ia.CorrectToCenter = true;
             r.PutImage(ia);
         }
@@ -76,9 +79,21 @@ namespace bball
             else if (currentState == PlayerState.FindBall)
             {
                 //볼 주우러 이동
+                if (PhysicsEngine.GetDistance(playerPosition, court.GetBallPosition()) < 1)
+                {
+                    SetState(PlayerState.Dribble);
+                }
             }
         }
 
+        public void SetState(PlayerState playerstate)
+        {
+            currentState = playerstate;
+            if (currentState == PlayerState.Dribble)
+            {
+                court.Ball.CurrentState = Ball.State.Bounding;
+            }
+        }
         public Point PlayerPosition
         {
             get
