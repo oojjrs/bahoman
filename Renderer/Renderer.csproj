@@ -71,6 +71,10 @@
       <Project>{490400e0-71ec-4a04-95dc-111a7f56cc27}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Physics\Physics.csproj">
+      <Project>{11757E34-7D68-436F-86EE-BA241122CE69}</Project>
+      <Name>Physics</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

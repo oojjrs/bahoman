@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 
+using AI;
 using Core;
 using Physics;
 using Renderer;
@@ -52,30 +53,13 @@ namespace bball
             }
         }
 
-        public void CreateBall(IImage ballimage)
+        public static CourtPos ToGlobalLocation(CourtPos pos)
         {
-            ball.Image = ballimage;
-            ball.Location = new Point(-150, 0);
-        }
-
-        public static Point LogicalCoordToPhysicalCoord(int x, int y)
-        {
-            return Court.LogicalCoordToPhysicalCoord(new Point(x, y));
-        }
-
-        public static Point LogicalCoordToPhysicalCoord(Point pt)
-        {
-            pt.X = pt.X + Court.Width / 2;
-            pt.Y = pt.Y + Court.Height / 2;
-            return pt;
-        }
-
-        public static Vector3f LogicalCoordToPhysicalCoord(Vector3f pos)
-        {
-            var np = new Vector3f(pos.X, pos.Y, pos.Z);
+            var np = new CourtPos();
             np.X += Court.Width / 2;
-            np.Z += Court.Width / 2;
-            return pos;
+            np.Y = pos.Y;
+            np.Z += Court.Height / 2;
+            return np;
         }
 
         public int AddHomeScore(int point)
@@ -88,6 +72,12 @@ namespace bball
         {
             awayScore = awayScore + point;
             return awayScore;
+        }
+
+        public void CreateBall(IImage ballimage)
+        {
+            ball.Image = ballimage;
+            ball.Location = CourtPos.FromCoord(-150, 0, 0);
         }
 
         #endregion
@@ -104,14 +94,14 @@ namespace bball
             get { return 968; }
         }
 
-        public static Point LeftGoalPos
+        public static CourtPos LeftGoalPos
         {
-            get { return new Point(-550, 0); }
+            get { return CourtPos.FromCoord(-550, 0, 0); }
         }
 
-        public static Point RightGoalPos
+        public static CourtPos RightGoalPos
         {
-            get { return new Point(550, 0); }
+            get { return CourtPos.FromCoord(550, 0, 0); }
         }
 
         public int HomeScore

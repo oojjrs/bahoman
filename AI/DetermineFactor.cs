@@ -6,12 +6,12 @@ namespace AI
 {
     public class DetermineFactor
     {
-        private Point playerPosition = new Point();
+        private CourtPos playerPosition = new CourtPos();
         private PlayerState currentState = new PlayerState();
         private TeamState teamState = new TeamState();
         private TargetInfo targetInfo = new TargetInfo();
 
-        public Point PlayerPosition
+        public CourtPos PlayerPosition
         {
             get { return this.playerPosition; }
             set { this.playerPosition = value; }

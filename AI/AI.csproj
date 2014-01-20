@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CourtPos.cs" />
     <Compile Include="DetermineFactor.cs" />
     <Compile Include="PlayerAI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

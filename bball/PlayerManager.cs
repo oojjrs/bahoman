@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
+using AI;
 using Core;
 using Renderer;
 
@@ -14,7 +15,7 @@ namespace bball
         public bool Initialize(IRenderer r)
         {
             Team homeTeam = new Team(TeamType.Home);
-            players.Add(new Player(0, 0, homeTeam, r));
+            players.Add(new Player(CourtPos.Center, homeTeam, r));
             return true;
         }
     }

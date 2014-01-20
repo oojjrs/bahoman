@@ -10,7 +10,7 @@ namespace bball
 {
     class Player : Object
     {
-        private Point playerPosition = new Point();
+        private CourtPos playerPosition = CourtPos.Center;
         private PlayerState currentState = new PlayerState();
         private int lastThinkTick = 0;
         //private Team team = new Team();
@@ -21,9 +21,8 @@ namespace bball
 
         public override void OnDraw(IRenderer r)
         {
-            var pt = Court.LogicalCoordToPhysicalCoord(playerPosition);
             ImageArgs ia = new ImageArgs(image);
-            ia.SetPos(pt.X, pt.Y);
+            ia.Location = Court.ToGlobalLocation(playerPosition).Location;
             ia.CorrectToCenter = true;
             r.PutImage(ia);
         }
@@ -36,9 +35,9 @@ namespace bball
 
         #endregion
 
-        public Player(int x, int y, Team team, IRenderer r)
+        public Player(CourtPos pos, Team team, IRenderer r)
         {
-            playerPosition = new Point(x, y);
+            playerPosition = pos;
             this.SetImage(r.GetImage("res/Player.png", new MyColor(), "Player"));
         }
 
@@ -67,7 +66,7 @@ namespace bball
         {
             if (currentState == PlayerState.Dribble)
             {
-                playerPosition = new Point(playerPosition.X + 1, playerPosition.Y);
+                playerPosition = playerPosition + CourtPos.FromCoord(1, 0, 0);
             }
             else if (currentState == PlayerState.Shoot)
             {
@@ -79,7 +78,7 @@ namespace bball
             }
         }
 
-        public Point PlayerPosition
+        public CourtPos PlayerPosition
         {
             get
             {

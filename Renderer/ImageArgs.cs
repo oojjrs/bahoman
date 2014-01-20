@@ -4,19 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Physics;
+
 namespace Renderer
 {
     public class ImageArgs
     {
-        private float rx = 0.0f;	// rotate
-        private float ry = 0.0f;
-        private float rz = 0.0f;
-        private float sx = 1.0f;	// scale
-        private float sy = 1.0f;
-        private float sz = 1.0f;
-        private int px = 0;	// pos
-        private int py = 0;
-        private int pz = 0;
+        private Vector3f rotate = new Vector3f();
+        private Vector3f scale = new Vector3f();
+        private Vector3f pos = new Vector3f();
         private bool correctToCenter = false;
         private IImage image = null;
 
@@ -27,8 +23,7 @@ namespace Renderer
                 name = "NoImage";
             else
                 name = image.GetIdentifier();
-            return String.Format("{9}(P({0},{1},{2})R({3},{4},{5})S({6},{7},{8}),CC({10}))",
-                px, py, pz, rx, ry, rz, sx, sy, sz, name, correctToCenter);
+            return String.Format("{0}(P({1})R({2})S({3}),CC({4}))", name, pos, rotate, scale, correctToCenter);
         }
 
         public ImageArgs()
@@ -40,99 +35,76 @@ namespace Renderer
             this.Image = image;
         }
 
-        public void SetPos(int x, int y)
+        public Vector3f Location
         {
-            this.SetPos(x, y, 0);
+            get { return pos; }
+            set { pos = value; }
         }
 
-        public void SetPos(int x, int y, int z)
+        public float PosX
         {
-            this.PosX = x;
-            this.PosY = y;
-            this.PosZ = z;
+            get { return pos.X; }
+            set { pos.X = value; }
         }
 
-        public void SetRotation(float radX, float radY)
+        public float PosY
         {
-            this.SetRotation(radX, radY, 0.0f);
+            get { return pos.Y; }
+            set { pos.Y = value; }
         }
 
-        public void SetRotation(float radX, float radY, float radZ)
+        public float PosZ
         {
-            rx = radX;
-            ry = radY;
-            rz = radZ;
+            get { return pos.Z; }
+            set { pos.Z = value; }
         }
 
-        public void SetScale(float xyz)
+        public Vector3f Rotate
         {
-            this.SetScale(xyz, xyz, xyz);
-        }
-
-        public void SetScale(float x, float y)
-        {
-            this.SetScale(x, y, 0.0f);
-        }
-
-        public void SetScale(float x, float y, float z)
-        {
-            this.ScaleX = x;
-            this.ScaleY = y;
-            this.ScaleZ = z;
-        }
-
-        public int PosX
-        {
-            get { return px; }
-            set { px = value; }
-        }
-
-        public int PosY
-        {
-            get { return py; }
-            set { py = value; }
-        }
-
-        public int PosZ
-        {
-            get { return pz; }
-            set { pz = value; }
+            get { return rotate; }
+            set { rotate = value; }
         }
 
         public float RotateX
         {
-            get { return rx; }
-            set { rx = value; }
+            get { return rotate.X; }
+            set { rotate.X = value; }
         }
 
         public float RotateY
         {
-            get { return ry; }
-            set { ry = value; }
+            get { return rotate.Y; }
+            set { rotate.Y = value; }
         }
 
         public float RotateZ
         {
-            get { return rz; }
-            set { rz = value; }
+            get { return rotate.Z; }
+            set { rotate.Z = value; }
+        }
+
+        public Vector3f Scale
+        {
+            get { return scale; }
+            set { scale = value; }
         }
 
         public float ScaleX
         {
-            get { return sx; }
-            set { sx = value; }
+            get { return scale.X; }
+            set { scale.X = value; }
         }
 
         public float ScaleY
         {
-            get { return sy; }
-            set { sy = value; }
+            get { return scale.Y; }
+            set { scale.Y = value; }
         }
 
         public float ScaleZ
         {
-            get { return sz; }
-            set { sz = value; }
+            get { return scale.Z; }
+            set { scale.Z = value; }
         }
 
         public bool CorrectToCenter

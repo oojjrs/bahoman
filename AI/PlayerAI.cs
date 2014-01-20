@@ -11,10 +11,10 @@ namespace AI
         private static LogHelper log = new LogHelper();
         //private Boolean hasBall = false;
 
-        private static int GetShootingPoint(Point playerpoint,Point ringpoint)
+        private static int GetShootingPoint(CourtPos playerpoint, CourtPos ringpoint)
         {
             //슛을 쏠지 말지 결정하는 팩터들을 수치화
-            float distancefromRing = PhysicsEngine.GetDistance(playerpoint,ringpoint);
+            float distancefromRing = playerpoint.DistanceTo(ringpoint);
             
             //일단 골대 근처에 있으면 100점으로 리턴
             if (40 > (int)distancefromRing)
@@ -65,7 +65,7 @@ namespace AI
                 //슛상태일때는 슛하고 리바운드 혹은 수비 준비 해야지;
                 if (factor.TargetInfo.TargetType == TargetInfo.Type.Goal)
                 {
-                    float distancefromRing = PhysicsEngine.GetDistance(factor.PlayerPosition, factor.TargetInfo.Position);
+                    float distancefromRing = factor.PlayerPosition.DistanceTo(factor.TargetInfo.Position);
                     if (distancefromRing < 50)
                     {
                         return PlayerState.Rebound;

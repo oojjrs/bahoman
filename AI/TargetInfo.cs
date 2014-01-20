@@ -18,7 +18,7 @@ namespace AI
         }
 
         private Type type = Type.None;
-        private Point pos = new Point();
+        private CourtPos pos = new CourtPos();
 
         public Type TargetType
         {
@@ -26,7 +26,7 @@ namespace AI
             set { type = value; }
         }
 
-        public Point Position
+        public CourtPos Position
         {
             get { return pos; }
             set { pos = value; }
