@@ -18,7 +18,7 @@ namespace bball
         private IImage image = null;
         private int homeScore;
         private int awayScore;
-        private Ball ball = new Ball();
+        Ball ball = null;
 
         #endregion
 
@@ -39,6 +39,7 @@ namespace bball
         #region Methods
         private Court()
         {
+            ball = new Ball();
         }
 
         public static Court Instance
@@ -60,6 +61,11 @@ namespace bball
             np.Y = pos.Y;
             np.Z += Court.Height / 2;
             return np;
+        }
+
+        public Point GetBallPosition()
+        {
+            return ball.Location;
         }
 
         public int AddHomeScore(int point)
@@ -118,6 +124,11 @@ namespace bball
         {
             get { return image; }
             set { image = value; }
+        }
+
+        public Ball Ball
+        {
+            get { return ball; }
         }
 
         #endregion
