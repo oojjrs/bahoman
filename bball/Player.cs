@@ -60,7 +60,7 @@ namespace bball
                 targetInfo.Position = Court.RightGoalPos;
                 targetInfo.TargetType = TargetInfo.Type.Goal;
                 factor.TargetInfo = targetInfo;
-                factor.TeamState = TeamState.LooseBall;
+                factor.TeamState = court.HomeTeam.TeamState;
                 currentState = PlayerAI.Determine(factor);
             }
         }
@@ -77,16 +77,18 @@ namespace bball
             }
             else if (currentState == PlayerState.FindBall)
             {
-                if (playerPosition.DistanceTo(court.GetBallPosition()) < 1)
+                if (playerPosition.DistanceTo(court.Ball.Location) < 1)
                 {
+                    //MessageBox.Show("볼 잡았스");
                     SetState(PlayerState.Dribble);
+                    
                 }
                 else
                 {
                     //볼 주우러 이동
                     var vDirect = playerPosition - court.Ball.Location;
                     vDirect.Location.Normalize();
-                    playerPosition = playerPosition + vDirect;
+                    playerPosition = playerPosition - vDirect;
                 }
             }
         }
@@ -96,6 +98,7 @@ namespace bball
             currentState = playerstate;
             if (currentState == PlayerState.Dribble)
             {
+                court.HomeTeam.TeamState = TeamState.Attack;
                 court.Ball.CurrentState = Ball.State.Bounding;
             }
         }

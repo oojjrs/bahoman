@@ -19,7 +19,8 @@ namespace bball
         private int homeScore;
         private int awayScore;
         Ball ball = null;
-
+        Team hometeam = new Team(TeamType.Home);
+        Team awayteam = new Team(TeamType.Away);
         #endregion
 
         #region From IDrawable
@@ -40,6 +41,7 @@ namespace bball
         private Court()
         {
             ball = new Ball();
+            hometeam.TeamState = TeamState.LooseBall;
         }
 
         public static Court Instance
@@ -63,11 +65,6 @@ namespace bball
             return np;
         }
 
-        public CourtPos GetBallPosition()
-        {
-            return ball.Location;
-        }
-
         public int AddHomeScore(int point)
         {
             homeScore = homeScore + point;
@@ -83,7 +80,7 @@ namespace bball
         public void CreateBall(IImage ballimage)
         {
             ball.Image = ballimage;
-            ball.Location = CourtPos.FromCoord(-150, 0, 0);
+            ball.Location = CourtPos.FromCoord(50, 0,50);
         }
 
         #endregion
@@ -131,6 +128,17 @@ namespace bball
             get { return ball; }
         }
 
+        public Team HomeTeam
+        {
+            get { return this.hometeam; }
+            set { hometeam = value; }
+        }
+
+        public Team AwayTeam
+        {
+            get { return this.awayteam; }
+            set { awayteam = value; }
+        }
         #endregion
     }
 }

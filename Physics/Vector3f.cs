@@ -170,7 +170,7 @@ namespace Physics
 
             return xDifference * xDifference + yDifference * yDifference + zDifference * zDifference;
         }
-
+        
         public void Truncate(float max)
         {
             if (Length() > max)
