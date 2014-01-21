@@ -77,10 +77,16 @@ namespace bball
             }
             else if (currentState == PlayerState.FindBall)
             {
-                //볼 주우러 이동
                 if (playerPosition.DistanceTo(court.GetBallPosition()) < 1)
                 {
                     SetState(PlayerState.Dribble);
+                }
+                else
+                {
+                    //볼 주우러 이동
+                    var vDirect = playerPosition - court.Ball.Location;
+                    vDirect.Location.Normalize();
+                    playerPosition = playerPosition + vDirect;
                 }
             }
         }

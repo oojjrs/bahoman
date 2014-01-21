@@ -16,6 +16,7 @@ namespace bball
         public enum State
         {
             Bounding,
+            Dribbling,
             //Holding,
             //Intercepting,
             //Passing,
