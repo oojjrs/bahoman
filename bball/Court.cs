@@ -57,9 +57,9 @@ namespace bball
         public static CourtPos ToGlobalLocation(CourtPos pos)
         {
             var np = new CourtPos();
-            np.X += Court.Width / 2;
+            np.X = pos.X + Court.Width / 2;
             np.Y = pos.Y;
-            np.Z += Court.Height / 2;
+            np.Z = pos.Z + Court.Height / 2;
             return np;
         }
 
