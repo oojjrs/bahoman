@@ -25,7 +25,7 @@ namespace bball
         {
             ImageArgs ia = new ImageArgs(image);
             ia.Location = Court.ToGlobalLocation(playerPosition).Location;
-            //ia.SetScale((float)0.5);
+            ia.Scale = new Vector3f(0.5f, 0.5f, 0.5f);
             ia.CorrectToCenter = true;
             r.PutImage(ia);
         }
