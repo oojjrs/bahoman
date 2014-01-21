@@ -198,6 +198,14 @@ namespace Renderer
                 Matrix matOld = sprite.Transform;
                 var image = r.Image as DXImage;
 
+                // Note : 일단 2차원으로 변경함
+                r.ScaleY = r.ScaleZ;
+                r.ScaleZ = 1.0f;
+                r.RotateY = r.RotateZ;
+                r.RotateZ = 0.0f;
+                r.PosY = r.PosZ;
+                r.PosZ = 0.0f;
+
                 if (r.CorrectToCenter)
                 {
                     var desc = image.Texture.GetLevelDescription(0);

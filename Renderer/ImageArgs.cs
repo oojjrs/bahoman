@@ -11,7 +11,7 @@ namespace Renderer
     public class ImageArgs
     {
         private Vector3f rotate = new Vector3f();
-        private Vector3f scale = new Vector3f();
+        private Vector3f scale = new Vector3f(1.0f, 1.0f, 1.0f);
         private Vector3f pos = new Vector3f();
         private bool correctToCenter = false;
         private IImage image = null;
