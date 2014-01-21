@@ -25,7 +25,7 @@ namespace bball
         {
             ImageArgs ia = new ImageArgs(image);
             ia.Location = Court.ToGlobalLocation(playerPosition).Location;
-            ia.SetScale((float)0.5);
+            //ia.SetScale((float)0.5);
             ia.CorrectToCenter = true;
             r.PutImage(ia);
         }
@@ -78,7 +78,7 @@ namespace bball
             else if (currentState == PlayerState.FindBall)
             {
                 //볼 주우러 이동
-                if (PhysicsEngine.GetDistance(playerPosition, court.GetBallPosition()) < 1)
+                if (playerPosition.DistanceTo(court.GetBallPosition()) < 1)
                 {
                     SetState(PlayerState.Dribble);
                 }
@@ -94,7 +94,7 @@ namespace bball
             }
         }
 
-        public Point PlayerPosition
+        public CourtPos PlayerPosition
         {
             get
             {

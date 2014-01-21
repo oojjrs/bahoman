@@ -63,7 +63,7 @@ namespace bball
             return np;
         }
 
-        public Point GetBallPosition()
+        public CourtPos GetBallPosition()
         {
             return ball.Location;
         }
