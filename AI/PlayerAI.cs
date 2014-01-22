@@ -33,69 +33,59 @@ namespace AI
             {
                 return PlayerState.FindBall;
             }
+            else if (factor.TeamState == TeamState.Attack)
+            {
+                if (factor.CurrentState == PlayerState.Free)
+                {
+                    return PlayerState.Free;
+                }
+                else if (factor.CurrentState == PlayerState.FindBall)
+                {
+                    return PlayerState.Free;
+                }
+                else if (factor.CurrentState == PlayerState.Dribble)
+                {
 
-            if (factor.CurrentState == PlayerState.Free)
-            {
-                return PlayerState.Free;
-            } 
-            else if (factor.CurrentState == PlayerState.Dribble)
-            {
-                //슛이 가능한지 현재 위치 확인
-                if (factor.TargetInfo.TargetType == TargetInfo.Type.Goal)
-                {
-                    if (GetShootingPoint(factor.PlayerPosition, factor.TargetInfo.Position) > 80)
+                    if (factor.TargetInfo.TargetType == TargetInfo.Type.Goal)
                     {
-                        //현재 상태를 슛상태로 변환
-                        return PlayerState.Shoot;
+                        //슛이 가능한지 현재 위치 확인
+                        if (GetShootingPoint(factor.PlayerPosition, factor.TargetInfo.Position) > 80)
+                        {
+                            //현재 상태를 슛상태로 변환
+                            return PlayerState.Shoot;
+                        }
+                        else
+                        {
+                            return PlayerState.Dribble;
+                        }
                     }
                     else
                     {
-                        //그냥 드리블 해서 골대로 이동
-                        return PlayerState.Dribble;
+                        throw new Exception { };
                     }
+                }
+                else if (factor.CurrentState == PlayerState.Shoot)
+                {
+                    //Rebound()
+                    //리바운드
+                    return PlayerState.Rebound;
+                }
+                else if (factor.CurrentState == PlayerState.Rebound)
+                {
+                    //Rebound()
+                    //리바운드
+                    return PlayerState.Rebound;
                 }
                 else
                 {
                     throw new Exception { };
                 }
-            }
-            else if (factor.CurrentState == PlayerState.Shoot)
-            {
-                //Shooting()
-                //슛상태일때는 슛하고 리바운드 혹은 수비 준비 해야지;
-                if (factor.TargetInfo.TargetType == TargetInfo.Type.Goal)
-                {
-                    float distancefromRing = factor.PlayerPosition.DistanceTo(factor.TargetInfo.Position);
-                    if (distancefromRing < 50)
-                    {
-                        return PlayerState.Rebound;
-                    }
-                    else
-                    {
-                        return PlayerState.Free;
-                    }
-                }
-                else
-                {
-                    throw new Exception { };
-                }
-            }
-            else if (factor.CurrentState == PlayerState.Rebound)
-            {
-                //Rebound()
-                //리바운드
-                throw new Exception { };
-            }
-            else if (factor.CurrentState == PlayerState.Free)
-            {
-                //Move
-                //슛상태일때는 슛하고 리바운드 혹은 수비 준비 해야지;
-                throw new Exception { };
             }
             else
             {
-                throw new Exception{};
+                throw new Exception { };
             }
+            
         }
 
         public static void SetReporter(IReporter er)

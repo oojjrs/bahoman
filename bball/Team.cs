@@ -8,7 +8,6 @@ namespace bball
         Home, Away
     }
     
-
     class Team
     {
         private TeamType teamType;

@@ -15,7 +15,7 @@ namespace bball
         private PlayerState currentState = new PlayerState();
         private int lastThinkTick = 0;
         private Boolean hasBall = false;
-        //private Team team = new Team();
+        private Team team = null;
         //private PlayerState prevState = new PlayerState();
         private IImage image = null;
         private Court court = Court.Instance;
@@ -39,8 +39,16 @@ namespace bball
 
         #endregion
 
-        public Player(CourtPos pos, Team team, IRenderer r)
+        public Player(CourtPos pos, TeamType teamType, IRenderer r)
         {
+            if (teamType == TeamType.Home)
+            {
+                this.team = court.HomeTeam;
+            }
+            else
+            {
+                this.team = court.AwayTeam;
+            }
             playerPosition = pos;
             this.SetImage(r.GetImage("res/Player.png", new MyColor(), "Player"));
         }
@@ -74,7 +82,8 @@ namespace bball
             }
             else if (currentState == PlayerState.Shoot)
             {
-                MessageBox.Show("Ω∏¿Ã¥Ÿ");
+                court.Ball.TargetLocation = Court.RightGoalPos;
+                court.Ball.CurrentState = Ball.State.Shooting;
             }
             else if (currentState == PlayerState.FindBall)
             {

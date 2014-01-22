@@ -14,8 +14,8 @@ namespace bball
 
         public bool Initialize(IRenderer r)
         {
-            Team homeTeam = new Team(TeamType.Home);
-            players.Add(new Player(CourtPos.Center, homeTeam, r));
+            players.Add(new Player(CourtPos.Center, TeamType.Home, r));
+            players.Add(new Player(CourtPos.FromCoord(220,0,30), TeamType.Home, r));
             return true;
         }
     }
