@@ -1,20 +1,34 @@
 ﻿using System;
-using System.Drawing;
-using AI;
+using System.Collections.Generic;
 
 namespace AI
 {
     public class DetermineFactor
     {
-        private CourtPos playerPosition = new CourtPos();
+        private CourtPos playerLocation = new CourtPos();
+        private CourtPos ballLocation = new CourtPos();
+        private List<CourtPos> teammateLocations = new List<CourtPos>();
         private PlayerState currentState = new PlayerState();
         private TeamState teamState = new TeamState();
         private TargetInfo targetInfo = new TargetInfo();
-
-        public CourtPos PlayerPosition
+        
+        public List<CourtPos> TeammateLocations
         {
-            get { return this.playerPosition; }
-            set { this.playerPosition = value; }
+            get { return this.teammateLocations; }
+            set { this.teammateLocations = value; }
+        }
+
+        public CourtPos PlayerLocation
+        {
+            get { return this.playerLocation; }
+            set { this.playerLocation = value; }
+
+        }
+
+        public CourtPos BallLocation
+        {
+            get { return this.ballLocation; }
+            set { this.ballLocation = value; }
 
         }
 

@@ -127,18 +127,6 @@ namespace bball
         {
             get { return ball; }
         }
-
-        public Team HomeTeam
-        {
-            get { return this.hometeam; }
-            set { hometeam = value; }
-        }
-
-        public Team AwayTeam
-        {
-            get { return this.awayteam; }
-            set { awayteam = value; }
-        }
         #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using AI;
+using System.Collections.Generic;
 
 namespace bball
 {
@@ -12,10 +13,16 @@ namespace bball
     {
         private TeamType teamType;
         private TeamState teamState;
+        private List<Player> players = new List<Player>();
 
         public Team(TeamType teamtype)
         {
             teamType = teamtype;
+        }
+
+        public List<Player> Players
+        {
+            get { return this.players; }
         }
 
         public TeamType TeamType

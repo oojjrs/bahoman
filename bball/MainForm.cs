@@ -17,7 +17,6 @@ namespace bball
     {
         private IRenderer renderer = Renderer.Container.GetInterface(Renderer.Type.Direct3D9);
         private Court court = Court.Instance;
-        private PlayerManager pm = new PlayerManager();
 
         public MainForm()
         {
@@ -41,8 +40,13 @@ namespace bball
             PlayerAI.SetReporter(Log.Instance);
 
             court.Image = renderer.GetImage("res/court.png", new MyColor(), "court");
-            pm.Initialize(renderer);
             court.CreateBall(renderer.GetImage("res/Ball.png", new MyColor(), "Ball"));
+
+            Team homeTeam = new Team(TeamType.Home);
+            homeTeam.TeamState = TeamState.LooseBall;
+            homeTeam.Players.Add(new Player(CourtPos.Center, homeTeam, renderer));
+            homeTeam.Players.Add(new Player(CourtPos.FromCoord(200,0,100), homeTeam, renderer));
+
         }
 
         private void GlobalTimer_Tick(object sender, EventArgs e)

@@ -1,17 +1,17 @@
 using System;
-using System.Drawing;
 
 using Core;
 using Renderer;
 using AI;
 using System.Windows.Forms;
 using Physics;
+using System.Collections.Generic;
 
 namespace bball
 {
     class Player : Object
     {
-        private CourtPos playerPosition = CourtPos.Center;
+        private CourtPos playerLocation = null;
         private PlayerState currentState = new PlayerState();
         private int lastThinkTick = 0;
         private Boolean hasBall = false;
@@ -25,7 +25,7 @@ namespace bball
         public override void OnDraw(IRenderer r)
         {
             ImageArgs ia = new ImageArgs(image);
-            ia.Location = Court.ToGlobalLocation(playerPosition).Location;
+            ia.Location = Court.ToGlobalLocation(playerLocation).Location;
             ia.Scale = new Vector3f(0.5f, 0.5f, 0.5f);
             ia.CorrectToCenter = true;
             r.PutImage(ia);
@@ -39,17 +39,10 @@ namespace bball
 
         #endregion
 
-        public Player(CourtPos pos, TeamType teamType, IRenderer r)
+        public Player(CourtPos pos, Team team, IRenderer r)
         {
-            if (teamType == TeamType.Home)
-            {
-                this.team = court.HomeTeam;
-            }
-            else
-            {
-                this.team = court.AwayTeam;
-            }
-            playerPosition = pos;
+            this.team = team;
+            playerLocation = pos;
             this.SetImage(r.GetImage("res/Player.png", new MyColor(), "Player"));
         }
 
@@ -64,12 +57,23 @@ namespace bball
             {
                 var factor = new DetermineFactor();
                 factor.CurrentState = currentState;
-                factor.PlayerPosition = playerPosition;
+                factor.PlayerLocation = playerLocation;
+
+                var teammateLocations = new List<CourtPos>();
+
+                foreach (var player in team.Players)
+	            {
+                    teammateLocations.Add(player.playerLocation);
+	            }
+
+                factor.TeammateLocations =  teammateLocations;
                 var targetInfo = new TargetInfo();
+
                 targetInfo.Position = Court.RightGoalPos;
                 targetInfo.TargetType = TargetInfo.Type.Goal;
+                
                 factor.TargetInfo = targetInfo;
-                factor.TeamState = court.HomeTeam.TeamState;
+                factor.TeamState = team.TeamState;
                 currentState = PlayerAI.Determine(factor);
             }
         }
@@ -87,7 +91,7 @@ namespace bball
             }
             else if (currentState == PlayerState.FindBall)
             {
-                if (playerPosition.DistanceTo(court.Ball.Location) < 1)
+                if (playerLocation.DistanceTo(court.Ball.Location) < 1)
                 {
                     //MessageBox.Show("볼 잡았스");
                     hasBall = true;
@@ -103,9 +107,9 @@ namespace bball
 
         public void Move(CourtPos target)
         {
-            var vDirect = target - playerPosition;
+            var vDirect = target - playerLocation;
             vDirect.Location.Normalize();
-            playerPosition = playerPosition + vDirect;
+            playerLocation = playerLocation + vDirect;
 
             if (hasBall)
             {
@@ -118,16 +122,16 @@ namespace bball
             currentState = playerstate;
             if (currentState == PlayerState.Dribble)
             {
-                court.HomeTeam.TeamState = TeamState.Attack;
+                team.TeamState = TeamState.Attack;
                 court.Ball.CurrentState = Ball.State.Dribbling;
             }
         }
 
-        public CourtPos PlayerPosition
+        public CourtPos PlayerLocation
         {
             get
             {
-                return playerPosition;
+                return playerLocation;
             }
         }
 

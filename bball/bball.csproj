@@ -100,7 +100,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Player.cs" />
-    <Compile Include="PlayerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Team.cs" />
   </ItemGroup>

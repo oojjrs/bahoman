@@ -31,6 +31,10 @@ namespace AI
         {
             if (factor.TeamState == TeamState.LooseBall)
             {
+                foreach (var playerposition in factor.TeammateLocations)
+                {
+                    //playerposition.DistanceTo(
+                }
                 return PlayerState.FindBall;
             }
             else if (factor.TeamState == TeamState.Attack)
@@ -49,7 +53,7 @@ namespace AI
                     if (factor.TargetInfo.TargetType == TargetInfo.Type.Goal)
                     {
                         //슛이 가능한지 현재 위치 확인
-                        if (GetShootingPoint(factor.PlayerPosition, factor.TargetInfo.Position) > 80)
+                        if (GetShootingPoint(factor.PlayerLocation, factor.TargetInfo.Position) > 80)
                         {
                             //현재 상태를 슛상태로 변환
                             return PlayerState.Shoot;
