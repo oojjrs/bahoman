@@ -65,6 +65,8 @@ namespace bball
                         scaleRate = ((float)Math.Cos(MyMath.DegreeToRadian((highestPoint - remain) / highestPoint * 90))) * 0.4f + 0.4f;
                     }
                     break;
+                case State.Dribbling:
+                    break;
                 default:
                     throw new System.ComponentModel.InvalidEnumArgumentException("공의 상태 정의가 추가로 필요한 지점입니다.");
             }
@@ -93,6 +95,9 @@ namespace bball
                         break;
                     case State.Shooting:
                         throw new Exception("이 상태에서는 위치를 강제 입력할 수 없습니다.");
+                    case State.Dribbling:
+                        currentPos = value;
+                        break;
                     default:
                         throw new System.ComponentModel.InvalidEnumArgumentException("공의 상태 정의가 추가로 필요한 지점입니다.");
                 }
@@ -113,6 +118,9 @@ namespace bball
                     case State.Shooting:
                         scaleRate = 0.5f;
                         beganPos = currentPos;
+                        break;
+                    case State.Dribbling:
+                        scaleRate = 0.5f;
                         break;
                     default:
                         throw new System.ComponentModel.InvalidEnumArgumentException("공의 상태 정의가 추가로 필요한 지점입니다.");

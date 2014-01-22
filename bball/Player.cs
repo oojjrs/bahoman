@@ -14,6 +14,7 @@ namespace bball
         private CourtPos playerPosition = CourtPos.Center;
         private PlayerState currentState = new PlayerState();
         private int lastThinkTick = 0;
+        private Boolean hasBall = false;
         //private Team team = new Team();
         //private PlayerState prevState = new PlayerState();
         private IImage image = null;
@@ -69,7 +70,7 @@ namespace bball
         {
             if (currentState == PlayerState.Dribble)
             {
-                playerPosition = playerPosition + CourtPos.FromCoord(1, 0, 0);
+                Move(Court.RightGoalPos);
             }
             else if (currentState == PlayerState.Shoot)
             {
@@ -80,16 +81,26 @@ namespace bball
                 if (playerPosition.DistanceTo(court.Ball.Location) < 1)
                 {
                     //MessageBox.Show("볼 잡았스");
+                    hasBall = true;
                     SetState(PlayerState.Dribble);
-                    
                 }
                 else
                 {
                     //볼 주우러 이동
-                    var vDirect = playerPosition - court.Ball.Location;
-                    vDirect.Location.Normalize();
-                    playerPosition = playerPosition - vDirect;
+                    this.Move(court.Ball.Location);
                 }
+            }
+        }
+
+        public void Move(CourtPos target)
+        {
+            var vDirect = target - playerPosition;
+            vDirect.Location.Normalize();
+            playerPosition = playerPosition + vDirect;
+
+            if (hasBall)
+            {
+                court.Ball.Location = court.Ball.Location + vDirect;
             }
         }
 
@@ -99,7 +110,7 @@ namespace bball
             if (currentState == PlayerState.Dribble)
             {
                 court.HomeTeam.TeamState = TeamState.Attack;
-                court.Ball.CurrentState = Ball.State.Bounding;
+                court.Ball.CurrentState = Ball.State.Dribbling;
             }
         }
 
@@ -108,6 +119,14 @@ namespace bball
             get
             {
                 return playerPosition;
+            }
+        }
+
+        public Boolean HasBall
+        {
+            get
+            {
+                return hasBall;
             }
         }
     }

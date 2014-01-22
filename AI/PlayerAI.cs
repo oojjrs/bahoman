@@ -17,7 +17,7 @@ namespace AI
             float distancefromRing = playerpoint.DistanceTo(ringpoint);
             
             //일단 골대 근처에 있으면 100점으로 리턴
-            if (40 > (int)distancefromRing)
+            if (60 > (int)distancefromRing)
             {
                 return 100;
             }
