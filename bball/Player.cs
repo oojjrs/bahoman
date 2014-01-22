@@ -89,6 +89,10 @@ namespace bball
                 court.Ball.TargetLocation = Court.RightGoalPos;
                 court.Ball.CurrentState = Ball.State.Shooting;
             }
+            else if (currentState == PlayerState.Free)
+            {
+                Move(Court.RightGoalPos);
+            }
             else if (currentState == PlayerState.FindBall)
             {
                 if (playerLocation.DistanceTo(court.Ball.Location) < 1)

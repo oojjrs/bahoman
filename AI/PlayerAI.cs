@@ -31,9 +31,18 @@ namespace AI
         {
             if (factor.TeamState == TeamState.LooseBall)
             {
+                var playerDistance = factor.PlayerLocation.DistanceTo(factor.BallLocation);
+
                 foreach (var playerposition in factor.TeammateLocations)
                 {
-                    //playerposition.DistanceTo(
+                    if(playerDistance > playerposition.DistanceTo(factor.BallLocation))
+                    {
+                        return PlayerState.Free;
+                    }
+                    else
+                    {
+                        return PlayerState.FindBall;
+                    }
                 }
                 return PlayerState.FindBall;
             }
