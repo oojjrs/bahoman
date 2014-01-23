@@ -47,6 +47,11 @@ namespace bball
             {
                 case State.Bounding:    // 원래 scaleRate 값 유지(일단은 아무 일도 하지 않음)
                     break;
+                case State.Passing:    // 원래 scaleRate 값 유지(일단은 아무 일도 하지 않음)
+                    var vDirect = this.targetPos - this.currentPos;
+                    vDirect.Location.Normalize();
+                    currentPos = this.currentPos + vDirect;
+                    break;
                 case State.Shooting:
                     // Note : 아직 여러 가지 물리 지수가 없으므로 공의 속도, 뜨는 높이, 거리비는 대충 사용한다.
                     var distance = beganPos.DistanceTo(targetPos);
@@ -75,6 +80,13 @@ namespace bball
             this.CurrentState = State.Bounding;
         }
 
+        public void Move()
+        {
+            var vDirect = this.targetPos - this.currentPos;
+            vDirect.Location.Normalize();
+            currentPos = this.currentPos + vDirect;
+        }
+
         public IImage Image
         {
             get { return image; }
@@ -92,8 +104,7 @@ namespace bball
                         currentPos = value;
                         break;
                     case State.Passing:
-                        currentPos = value;
-                        break;
+                        throw new Exception("이 상태에서는 위치를 강제 입력할 수 없습니다.");
                     case State.Shooting:
                         throw new Exception("이 상태에서는 위치를 강제 입력할 수 없습니다.");
                     case State.Dribbling:

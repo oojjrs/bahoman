@@ -58,7 +58,7 @@ namespace bball
                 factor.TeammateLocations =  teammateLocations;
                 var targetInfo = new TargetInfo();
 
-                targetInfo.Position = Court.RightGoalPos;
+                targetInfo.Location = Court.RightGoalPos;
                 targetInfo.TargetType = TargetInfo.Type.Goal;
                 
                 factor.TargetInfo = targetInfo;
@@ -96,6 +96,24 @@ namespace bball
                     this.Move(court.Ball.Location);
                 }
             }
+            else if (currentState == PlayerState.Pass)
+            {
+                //MessageBox.Show("¾ðÁ¦Âë");
+                if (court.Ball.CurrentState != Ball.State.Passing)
+                {
+                    var playerDistance = playerLocation.DistanceTo(Court.RightGoalPos);
+                    foreach (var player in team.Players)
+                    {
+                        if (playerDistance > player.PlayerLocation.DistanceTo(Court.RightGoalPos))
+                        {
+                            court.Ball.TargetLocation = player.PlayerLocation;
+                            court.Ball.CurrentState = Ball.State.Passing;
+                            SetState(PlayerState.Free);
+                        }
+
+                    }
+                }
+            }
         }
 
         public void Move(CourtPos target)
@@ -103,9 +121,10 @@ namespace bball
             var vDirect = target - playerLocation;
             vDirect.Location.Normalize();
             playerLocation = playerLocation + vDirect;
-
+            
             if (hasBall)
             {
+                court.Ball.CurrentState = Ball.State.Dribbling;
                 court.Ball.Location = court.Ball.Location + vDirect;
             }
         }
