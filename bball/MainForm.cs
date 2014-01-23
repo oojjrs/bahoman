@@ -36,19 +36,20 @@ namespace bball
             renderer.Initialize(this);
             renderer.SetReporter(Log.Instance);
             renderer.ResizeBackBuffer(Court.Width, Court.Height);
+            ImageFactory.Renderer = renderer;
 
-            court.Image = renderer.GetImage("res/court.png", new MyColor(), "court");
-            court.CreateBall(renderer.GetImage("res/Ball.png", new MyColor(), "Ball"));
+            court.Image = ImageFactory.Create("res/court.png");
+            court.CreateBall(ImageFactory.Create("res/Ball.png"));
 
             var p1 = new Player();
             p1.PlayerLocation = CourtPos.Center;
-            p1.Image = renderer.GetImage("res/Player.png", new MyColor(), "Player");
+            p1.Image = ImageFactory.Create("res/Player.png");
             p1.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
             p1.AI.SetReporter(Log.Instance);
 
             var p2 = new Player();
             p2.PlayerLocation = CourtPos.FromCoord(200, 0, 100);
-            p2.Image = renderer.GetImage("res/Player.png", new MyColor(), "Player");
+            p2.Image = ImageFactory.Create("res/Player.png");
             p2.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
             p2.AI.SetReporter(Log.Instance);
 

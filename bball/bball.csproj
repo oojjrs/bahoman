@@ -80,6 +80,7 @@
     <Compile Include="Ball.cs" />
     <Compile Include="Court.cs" />
     <Compile Include="GlobalVariables.cs" />
+    <Compile Include="ImageFactory.cs" />
     <Compile Include="IOutputModel.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="MainForm.cs">
