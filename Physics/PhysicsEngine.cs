@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 
+using Core;
+
 namespace Physics
 {
     public class PhysicsEngine
