@@ -37,16 +37,25 @@ namespace bball
             renderer.SetReporter(Log.Instance);
             renderer.ResizeBackBuffer(Court.Width, Court.Height);
 
-            PlayerAI.SetReporter(Log.Instance);
-
             court.Image = renderer.GetImage("res/court.png", new MyColor(), "court");
             court.CreateBall(renderer.GetImage("res/Ball.png", new MyColor(), "Ball"));
 
+            var p1 = new Player();
+            p1.PlayerLocation = CourtPos.Center;
+            p1.Image = renderer.GetImage("res/Player.png", new MyColor(), "Player");
+            p1.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
+            p1.AI.SetReporter(Log.Instance);
+
+            var p2 = new Player();
+            p2.PlayerLocation = CourtPos.FromCoord(200, 0, 100);
+            p2.Image = renderer.GetImage("res/Player.png", new MyColor(), "Player");
+            p2.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
+            p2.AI.SetReporter(Log.Instance);
+
             Team homeTeam = new Team(TeamType.Home);
             homeTeam.TeamState = TeamState.LooseBall;
-            homeTeam.Players.Add(new Player(CourtPos.Center, homeTeam, renderer));
-            homeTeam.Players.Add(new Player(CourtPos.FromCoord(200,0,100), homeTeam, renderer));
-
+            homeTeam.AddPlayer(p1);
+            homeTeam.AddPlayer(p2);
         }
 
         private void GlobalTimer_Tick(object sender, EventArgs e)

@@ -90,6 +90,7 @@
     </Compile>
     <Compile Include="Object.cs" />
     <Compile Include="OutputManager.cs" />
+    <Compile Include="PlayerPool.cs" />
     <Compile Include="res\bball.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -20,6 +20,12 @@ namespace bball
             teamType = teamtype;
         }
 
+        public void AddPlayer(Player player)
+        {
+            player.Team = this;
+            players.Add(player);
+        }
+
         public List<Player> Players
         {
             get { return this.players; }

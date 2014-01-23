@@ -19,6 +19,7 @@ namespace bball
         //private PlayerState prevState = new PlayerState();
         private IImage image = null;
         private Court court = Court.Instance;
+        private IPlayerAIType ai = null;
 
         #region From IDrawable
 
@@ -38,18 +39,6 @@ namespace bball
         }
 
         #endregion
-
-        public Player(CourtPos pos, Team team, IRenderer r)
-        {
-            this.team = team;
-            playerLocation = pos;
-            this.SetImage(r.GetImage("res/Player.png", new MyColor(), "Player"));
-        }
-
-        public void SetImage(IImage image)
-        {
-            this.image = image;
-        }
 
         private void Thinking()
         {
@@ -74,7 +63,7 @@ namespace bball
                 
                 factor.TargetInfo = targetInfo;
                 factor.TeamState = team.TeamState;
-                currentState = PlayerAI.Determine(factor);
+                currentState = this.AI.Determine(factor).state;
             }
         }
 
@@ -133,18 +122,31 @@ namespace bball
 
         public CourtPos PlayerLocation
         {
-            get
-            {
-                return playerLocation;
-            }
+            get { return playerLocation; }
+            set { playerLocation = value; }
         }
 
         public Boolean HasBall
         {
-            get
-            {
-                return hasBall;
-            }
+            get { return hasBall; }
+        }
+
+        public IImage Image
+        {
+            get { return image; }
+            set { image = value; }
+        }
+
+        public Team Team
+        {
+            get { return team; }
+            set { team = value; }
+        }
+
+        public IPlayerAIType AI
+        {
+            get { return ai; }
+            set { ai = value; }
         }
     }
 }

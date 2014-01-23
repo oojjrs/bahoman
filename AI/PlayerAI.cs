@@ -6,16 +6,98 @@ using Core;
 
 namespace AI
 {
-    public static class PlayerAI
+    class PlayerExpert : IPlayerAIType
     {
-        private static LogHelper log = new LogHelper();
-        //private Boolean hasBall = false;
+        private static PlayerExpert instance = new PlayerExpert();
+        private LogHelper log = new LogHelper();
 
-        private static int GetShootingPoint(CourtPos playerpoint, CourtPos ringpoint)
+        public PlayerAIResult Determine(DetermineFactor factor)
+        {
+            var ret = new PlayerAIResult();
+            if (factor.TeamState == TeamState.LooseBall)
+            {
+                var playerDistance = factor.PlayerLocation.DistanceTo(factor.BallLocation);
+
+                ret.state = PlayerState.FindBall;
+                foreach (var tloc in factor.TeammateLocations)
+                {
+                    if (playerDistance > tloc.DistanceTo(factor.BallLocation))
+                    {
+                        ret.state = PlayerState.Free;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                return ret;
+            }
+            else if (factor.TeamState == TeamState.Attack)
+            {
+                if (factor.CurrentState == PlayerState.Free)
+                {
+                    ret.state = PlayerState.Free;
+                    return ret;
+                }
+                else if (factor.CurrentState == PlayerState.FindBall)
+                {
+                    ret.state = PlayerState.Free;
+                    return ret;
+                }
+                else if (factor.CurrentState == PlayerState.Dribble)
+                {
+                    if (factor.TargetInfo.TargetType == TargetInfo.Type.Goal)
+                    {
+                        //슛이 가능한지 현재 위치 확인
+                        if (GetShootingPoint(factor.PlayerLocation, factor.TargetInfo.Position) > 80)
+                        {
+                            //현재 상태를 슛상태로 변환
+                            ret.state = PlayerState.Shoot;
+                            return ret;
+                        }
+                        else
+                        {
+                            ret.state = PlayerState.Dribble;
+                            return ret;
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception { };
+                    }
+                }
+                else if (factor.CurrentState == PlayerState.Shoot)
+                {
+                    ret.state = PlayerState.Rebound;
+                    return ret;
+                }
+                else if (factor.CurrentState == PlayerState.Rebound)
+                {
+                    ret.state = PlayerState.Rebound;
+                    return ret;
+                }
+                else
+                {
+                    throw new Exception { };
+                }
+            }
+            else
+            {
+                throw new Exception { };
+            }
+        }
+
+        public void SetReporter(IReporter er)
+        {
+            log.SetReporter(er);
+        }
+
+        private int GetShootingPoint(CourtPos playerpoint, CourtPos ringpoint)
         {
             //슛을 쏠지 말지 결정하는 팩터들을 수치화
             float distancefromRing = playerpoint.DistanceTo(ringpoint);
-            
+
             //일단 골대 근처에 있으면 100점으로 리턴
             if (60 > (int)distancefromRing)
             {
@@ -27,83 +109,9 @@ namespace AI
             }
         }
 
-        public static PlayerState Determine(DetermineFactor factor)
+        public static PlayerExpert Instance
         {
-            if (factor.TeamState == TeamState.LooseBall)
-            {
-                var playerDistance = factor.PlayerLocation.DistanceTo(factor.BallLocation);
-
-                foreach (var playerposition in factor.TeammateLocations)
-                {
-                    if(playerDistance > playerposition.DistanceTo(factor.BallLocation))
-                    {
-                        return PlayerState.Free;
-                    }
-                    else
-                    {
-                        return PlayerState.FindBall;
-                    }
-                }
-                return PlayerState.FindBall;
-            }
-            else if (factor.TeamState == TeamState.Attack)
-            {
-                if (factor.CurrentState == PlayerState.Free)
-                {
-                    return PlayerState.Free;
-                }
-                else if (factor.CurrentState == PlayerState.FindBall)
-                {
-                    return PlayerState.Free;
-                }
-                else if (factor.CurrentState == PlayerState.Dribble)
-                {
-
-                    if (factor.TargetInfo.TargetType == TargetInfo.Type.Goal)
-                    {
-                        //슛이 가능한지 현재 위치 확인
-                        if (GetShootingPoint(factor.PlayerLocation, factor.TargetInfo.Position) > 80)
-                        {
-                            //현재 상태를 슛상태로 변환
-                            return PlayerState.Shoot;
-                        }
-                        else
-                        {
-                            return PlayerState.Dribble;
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception { };
-                    }
-                }
-                else if (factor.CurrentState == PlayerState.Shoot)
-                {
-                    //Rebound()
-                    //리바운드
-                    return PlayerState.Rebound;
-                }
-                else if (factor.CurrentState == PlayerState.Rebound)
-                {
-                    //Rebound()
-                    //리바운드
-                    return PlayerState.Rebound;
-                }
-                else
-                {
-                    throw new Exception { };
-                }
-            }
-            else
-            {
-                throw new Exception { };
-            }
-            
-        }
-
-        public static void SetReporter(IReporter er)
-        {
-            log.SetReporter(er);
+            get { return instance; }
         }
     }
 }
