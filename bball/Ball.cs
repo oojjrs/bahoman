@@ -19,7 +19,7 @@ namespace bball
             Dribbling,
             //Holding,
             //Intercepting,
-            //Passing,
+            Passing,
             //Rolling,
             Shooting,
             //Stealing,
@@ -36,7 +36,6 @@ namespace bball
         {
             if (this.CurrentState == State.Shooting)
                 currentPos += CourtPos.FromCoord(5, 0, 0);
-
             var ia = new ImageArgs(image);
             ia.CorrectToCenter = true;
             ia.Location = Court.ToGlobalLocation(currentPos).Location;
@@ -93,6 +92,9 @@ namespace bball
                     case State.Bounding:
                         currentPos = value;
                         break;
+                    case State.Passing:
+                        currentPos = value;
+                        break;
                     case State.Shooting:
                         throw new Exception("이 상태에서는 위치를 강제 입력할 수 없습니다.");
                     case State.Dribbling:
@@ -114,6 +116,10 @@ namespace bball
                 {
                     case State.Bounding:
                         scaleRate = 0.5f;
+                        break;
+                    case State.Passing:
+                        scaleRate = 0.5f;
+                        beganPos = currentPos;
                         break;
                     case State.Shooting:
                         scaleRate = 0.5f;
