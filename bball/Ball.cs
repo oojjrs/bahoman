@@ -34,8 +34,6 @@ namespace bball
 
         public override void OnDraw(IRenderer r)
         {
-            if (this.CurrentState == State.Shooting)
-                currentPos += CourtPos.FromCoord(5, 0, 0);
             var ia = new ImageArgs(image);
             ia.CorrectToCenter = true;
             ia.Location = Court.ToGlobalLocation(currentPos).Location;
@@ -63,6 +61,7 @@ namespace bball
                         var highestPoint = distance / 2.0f + distance * 0.15f;
                         scaleRate = ((float)Math.Cos(MyMath.DegreeToRadian((highestPoint - remain) / highestPoint * 90))) * 0.4f + 0.4f;
                     }
+                    currentPos += CourtPos.FromCoord(5, 0, 0);
                     break;
                 case State.Dribbling:
                     break;
