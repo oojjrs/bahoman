@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Core;
+
 namespace AI
 {
     public class DetermineFactor

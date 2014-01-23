@@ -10,6 +10,7 @@ namespace AI
     public interface IPlayerAIType
     {
         PlayerAIResult Determine(DetermineFactor factor);
+        PlayerAIResult Determine(PropertyBag factor);
         void SetReporter(IReporter er);
     }
 }

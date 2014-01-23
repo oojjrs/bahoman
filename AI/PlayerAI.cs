@@ -88,6 +88,97 @@ namespace AI
             }
         }
 
+        public PlayerAIResult Determine(PropertyBag factor)
+        {
+            var ret = new PlayerAIResult();
+            if (factor.IsFlagOn("TeamState.LooseBall"))
+            {
+                Vector3f ploc;
+                factor.GetVector("PlayerLocation", out ploc);
+
+                Vector3f bloc;
+                factor.GetVector("BallLocation", out bloc);
+
+                Vector3f[] tlocs;
+                factor.GetVectors("TeammateLocation", out tlocs);
+
+                var playerDistance = ploc.Distance(bloc);
+                ret.state = PlayerState.FindBall;
+                foreach (var tloc in tlocs)
+                {
+                    if (playerDistance > tloc.Distance(bloc))
+                    {
+                        ret.state = PlayerState.Free;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                return ret;
+            }
+            else if (factor.IsFlagOn("TeamState.Attack"))
+            {
+                if (factor.IsFlagOn("PlayerState.Free"))
+                {
+                    ret.state = PlayerState.Free;
+                    return ret;
+                }
+                else if (factor.IsFlagOn("PlayerState.FindBall"))
+                {
+                    ret.state = PlayerState.Free;
+                    return ret;
+                }
+                else if (factor.IsFlagOn("PlayerState.Dribble"))
+                {
+                    if (factor.IsFlagOn("TargetInfo.Type.Goal"))
+                    {
+                        Vector3f ploc;
+                        factor.GetVector("PlayerLocation", out ploc);
+
+                        Vector3f tloc;
+                        factor.GetVector("TargetLocation", out tloc);
+
+                        //슛이 가능한지 현재 위치 확인
+                        if (GetShootingPoint(ploc, tloc) > 80)
+                        {
+                            //현재 상태를 슛상태로 변환
+                            ret.state = PlayerState.Shoot;
+                            return ret;
+                        }
+                        else
+                        {
+                            ret.state = PlayerState.Dribble;
+                            return ret;
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception { };
+                    }
+                }
+                else if (factor.IsFlagOn("PlayerState.Shoot"))
+                {
+                    ret.state = PlayerState.Rebound;
+                    return ret;
+                }
+                else if (factor.IsFlagOn("PlayerState.Rebound"))
+                {
+                    ret.state = PlayerState.Rebound;
+                    return ret;
+                }
+                else
+                {
+                    throw new Exception { };
+                }
+            }
+            else
+            {
+                throw new Exception { };
+            }
+        }
+
         public void SetReporter(IReporter er)
         {
             log.SetReporter(er);
@@ -97,6 +188,22 @@ namespace AI
         {
             //슛을 쏠지 말지 결정하는 팩터들을 수치화
             float distancefromRing = playerpoint.DistanceTo(ringpoint);
+
+            //일단 골대 근처에 있으면 100점으로 리턴
+            if (60 > (int)distancefromRing)
+            {
+                return 100;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        private int GetShootingPoint(Vector3f bp, Vector3f ep)
+        {
+            //슛을 쏠지 말지 결정하는 팩터들을 수치화
+            float distancefromRing = bp.Distance(ep);
 
             //일단 골대 근처에 있으면 100점으로 리턴
             if (60 > (int)distancefromRing)
