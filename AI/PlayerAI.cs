@@ -40,17 +40,34 @@ namespace AI
                     ret.state = PlayerState.Free;
                     return ret;
                 }
+                else if (factor.CurrentState == PlayerState.Pass)
+                {
+                    ret.state = PlayerState.Pass;
+                    return ret;
+                }
                 else if (factor.CurrentState == PlayerState.FindBall)
                 {
-                    ret.state = PlayerState.Free;
+                    ret.state = PlayerState.FindBall;
                     return ret;
                 }
                 else if (factor.CurrentState == PlayerState.Dribble)
                 {
                     if (factor.TargetInfo.TargetType == TargetInfo.Type.Goal)
                     {
+                        //패스할데가 있나 확인
+                        var playerDistance = factor.PlayerLocation.DistanceTo(factor.TargetInfo.Location);
+                        foreach (var tloc in factor.TeammateLocations)
+                        {
+                            if (playerDistance > tloc.DistanceTo(factor.TargetInfo.Location))
+                            {
+                                ret.state = PlayerState.Pass;
+                                return ret;
+                                
+                            }
+                        }
+
                         //슛이 가능한지 현재 위치 확인
-                        if (GetShootingPoint(factor.PlayerLocation, factor.TargetInfo.Position) > 80)
+                        if (GetShootingPoint(factor.PlayerLocation, factor.TargetInfo.Location) > 80)
                         {
                             //현재 상태를 슛상태로 변환
                             ret.state = PlayerState.Shoot;
