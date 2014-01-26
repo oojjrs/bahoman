@@ -42,55 +42,55 @@ namespace bball
 
         private void Thinking()
         {
-            //if (Environment.TickCount - lastThinkTick > 10)
-            //{
-            //    var factor = new PropertyBag();
+            if (Environment.TickCount - lastThinkTick > 10)
+            {
+                var factor = new PropertyBag();
 
-            //    switch (team.TeamState)
-            //    {
-            //        case TeamState.Attack:
-            //            factor.AddPrimitive("TeamState.Attack", true);
-            //            switch (currentState)
-            //            {
-            //                case PlayerState.Dribble:
-            //                    factor.AddPrimitive("PlayerState.Dribble", true);
-            //                    factor.AddPrimitive("TargetInfo.Type.Goal", true);
-            //                    factor.AddPrimitive("CanShoot", this.GetShootingPoint(this.PlayerLocation, Court.RightGoalPos) > 80);
-            //                    break;
-            //                case PlayerState.Shoot:
-            //                    factor.AddPrimitive("PlayerState.Shoot", true);
-            //                    break;
-            //                case PlayerState.Pass:
-            //                    factor.AddPrimitive("PlayerState.Pass", true);
-            //                    break;
-            //                case PlayerState.Rebound:
-            //                    factor.AddPrimitive("PlayerState.Rebound", true);
-            //                    break;
-            //                case PlayerState.Free:
-            //                    factor.AddPrimitive("PlayerState.Free", true);
-            //                    break;
-            //                case PlayerState.FindBall:
-            //                    factor.AddPrimitive("PlayerState.FindBall", true);
-            //                    break;
-            //            }
-            //            break;
-            //        case TeamState.Defence:
-            //            factor.AddPrimitive("TeamState.Defence", true);
-            //            break;
-            //        case TeamState.LooseBall:
-            //            factor.AddPrimitive("TeamState.LooseBall", true);
-            //            factor.AddVector("PlayerLocation", this.PlayerLocation.Location);
-            //            factor.AddVector("BallLocation", Court.RightGoalPos.Location);
-            //            foreach (var p in team.Players)
-            //                factor.AddVector("TeammateLocation", p.PlayerLocation.Location);
-            //            break;
-            //        case TeamState.StrategyTime:
-            //            factor.AddPrimitive("TeamState.StrategyTime", true);
-            //            break;
-            //    }
+                switch (team.TeamState)
+                {
+                    case TeamState.Attack:
+                        factor.AddPrimitive("TeamState.Attack", true);
+                        switch (currentState)
+                        {
+                            case PlayerState.Dribble:
+                                factor.AddPrimitive("PlayerState.Dribble", true);
+                                factor.AddPrimitive("TargetInfo.Type.Goal", true);
+                                factor.AddPrimitive("CanShoot", this.GetShootingPoint(this.PlayerLocation, Court.RightGoalPos) > 80);
+                                break;
+                            case PlayerState.Shoot:
+                                factor.AddPrimitive("PlayerState.Shoot", true);
+                                break;
+                            case PlayerState.Pass:
+                                factor.AddPrimitive("PlayerState.Pass", true);
+                                break;
+                            case PlayerState.Rebound:
+                                factor.AddPrimitive("PlayerState.Rebound", true);
+                                break;
+                            case PlayerState.Free:
+                                factor.AddPrimitive("PlayerState.Free", true);
+                                break;
+                            case PlayerState.FindBall:
+                                factor.AddPrimitive("PlayerState.FindBall", true);
+                                break;
+                        }
+                        break;
+                    case TeamState.Defence:
+                        factor.AddPrimitive("TeamState.Defence", true);
+                        break;
+                    case TeamState.LooseBall:
+                        factor.AddPrimitive("TeamState.LooseBall", true);
+                        factor.AddVector("PlayerLocation", this.PlayerLocation.Location);
+                        factor.AddVector("BallLocation", Court.RightGoalPos.Location);
+                        foreach (var p in team.Players)
+                            factor.AddVector("TeammateLocation", p.PlayerLocation.Location);
+                        break;
+                    case TeamState.StrategyTime:
+                        factor.AddPrimitive("TeamState.StrategyTime", true);
+                        break;
+                }
 
-            //    currentState = this.AI.Determine(factor).state;
-            //}
+                currentState = this.AI.Determine(factor).state;
+            }
         }
 
         private void Action()
