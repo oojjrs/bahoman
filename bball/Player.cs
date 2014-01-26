@@ -139,6 +139,22 @@ namespace bball
             }
         }
 
+        private int GetShootingPoint(CourtPos bp, CourtPos ep)
+        {
+            //슛을 쏠지 말지 결정하는 팩터들을 수치화
+            float distancefromRing = bp.DistanceTo(ep);
+
+            //일단 골대 근처에 있으면 100점으로 리턴
+            if (60 > (int)distancefromRing)
+            {
+                return 100;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public CourtPos PlayerLocation
         {
             get { return playerLocation; }

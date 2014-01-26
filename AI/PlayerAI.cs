@@ -151,14 +151,8 @@ namespace AI
                 {
                     if (factor.IsFlagOn("TargetInfo.Type.Goal"))
                     {
-                        Vector3f ploc;
-                        factor.GetVector("PlayerLocation", out ploc);
-
-                        Vector3f tloc;
-                        factor.GetVector("TargetLocation", out tloc);
-
                         //슛이 가능한지 현재 위치 확인
-                        if (GetShootingPoint(ploc, tloc) > 80)
+                        if (factor.IsFlagOn("CanShoot"))
                         {
                             //현재 상태를 슛상태로 변환
                             ret.state = PlayerState.Shoot;
@@ -205,22 +199,6 @@ namespace AI
         {
             //슛을 쏠지 말지 결정하는 팩터들을 수치화
             float distancefromRing = playerpoint.DistanceTo(ringpoint);
-
-            //일단 골대 근처에 있으면 100점으로 리턴
-            if (60 > (int)distancefromRing)
-            {
-                return 100;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        private int GetShootingPoint(Vector3f bp, Vector3f ep)
-        {
-            //슛을 쏠지 말지 결정하는 팩터들을 수치화
-            float distancefromRing = bp.Distance(ep);
 
             //일단 골대 근처에 있으면 100점으로 리턴
             if (60 > (int)distancefromRing)
