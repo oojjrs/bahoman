@@ -142,15 +142,40 @@ namespace AI
                     ret.state = PlayerState.Free;
                     return ret;
                 }
+                else if (factor.IsFlagOn("PlayerState.Pass"))
+                {
+                    ret.state = PlayerState.Pass;
+                    return ret;
+                }
                 else if (factor.IsFlagOn("PlayerState.FindBall"))
                 {
-                    ret.state = PlayerState.Free;
+                    ret.state = PlayerState.FindBall;
                     return ret;
                 }
                 else if (factor.IsFlagOn("PlayerState.Dribble"))
                 {
                     if (factor.IsFlagOn("TargetInfo.Type.Goal"))
                     {
+                        //패스할 데가 있나 확인
+                        Vector3f ploc;
+                        factor.GetVector("PlayerLocation", out ploc);
+
+                        Vector3f bloc;
+                        factor.GetVector("BallLocation", out bloc);
+
+                        Vector3f[] tlocs;
+                        factor.GetVectors("TeammateLocation", out tlocs);
+
+                        var playerDistance = ploc.Distance(bloc);
+                        foreach (var tloc in tlocs)
+                        {
+                            if (playerDistance > tloc.Distance(bloc))
+                            {
+                                ret.state = PlayerState.Pass;
+                                return ret;
+                            }
+                        }
+
                         //슛이 가능한지 현재 위치 확인
                         if (factor.IsFlagOn("CanShoot"))
                         {
