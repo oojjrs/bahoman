@@ -62,6 +62,10 @@ namespace bball
                                 break;
                             case PlayerState.Pass:
                                 factor.AddPrimitive("PlayerState.Pass", true);
+                                factor.AddVector("PlayerLocation", this.PlayerLocation.Location);
+                                factor.AddVector("BallLocation", Court.RightGoalPos.Location);
+                                foreach (var p in team.Players)
+                                    factor.AddVector("TeammateLocation", p.PlayerLocation.Location);
                                 break;
                             case PlayerState.Rebound:
                                 factor.AddPrimitive("PlayerState.Rebound", true);
