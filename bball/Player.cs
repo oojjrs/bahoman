@@ -42,30 +42,6 @@ namespace bball
 
         private void Thinking()
         {
-            if (Environment.TickCount - lastThinkTick > 10)
-            {
-                var factor = new DetermineFactor();
-                factor.CurrentState = currentState;
-                factor.PlayerLocation = playerLocation;
-
-                var teammateLocations = new List<CourtPos>();
-
-                foreach (var player in team.Players)
-	            {
-                    teammateLocations.Add(player.playerLocation);
-	            }
-
-                factor.TeammateLocations =  teammateLocations;
-                var targetInfo = new TargetInfo();
-
-                targetInfo.Location = Court.RightGoalPos;
-                targetInfo.TargetType = TargetInfo.Type.Goal;
-                
-                factor.TargetInfo = targetInfo;
-                factor.TeamState = team.TeamState;
-                currentState = this.AI.Determine(factor).state;
-            }
-
             //if (Environment.TickCount - lastThinkTick > 10)
             //{
             //    var factor = new PropertyBag();
