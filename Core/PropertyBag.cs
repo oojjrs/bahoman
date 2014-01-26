@@ -30,7 +30,7 @@ namespace Core
         public bool GetPrimitive<T>(string key, ref T value, bool raiseException = true)
         {
             T[] values;
-            if (this.GetPrimitives<T>(key, out values, raiseException))
+            if (this.GetPrimitives<T>(key, out values, raiseException) == false)
             {
                 if (raiseException)
                     throw new Exception(key + " 팩터가 필요합니다");
