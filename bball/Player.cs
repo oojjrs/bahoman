@@ -3,9 +3,7 @@ using System;
 using Core;
 using Renderer;
 using AI;
-using System.Windows.Forms;
 using Physics;
-using System.Collections.Generic;
 
 namespace bball
 {
