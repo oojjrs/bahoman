@@ -19,6 +19,7 @@ namespace bball
         private int homeScore;
         private int awayScore;
         Ball ball = null;
+        private static Random random = new Random();
         #endregion
 
         #region From IDrawable
@@ -62,6 +63,21 @@ namespace bball
             return np;
         }
 
+        public static CourtPos ToLogicalLocation(Vector3f v)
+        {
+            var np = new CourtPos();
+            np.X = v.X - Court.ImageWidth / 2;
+            np.Y = v.Y;
+            np.Z = v.Z - Court.ImageHeight / 2;
+            return np;
+        }
+
+        public static CourtPos CreateRandomPos()
+        {
+            var v = new Vector3f(random.Next(Court.Width) - Court.Width / 2, 0, random.Next(Court.Height) - Court.Height / 2);
+            return CourtPos.FromVector(v);
+        }
+
         public int AddHomeScore(int point)
         {
             homeScore = homeScore + point;
@@ -92,6 +108,16 @@ namespace bball
         public static int ImageHeight
         {
             get { return 968; }
+        }
+
+        public static int Width
+        {
+            get { return 1243; }
+        }
+
+        public static int Height
+        {
+            get { return 665; }
         }
 
         public static CourtPos LeftGoalPos

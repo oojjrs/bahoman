@@ -50,10 +50,9 @@ namespace bball
 
         private Player CreateAwayRandomPlayer()
         {
-            var r = new Random();
             var player = new Player();
             player.CurrentGame = this;
-            player.PlayerLocation = CourtPos.FromCoord(r.Next(Court.Width), 0, r.Next(Court.Height));
+            player.PlayerLocation = Court.CreateRandomPos();
             player.Image = ImageFactory.Create("res/Player2.png");
             player.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
             player.AI.SetReporter(Log.Instance);
