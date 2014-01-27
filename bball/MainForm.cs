@@ -58,5 +58,14 @@ namespace bball
                 }
             }
         }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.F5)
+            {
+                game = new Game();
+                game.Initialize();
+            }
+        }
     }
 }
