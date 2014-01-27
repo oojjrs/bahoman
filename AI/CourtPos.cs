@@ -21,6 +21,11 @@ namespace AI
             return new CourtPos(l.pos - r.pos);
         }
 
+        public static CourtPos operator *(CourtPos l, float r)
+        {
+            return new CourtPos(l.pos * r);
+        }
+
         public static CourtPos FromCoord(float x, float y, float z)
         {
             return new CourtPos(new Vector3f(x, y, z));
