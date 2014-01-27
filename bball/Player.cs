@@ -129,6 +129,7 @@ namespace bball
                 //MessageBox.Show("О№СІТы");
                 if (this.CurrentGame.Ball.CurrentState != Ball.State.Passing)
                 {
+                    hasBall = false;
                     var playerDistance = playerLocation.DistanceTo(team.TargetRingLocation);
                     foreach (var player in team.Players)
                     {
