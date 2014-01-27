@@ -33,19 +33,30 @@ namespace bball
             p2.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
             p2.AI.SetReporter(Log.Instance);
 
-            homeTeam = new Team(TeamType.Home);
+            homeTeam = new Team();
+            homeTeam.TargetRingLocation = Court.RightGoalPos;
             homeTeam.TeamState = TeamState.LooseBall;
             homeTeam.AddPlayer(p1);
             homeTeam.AddPlayer(p2);
 
-            awayTeam = new Team(TeamType.Away);
+            awayTeam = new Team();
+            awayTeam.TargetRingLocation = Court.LeftGoalPos;
             awayTeam.TeamState = TeamState.LooseBall;
             awayTeam.AddPlayer(this.CreateAwayRandomPlayer());
             awayTeam.AddPlayer(this.CreateAwayRandomPlayer());
             awayTeam.AddPlayer(this.CreateAwayRandomPlayer());
             awayTeam.AddPlayer(this.CreateAwayRandomPlayer());
             awayTeam.AddPlayer(this.CreateAwayRandomPlayer());
+
+            homeTeam.Away = awayTeam;
+            awayTeam.Away = homeTeam;
             return true;
+        }
+
+        public void SetTeamState(Team target, TeamState state)
+        {
+            target.TeamState = TeamState.Attack;
+            target.Away.TeamState = TeamState.Defence;
         }
 
         private Player CreateAwayRandomPlayer()

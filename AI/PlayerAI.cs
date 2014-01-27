@@ -117,7 +117,9 @@ namespace AI
             }
             else
             {
-                throw new Exception { };
+                ret.state = PlayerState.Free;
+                return ret;
+                //throw new Exception { };
             }
         }
 

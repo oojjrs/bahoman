@@ -54,10 +54,10 @@ namespace bball
                                 factor.AddPrimitive("PlayerState.Dribble", true);
                                 factor.AddPrimitive("TargetInfo.Type.Goal", true);
                                 factor.AddVector("PlayerLocation", this.PlayerLocation.Location);
-                                factor.AddVector("BallLocation", Court.RightGoalPos.Location);
+                                factor.AddVector("BallLocation", team.TargetRingLocation.Location);
                                 foreach (var p in team.Players)
                                     factor.AddVector("TeammateLocation", p.PlayerLocation.Location);
-                                factor.AddPrimitive("CanShoot", this.GetShootingPoint(this.PlayerLocation, Court.RightGoalPos) > 80);
+                                factor.AddPrimitive("CanShoot", this.GetShootingPoint(this.PlayerLocation, team.TargetRingLocation) > 80);
                                 break;
                             case PlayerState.Shoot:
                                 factor.AddPrimitive("PlayerState.Shoot", true);
@@ -82,7 +82,7 @@ namespace bball
                     case TeamState.LooseBall:
                         factor.AddPrimitive("TeamState.LooseBall", true);
                         factor.AddVector("PlayerLocation", this.PlayerLocation.Location);
-                        factor.AddVector("BallLocation", Court.RightGoalPos.Location);
+                        factor.AddVector("BallLocation", team.TargetRingLocation.Location);
                         foreach (var p in team.Players)
                             factor.AddVector("TeammateLocation", p.PlayerLocation.Location);
                         break;
@@ -99,16 +99,16 @@ namespace bball
         {
             if (currentState == PlayerState.Dribble)
             {
-                Move(Court.RightGoalPos);
+                Move(team.TargetRingLocation);
             }
             else if (currentState == PlayerState.Shoot)
             {
-                this.CurrentGame.Ball.TargetLocation = Court.RightGoalPos;
+                this.CurrentGame.Ball.TargetLocation = team.TargetRingLocation;
                 this.CurrentGame.Ball.CurrentState = Ball.State.Shooting;
             }
             else if (currentState == PlayerState.Free)
             {
-                Move(Court.RightGoalPos);
+                Move(team.TargetRingLocation);
             }
             else if (currentState == PlayerState.FindBall)
             {
@@ -129,10 +129,10 @@ namespace bball
                 //MessageBox.Show("¾ðÁ¦Âë");
                 if (this.CurrentGame.Ball.CurrentState != Ball.State.Passing)
                 {
-                    var playerDistance = playerLocation.DistanceTo(Court.RightGoalPos);
+                    var playerDistance = playerLocation.DistanceTo(team.TargetRingLocation);
                     foreach (var player in team.Players)
                     {
-                        if (playerDistance > player.PlayerLocation.DistanceTo(Court.RightGoalPos))
+                        if (playerDistance > player.PlayerLocation.DistanceTo(team.TargetRingLocation))
                         {
                             this.CurrentGame.Ball.TargetLocation = player.PlayerLocation;
                             this.CurrentGame.Ball.CurrentState = Ball.State.Passing;
@@ -162,7 +162,7 @@ namespace bball
             currentState = playerstate;
             if (currentState == PlayerState.Dribble)
             {
-                team.TeamState = TeamState.Attack;
+                currentGame.SetTeamState(team, TeamState.Attack);
                 this.CurrentGame.Ball.CurrentState = Ball.State.Dribbling;
             }
         }
