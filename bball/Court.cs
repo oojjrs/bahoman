@@ -19,8 +19,6 @@ namespace bball
         private int homeScore;
         private int awayScore;
         Ball ball = null;
-        Team hometeam = new Team(TeamType.Home);
-        Team awayteam = new Team(TeamType.Away);
         #endregion
 
         #region From IDrawable
@@ -38,10 +36,9 @@ namespace bball
         #endregion
 
         #region Methods
-        private Court()
+        public Court()
         {
             ball = new Ball();
-            hometeam.TeamState = TeamState.LooseBall;
         }
 
         public static Court Instance

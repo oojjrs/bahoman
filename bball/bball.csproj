@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Ball.cs" />
     <Compile Include="Court.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="ImageFactory.cs" />
     <Compile Include="IOutputModel.cs" />
@@ -166,6 +167,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Ball.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Player2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

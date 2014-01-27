@@ -16,8 +16,8 @@ namespace bball
         private Team team = null;
         //private PlayerState prevState = new PlayerState();
         private IImage image = null;
-        private Court court = Court.Instance;
         private IPlayerAIType ai = null;
+        private Game currentGame = null;
 
         #region From IDrawable
 
@@ -103,8 +103,8 @@ namespace bball
             }
             else if (currentState == PlayerState.Shoot)
             {
-                court.Ball.TargetLocation = Court.RightGoalPos;
-                court.Ball.CurrentState = Ball.State.Shooting;
+                this.CurrentGame.Ball.TargetLocation = Court.RightGoalPos;
+                this.CurrentGame.Ball.CurrentState = Ball.State.Shooting;
             }
             else if (currentState == PlayerState.Free)
             {
@@ -112,7 +112,7 @@ namespace bball
             }
             else if (currentState == PlayerState.FindBall)
             {
-                if (playerLocation.DistanceTo(court.Ball.Location) < 1)
+                if (playerLocation.DistanceTo(this.CurrentGame.Ball.Location) < 1)
                 {
                     //MessageBox.Show("볼 잡았스");
                     hasBall = true;
@@ -121,21 +121,21 @@ namespace bball
                 else
                 {
                     //볼 주우러 이동
-                    this.Move(court.Ball.Location);
+                    this.Move(this.CurrentGame.Ball.Location);
                 }
             }
             else if (currentState == PlayerState.Pass)
             {
                 //MessageBox.Show("언제쯤");
-                if (court.Ball.CurrentState != Ball.State.Passing)
+                if (this.CurrentGame.Ball.CurrentState != Ball.State.Passing)
                 {
                     var playerDistance = playerLocation.DistanceTo(Court.RightGoalPos);
                     foreach (var player in team.Players)
                     {
                         if (playerDistance > player.PlayerLocation.DistanceTo(Court.RightGoalPos))
                         {
-                            court.Ball.TargetLocation = player.PlayerLocation;
-                            court.Ball.CurrentState = Ball.State.Passing;
+                            this.CurrentGame.Ball.TargetLocation = player.PlayerLocation;
+                            this.CurrentGame.Ball.CurrentState = Ball.State.Passing;
                             SetState(PlayerState.Free);
                         }
 
@@ -152,8 +152,8 @@ namespace bball
             
             if (hasBall)
             {
-                court.Ball.CurrentState = Ball.State.Dribbling;
-                court.Ball.Location = court.Ball.Location + vDirect;
+                this.CurrentGame.Ball.CurrentState = Ball.State.Dribbling;
+                this.CurrentGame.Ball.Location = this.CurrentGame.Ball.Location + vDirect;
             }
         }
 
@@ -163,7 +163,7 @@ namespace bball
             if (currentState == PlayerState.Dribble)
             {
                 team.TeamState = TeamState.Attack;
-                court.Ball.CurrentState = Ball.State.Dribbling;
+                this.CurrentGame.Ball.CurrentState = Ball.State.Dribbling;
             }
         }
 
@@ -210,6 +210,12 @@ namespace bball
         {
             get { return ai; }
             set { ai = value; }
+        }
+
+        public Game CurrentGame
+        {
+            get { return currentGame; }
+            set { currentGame = value; }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace bball
     public partial class MainForm : Form
     {
         private IRenderer renderer = Renderer.Container.GetInterface(Renderer.Type.Direct3D9);
-        private Court court = Court.Instance;
+        private Game game = null;
 
         public MainForm()
         {
@@ -38,25 +38,9 @@ namespace bball
             renderer.ResizeBackBuffer(Court.Width, Court.Height);
             ImageFactory.Renderer = renderer;
 
-            court.Image = ImageFactory.Create("res/court.png");
-            court.CreateBall(ImageFactory.Create("res/Ball.png"));
-
-            var p1 = new Player();
-            p1.PlayerLocation = CourtPos.Center;
-            p1.Image = ImageFactory.Create("res/Player.png");
-            p1.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
-            p1.AI.SetReporter(Log.Instance);
-
-            var p2 = new Player();
-            p2.PlayerLocation = CourtPos.FromCoord(200, 0, 100);
-            p2.Image = ImageFactory.Create("res/Player.png");
-            p2.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
-            p2.AI.SetReporter(Log.Instance);
-
-            Team homeTeam = new Team(TeamType.Home);
-            homeTeam.TeamState = TeamState.LooseBall;
-            homeTeam.AddPlayer(p1);
-            homeTeam.AddPlayer(p2);
+            // Note : 원래는 메뉴에서 게임 스타트를 눌러야 실행되는 부분이나 테스트를 위해 삽입
+            game = new Game();
+            game.Initialize();
         }
 
         private void GlobalTimer_Tick(object sender, EventArgs e)
