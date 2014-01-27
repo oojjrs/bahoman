@@ -56,9 +56,9 @@ namespace bball
         public static CourtPos ToGlobalLocation(CourtPos pos)
         {
             var np = new CourtPos();
-            np.X = pos.X + Court.Width / 2;
+            np.X = pos.X + Court.ImageWidth / 2;
             np.Y = pos.Y;
-            np.Z = pos.Z + Court.Height / 2;
+            np.Z = pos.Z + Court.ImageHeight / 2;
             return np;
         }
 
@@ -84,12 +84,12 @@ namespace bball
 
         #region Properties
 
-        public static int Width
+        public static int ImageWidth
         {
             get { return 1290; }
         }
 
-        public static int Height
+        public static int ImageHeight
         {
             get { return 968; }
         }

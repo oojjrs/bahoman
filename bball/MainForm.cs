@@ -35,7 +35,7 @@ namespace bball
 
             renderer.Initialize(this);
             renderer.SetReporter(Log.Instance);
-            renderer.ResizeBackBuffer(Court.Width, Court.Height);
+            renderer.ResizeBackBuffer(Court.ImageWidth, Court.ImageHeight);
             ImageFactory.Renderer = renderer;
 
             // Note : 원래는 메뉴에서 게임 스타트를 눌러야 실행되는 부분이나 테스트를 위해 삽입
