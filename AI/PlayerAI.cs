@@ -55,7 +55,7 @@ namespace AI
                 }
                 else if (factor.IsFlagOn("PlayerState.FindBall"))
                 {
-                    ret.state = PlayerState.FindBall;
+                    ret.state = PlayerState.Free;
                     return ret;
                 }
                 else if (factor.IsFlagOn("PlayerState.Dribble"))
