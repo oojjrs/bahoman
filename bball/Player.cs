@@ -136,7 +136,7 @@ namespace bball
                         {
                             this.CurrentGame.Ball.TargetLocation = player.PlayerLocation;
                             this.CurrentGame.Ball.CurrentState = Ball.State.Passing;
-                            SetState(PlayerState.Free);
+                            currentState = PlayerState.Free;
                         }
 
                     }
