@@ -19,25 +19,14 @@ namespace bball
             court.Image = ImageFactory.Create("res/court.png");
             court.CreateBall(ImageFactory.Create("res/Ball.png"));
 
-            var p1 = new Player();
-            p1.CurrentGame = this;
-            p1.PlayerLocation = CourtPos.Center;
-            p1.Image = ImageFactory.Create("res/Player.png");
-            p1.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
-            p1.AI.SetReporter(Log.Instance);
-
-            var p2 = new Player();
-            p2.CurrentGame = this;
-            p2.PlayerLocation = CourtPos.FromCoord(200, 0, 100);
-            p2.Image = ImageFactory.Create("res/Player.png");
-            p2.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
-            p2.AI.SetReporter(Log.Instance);
-
             homeTeam = new Team();
             homeTeam.TargetRingLocation = Court.RightGoalPos;
             homeTeam.TeamState = TeamState.LooseBall;
-            homeTeam.AddPlayer(p1);
-            homeTeam.AddPlayer(p2);
+            homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
+            homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
+            homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
+            homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
+            homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
 
             awayTeam = new Team();
             awayTeam.TargetRingLocation = Court.LeftGoalPos;
