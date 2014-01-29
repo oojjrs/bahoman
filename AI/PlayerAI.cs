@@ -115,12 +115,21 @@ namespace AI
                     throw new Exception { };
                 }
             }
+            else if (factor.IsFlagOn("TeamState.Defence"))
+            {
+                return this.StateDefence(factor);
+            }
             else
             {
-                ret.state = PlayerState.Free;
-                return ret;
-                //throw new Exception { };
+                throw new Exception { };
             }
+        }
+
+        private PlayerAIResult StateDefence(PropertyBag factor)
+        {
+            var ret = new PlayerAIResult();
+            ret.state = PlayerState.Free;
+            return ret;
         }
 
         public void SetReporter(IReporter er)
