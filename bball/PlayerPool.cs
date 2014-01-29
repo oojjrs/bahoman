@@ -15,7 +15,7 @@ namespace bball
         public UID Add(string name, DateTime birthday, IImage image, IPlayerAIType ai, Position position)
         {
             var uid = UID.Create(UID.Type.Player);
-            if (uid != UID.Unknown)
+            if (uid != UID.Null)
             {
                 var pi = new PlayerInfo(uid);
                 pi.Name = name;
@@ -30,7 +30,7 @@ namespace bball
 
         public Player Get(UID uid)
         {
-            if (uid == UID.Unknown)
+            if (uid == UID.Null)
                 return null;
 
             Player p;

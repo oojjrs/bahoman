@@ -42,7 +42,7 @@ namespace bball
             ai.SetReporter(Log.Instance);
 
             var pid = pp.Add(name, new DateTime(), image, ai, position);
-            if (tid != UID.Unknown)
+            if (tid != UID.Null)
                 tp.AddPlayer(tid, pp.Get(pid));
         }
 

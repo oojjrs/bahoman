@@ -13,7 +13,7 @@ namespace bball
             Team,
         }
 
-        public static readonly UID Unknown = new UID(0);
+        public static readonly UID Null = new UID(0);
 
         private static int seqPlayer = 0;
         private static int seqTeam = 0;
@@ -24,7 +24,7 @@ namespace bball
         {
             if (obj == null)
                 return false;
-            if (this.value == UID.Unknown.value)
+            if (this.value == UID.Null.value)
                 return false;
             return this.value == ((UID)obj).value;
         }

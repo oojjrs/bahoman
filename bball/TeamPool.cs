@@ -12,7 +12,7 @@ namespace bball
         public UID Add(string name)
         {
             var uid = UID.Create(UID.Type.Team);
-            if (uid != UID.Unknown)
+            if (uid != UID.Null)
             {
                 var ti = new TeamInfo(uid);
                 ti.Name = name;
