@@ -10,6 +10,7 @@ namespace bball
         private List<Player> players = new List<Player>();
         private CourtPos targetRingLocation;
         private Team away;
+        private Dictionary<Position, Player> entries = new Dictionary<Position, Player>();
 
         public void AddPlayer(Player player)
         {
@@ -19,7 +20,12 @@ namespace bball
 
         public List<Player> CurrentEntries
         {
-            get { return this.players; }
+            get { return new List<Player>(entries.Values); }
+        }
+
+        public List<Player> AllPlayers
+        {
+            get { return players; }
         }
 
         public TeamState TeamState

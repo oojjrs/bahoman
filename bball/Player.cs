@@ -21,6 +21,8 @@ namespace bball
         private IImage image = null;
         private IPlayerAIType ai = null;
         private Game currentGame = null;
+        private Position originalPosition = Position.Bench;
+        private Position currentPosition = Position.Bench;
 
         #region From IDrawable
 
@@ -235,6 +237,18 @@ namespace bball
         {
             get { return currentGame; }
             set { currentGame = value; }
+        }
+
+        public Position OriginalPosition
+        {
+            get { return originalPosition; }
+            set { originalPosition = value; }
+        }
+
+        public Position CurrentPosition
+        {
+            get { return currentPosition; }
+            set { currentPosition = value; }
         }
     }
 }
