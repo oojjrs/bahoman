@@ -22,20 +22,20 @@ namespace bball
             homeTeam = new Team();
             homeTeam.TargetRingLocation = Court.RightGoalPos;
             homeTeam.TeamState = TeamState.LooseBall;
-            //homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png", CourtPos.FromCoord(150, 0, 150)));
-            //homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png", CourtPos.FromCoord(350,0,150)));
-            homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
-            homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
-            homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
+            homeTeam.AddPlayer(this.CreatePlayer("res/Player.png", CourtPos.FromCoord(150, 0, 150)));
+            homeTeam.AddPlayer(this.CreatePlayer("res/Player.png", CourtPos.FromCoord(350, 0, 150)));
+            homeTeam.AddPlayer(this.CreatePlayer("res/Player.png", Court.CreateRandomPos()));
+            homeTeam.AddPlayer(this.CreatePlayer("res/Player.png", Court.CreateRandomPos()));
+            homeTeam.AddPlayer(this.CreatePlayer("res/Player.png", Court.CreateRandomPos()));
 
             awayTeam = new Team();
             awayTeam.TargetRingLocation = Court.LeftGoalPos;
             awayTeam.TeamState = TeamState.LooseBall;
-            //awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
-            //awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
-            //awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
-            //awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
-            //awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
+            awayTeam.AddPlayer(this.CreatePlayer("res/Player2.png", Court.CreateRandomPos()));
+            awayTeam.AddPlayer(this.CreatePlayer("res/Player2.png", Court.CreateRandomPos()));
+            awayTeam.AddPlayer(this.CreatePlayer("res/Player2.png", Court.CreateRandomPos()));
+            awayTeam.AddPlayer(this.CreatePlayer("res/Player2.png", Court.CreateRandomPos()));
+            awayTeam.AddPlayer(this.CreatePlayer("res/Player2.png", Court.CreateRandomPos()));
 
             homeTeam.Away = awayTeam;
             awayTeam.Away = homeTeam;
@@ -48,18 +48,7 @@ namespace bball
             target.Away.TeamState = TeamState.Defence;
         }
 
-        private Player CreateRandomLocationPlayer(string imageSubPath)
-        {
-            var player = new Player();
-            player.CurrentGame = this;
-            player.PlayerLocation = Court.CreateRandomPos();
-            player.Image = ImageFactory.Create(imageSubPath);
-            player.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
-            player.AI.SetReporter(Log.Instance);
-            return player;
-        }
-
-        private Player CreateRandomLocationPlayer(string imageSubPath,CourtPos location)
+        private Player CreatePlayer(string imageSubPath, CourtPos location)
         {
             var player = new Player();
             player.CurrentGame = this;
