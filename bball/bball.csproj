@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Ball.cs" />
     <Compile Include="Court.cs" />
+    <Compile Include="Enumerations.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GlobalVariables.cs" />
     <Compile Include="ImageFactory.cs" />
