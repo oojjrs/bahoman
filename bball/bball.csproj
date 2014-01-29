@@ -106,6 +106,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Team.cs" />
+    <Compile Include="UID.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="res\bball.resx">
