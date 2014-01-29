@@ -76,7 +76,8 @@ namespace AI
                         var playerDistance = ploc.Distance(rloc);
                         foreach (var tloc in tlocs)
                         {
-                            if (playerDistance > tloc.Distance(rloc))
+                            var dis = playerDistance - tloc.Distance(rloc);
+                            if (dis > 20)
                             {
                                 ret.state = PlayerState.Pass;
                                 return ret;

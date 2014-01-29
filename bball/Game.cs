@@ -22,8 +22,8 @@ namespace bball
             homeTeam = new Team();
             homeTeam.TargetRingLocation = Court.RightGoalPos;
             homeTeam.TeamState = TeamState.LooseBall;
-            homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
-            homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
+            //homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png", CourtPos.FromCoord(150, 0, 150)));
+            //homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png", CourtPos.FromCoord(350,0,150)));
             homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
             homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
             homeTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player.png"));
@@ -31,11 +31,11 @@ namespace bball
             awayTeam = new Team();
             awayTeam.TargetRingLocation = Court.LeftGoalPos;
             awayTeam.TeamState = TeamState.LooseBall;
-            awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
-            awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
-            awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
-            awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
-            awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
+            //awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
+            //awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
+            //awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
+            //awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
+            //awayTeam.AddPlayer(this.CreateRandomLocationPlayer("res/Player2.png"));
 
             homeTeam.Away = awayTeam;
             awayTeam.Away = homeTeam;
@@ -53,6 +53,17 @@ namespace bball
             var player = new Player();
             player.CurrentGame = this;
             player.PlayerLocation = Court.CreateRandomPos();
+            player.Image = ImageFactory.Create(imageSubPath);
+            player.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
+            player.AI.SetReporter(Log.Instance);
+            return player;
+        }
+
+        private Player CreateRandomLocationPlayer(string imageSubPath,CourtPos location)
+        {
+            var player = new Player();
+            player.CurrentGame = this;
+            player.PlayerLocation = location;
             player.Image = ImageFactory.Create(imageSubPath);
             player.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
             player.AI.SetReporter(Log.Instance);

@@ -28,6 +28,7 @@ namespace bball
         private CourtPos currentPos;
         private CourtPos beganPos;
         private CourtPos targetPos;
+        private float force = 1;
         private IImage image = null;
         private float scaleRate;
         private State state;
@@ -50,7 +51,7 @@ namespace bball
                 case State.Passing:
                     var vDirect = this.targetPos - this.currentPos;
                     vDirect.Location.Normalize();
-                    currentPos = this.currentPos + vDirect * (float)3;
+                    currentPos = this.currentPos + vDirect * force;
                     break;
                 case State.Shooting:
                     // Note : 아직 여러 가지 물리 지수가 없으므로 공의 속도, 뜨는 높이, 거리비는 대충 사용한다.
@@ -142,6 +143,12 @@ namespace bball
                         throw new System.ComponentModel.InvalidEnumArgumentException("공의 상태 정의가 추가로 필요한 지점입니다.");
                 }
             }
+        }
+
+        public float Force
+        {
+            get { return force; }
+            set { force = value; }
         }
 
         public CourtPos TargetLocation

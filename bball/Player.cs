@@ -4,6 +4,7 @@ using Core;
 using Renderer;
 using AI;
 using Physics;
+using System.Windows.Forms;
 
 namespace bball
 {
@@ -94,7 +95,8 @@ namespace bball
                         break;
                 }
 
-                currentState = this.AI.Determine(factor).state;
+                var s = this.AI.Determine(factor).state;
+                currentState = s;
             }
         }
 
@@ -115,7 +117,7 @@ namespace bball
             }
             else if (currentState == PlayerState.FindBall)
             {
-                if (playerLocation.DistanceTo(this.CurrentGame.Ball.Location) < 1)
+                if (playerLocation.DistanceTo(this.CurrentGame.Ball.Location) < 5)
                 {
                     //MessageBox.Show("볼 잡았스");
                     hasBall = true;
@@ -129,16 +131,16 @@ namespace bball
             }
             else if (currentState == PlayerState.Pass)
             {
-                //MessageBox.Show("언제쯤");
                 if (this.CurrentGame.Ball.CurrentState != Ball.State.Passing)
                 {
-                    hasBall = false;
                     var playerDistance = playerLocation.DistanceTo(team.TargetRingLocation);
                     foreach (var player in team.Players)
                     {
                         if (playerDistance > player.PlayerLocation.DistanceTo(team.TargetRingLocation))
                         {
-                            this.CurrentGame.Ball.TargetLocation = player.PlayerLocation + CourtPos.FromVector(player.Direction) * 3;
+                            hasBall = false;
+                            this.CurrentGame.Ball.TargetLocation = player.PlayerLocation + CourtPos.FromVector(player.Direction) * (playerLocation.DistanceTo(player.PlayerLocation) / (float) 5);
+                            this.CurrentGame.Ball.Force = 5;
                             this.CurrentGame.Ball.CurrentState = Ball.State.Passing;
                             currentState = PlayerState.Free;
                         }
