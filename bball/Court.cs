@@ -13,14 +13,9 @@ namespace bball
 {
     sealed class Court : Object
     {
-        #region Variables
-        private static Court instance = null;
-        private IImage image = null;
-        private int homeScore;
-        private int awayScore;
-        Ball ball = null;
+        private IImage image = ImageFactory.Create("res/court.png");
+        private Ball ball = new Ball();
         private static Random random = new Random();
-        #endregion
 
         #region From IDrawable
 
@@ -37,23 +32,6 @@ namespace bball
         #endregion
 
         #region Methods
-        public Court()
-        {
-            ball = new Ball();
-        }
-
-        public static Court Instance
-        {
-            get
-            {
-                if (instance==null)
-                {
-                    instance = new Court();
-                }
-                return instance;
-            }
-        }
-
         public static CourtPos ToGlobalLocation(CourtPos pos)
         {
             var np = new CourtPos();
@@ -78,22 +56,9 @@ namespace bball
             return CourtPos.FromVector(v);
         }
 
-        public int AddHomeScore(int point)
+        public Court()
         {
-            homeScore = homeScore + point;
-            return homeScore;
-        }
-
-        public int AddAwayScore(int point)
-        {
-            awayScore = awayScore + point;
-            return awayScore;
-        }
-
-        public void CreateBall(IImage ballimage)
-        {
-            ball.Image = ballimage;
-            ball.Location = CourtPos.FromCoord(50, 0,50);
+            OutputManager.MoveToFirst(this);
         }
 
         #endregion
@@ -128,16 +93,6 @@ namespace bball
         public static CourtPos RightGoalPos
         {
             get { return CourtPos.FromCoord(550, 0, 0); }
-        }
-
-        public int HomeScore
-        {
-            get { return this.homeScore; }
-        }
-
-        public int AwayScore
-        {
-            get { return this.awayScore; }
         }
 
         public IImage Image

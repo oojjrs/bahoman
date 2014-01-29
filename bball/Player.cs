@@ -8,8 +8,64 @@ using System.Windows.Forms;
 
 namespace bball
 {
+    struct PlayerInfo
+    {
+        private UID id;
+        private string name;
+        private DateTime birthday;
+        private IImage image;
+        private IPlayerAIType ai;
+        private Position position;
+
+        public PlayerInfo(UID id)
+        {
+            this.id = id;
+            name = "";
+            birthday = new DateTime();
+            image = null;
+            ai = null;
+            position = Position.Bench;
+        }
+
+        public UID ID
+        {
+            get { return id; }
+        }
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public DateTime Birthday
+        {
+            get { return birthday; }
+            set { birthday = value; }
+        }
+
+        public IImage Image
+        {
+            get { return image; }
+            set { image = value; }
+        }
+
+        public IPlayerAIType AI
+        {
+            get { return ai; }
+            set { ai = value; }
+        }
+
+        public Position Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+    }
+
     class Player : Object
     {
+        private readonly PlayerInfo playerInfo;
         private CourtPos playerLocation = null;
         private PlayerState currentState = new PlayerState();
         private int lastThinkTick = 0;
@@ -18,17 +74,14 @@ namespace bball
         private float speed = 1;
         private Vector3f diretion = null;
         //private PlayerState prevState = new PlayerState();
-        private IImage image = null;
-        private IPlayerAIType ai = null;
         private Game currentGame = null;
-        private Position originalPosition = Position.Bench;
         private Position currentPosition = Position.Bench;
 
         #region From IDrawable
 
         public override void OnDraw(IRenderer r)
         {
-            ImageArgs ia = new ImageArgs(image);
+            ImageArgs ia = new ImageArgs(playerInfo.Image);
             ia.Location = Court.ToGlobalLocation(playerLocation).Location;
             ia.Scale = new Vector3f(0.5f, 0.5f, 0.5f);
             ia.CorrectToCenter = true;
@@ -42,6 +95,24 @@ namespace bball
         }
 
         #endregion
+
+        public override bool Equals(object obj)
+        {
+            var p = obj as Player;
+            if ((object)p == null)
+                return false;
+            return this.ID == p.ID;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ID.GetHashCode();
+        }
+
+        public Player(PlayerInfo pi)
+        {
+            playerInfo = pi;
+        }
 
         private void Thinking()
         {
@@ -192,6 +263,11 @@ namespace bball
             }
         }
 
+        public UID ID
+        {
+            get { return playerInfo.ID; }
+        }
+
         public CourtPos PlayerLocation
         {
             get { return playerLocation; }
@@ -205,8 +281,7 @@ namespace bball
 
         public IImage Image
         {
-            get { return image; }
-            set { image = value; }
+            get { return playerInfo.Image; }
         }
 
         public Team Team
@@ -217,8 +292,7 @@ namespace bball
 
         public IPlayerAIType AI
         {
-            get { return ai; }
-            set { ai = value; }
+            get { return playerInfo.AI; }
         }
 
         public  Vector3f Direction
@@ -241,8 +315,7 @@ namespace bball
 
         public Position OriginalPosition
         {
-            get { return originalPosition; }
-            set { originalPosition = value; }
+            get { return playerInfo.Position; }
         }
 
         public Position CurrentPosition

@@ -16,7 +16,10 @@ namespace bball
     public partial class MainForm : Form
     {
         private IRenderer renderer = Renderer.Container.GetInterface(Renderer.Type.Direct3D9);
+
+        // Note : 다음 요소들은 추후 UserManager가 생기면 그 아래로 이동할 요소들이다.
         private Game game = null;
+        private DataManager dataManager = new DataManager();
 
         public MainForm()
         {
@@ -39,11 +42,11 @@ namespace bball
             ImageFactory.Renderer = renderer;
 
             // Note : 원래는 메뉴에서 게임 스타트를 눌러야 실행되는 부분이나 테스트를 위해 삽입
-            game = new Game();
-            game.Initialize();
+            dataManager.BuildData();
+            this.StartNewGame();
         }
 
-        private void GlobalTimer_Tick(object sender, EventArgs e)
+        private void globalTimer_Tick(object sender, EventArgs e)
         {
             OutputManager.UpdateAll();
 
@@ -62,10 +65,14 @@ namespace bball
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.F5)
-            {
-                game = new Game();
-                game.Initialize();
-            }
+                this.StartNewGame();
+        }
+
+        private void StartNewGame()
+        {
+            game = new Game();
+            if (game.Initialize(dataManager.AllTeams[0], dataManager.AllTeams[1]))
+                globalTimer.Enabled = true;
         }
     }
 }

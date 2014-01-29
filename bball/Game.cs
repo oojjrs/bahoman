@@ -9,36 +9,19 @@ namespace bball
 {
     class Game
     {
-        private Court court = null;
+        private Court court = new Court();
         private Team homeTeam = null;
         private Team awayTeam = null;
 
-        public bool Initialize()
+        public bool Initialize(Team home, Team away)
         {
-            court = new Court();
-            court.Image = ImageFactory.Create("res/court.png");
-            court.CreateBall(ImageFactory.Create("res/Ball.png"));
+            homeTeam = home;
+            if (homeTeam.Initialize(this, away, Court.RightGoalPos) == false)
+                return false;
 
-            homeTeam = new Team();
-            homeTeam.TargetRingLocation = Court.RightGoalPos;
-            homeTeam.TeamState = TeamState.LooseBall;
-            homeTeam.AddPlayer(this.CreatePlayer("res/Player.png", CourtPos.FromCoord(150, 0, 150)));
-            homeTeam.AddPlayer(this.CreatePlayer("res/Player.png", CourtPos.FromCoord(350, 0, 150)));
-            homeTeam.AddPlayer(this.CreatePlayer("res/Player.png", Court.CreateRandomPos()));
-            homeTeam.AddPlayer(this.CreatePlayer("res/Player.png", Court.CreateRandomPos()));
-            homeTeam.AddPlayer(this.CreatePlayer("res/Player.png", Court.CreateRandomPos()));
-
-            awayTeam = new Team();
-            awayTeam.TargetRingLocation = Court.LeftGoalPos;
-            awayTeam.TeamState = TeamState.LooseBall;
-            awayTeam.AddPlayer(this.CreatePlayer("res/Player2.png", Court.CreateRandomPos()));
-            awayTeam.AddPlayer(this.CreatePlayer("res/Player2.png", Court.CreateRandomPos()));
-            awayTeam.AddPlayer(this.CreatePlayer("res/Player2.png", Court.CreateRandomPos()));
-            awayTeam.AddPlayer(this.CreatePlayer("res/Player2.png", Court.CreateRandomPos()));
-            awayTeam.AddPlayer(this.CreatePlayer("res/Player2.png", Court.CreateRandomPos()));
-
-            homeTeam.Away = awayTeam;
-            awayTeam.Away = homeTeam;
+            awayTeam = away;
+            if (awayTeam.Initialize(this, home, Court.LeftGoalPos) == false)
+                return false;
             return true;
         }
 
@@ -46,17 +29,6 @@ namespace bball
         {
             target.TeamState = TeamState.Attack;
             target.Away.TeamState = TeamState.Defence;
-        }
-
-        private Player CreatePlayer(string imageSubPath, CourtPos location)
-        {
-            var player = new Player();
-            player.CurrentGame = this;
-            player.PlayerLocation = location;
-            player.Image = ImageFactory.Create(imageSubPath);
-            player.AI = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
-            player.AI.SetReporter(Log.Instance);
-            return player;
         }
 
         public Court Court

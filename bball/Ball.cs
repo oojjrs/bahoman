@@ -78,6 +78,8 @@ namespace bball
 
         public Ball()
         {
+            this.Image = ImageFactory.Create("res/Ball.png");
+            this.Location = CourtPos.FromCoord(50, 0, 50);
             this.CurrentState = State.Bounding;
         }
 
