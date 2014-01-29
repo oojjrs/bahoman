@@ -59,7 +59,7 @@ namespace bball
                                 factor.AddVector("PlayerLocation", this.PlayerLocation.Location);
                                 factor.AddVector("RingLocation", team.TargetRingLocation.Location);
                                 factor.AddVector("BallLocation", currentGame.Ball.Location.Location);
-                                foreach (var p in team.Players)
+                                foreach (var p in team.CurrentEntries)
                                     factor.AddVector("TeammateLocation", p.PlayerLocation.Location);
                                 factor.AddPrimitive("CanShoot", this.GetShootingPoint(this.PlayerLocation, team.TargetRingLocation) > 80);
                                 break;
@@ -87,7 +87,7 @@ namespace bball
                         factor.AddPrimitive("TeamState.LooseBall", true);
                         factor.AddVector("PlayerLocation", this.PlayerLocation.Location);
                         factor.AddVector("BallLocation", this.currentGame.Ball.Location.Location);
-                        foreach (var p in team.Players)
+                        foreach (var p in team.CurrentEntries)
                             factor.AddVector("TeammateLocation", p.PlayerLocation.Location);
                         break;
                     case TeamState.StrategyTime:
@@ -134,7 +134,7 @@ namespace bball
                 if (this.CurrentGame.Ball.CurrentState != Ball.State.Passing)
                 {
                     var playerDistance = playerLocation.DistanceTo(team.TargetRingLocation);
-                    foreach (var player in team.Players)
+                    foreach (var player in team.CurrentEntries)
                     {
                         if (playerDistance > player.PlayerLocation.DistanceTo(team.TargetRingLocation))
                         {

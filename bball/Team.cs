@@ -17,7 +17,7 @@ namespace bball
             players.Add(player);
         }
 
-        public List<Player> Players
+        public List<Player> CurrentEntries
         {
             get { return this.players; }
         }
