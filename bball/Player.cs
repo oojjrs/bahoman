@@ -56,7 +56,8 @@ namespace bball
                                 factor.AddPrimitive("PlayerState.Dribble", true);
                                 factor.AddPrimitive("TargetInfo.Type.Goal", true);
                                 factor.AddVector("PlayerLocation", this.PlayerLocation.Location);
-                                factor.AddVector("BallLocation", team.TargetRingLocation.Location);
+                                factor.AddVector("RingLocation", team.TargetRingLocation.Location);
+                                factor.AddVector("BallLocation", currentGame.Ball.Location.Location);
                                 foreach (var p in team.Players)
                                     factor.AddVector("TeammateLocation", p.PlayerLocation.Location);
                                 factor.AddPrimitive("CanShoot", this.GetShootingPoint(this.PlayerLocation, team.TargetRingLocation) > 80);
@@ -84,7 +85,7 @@ namespace bball
                     case TeamState.LooseBall:
                         factor.AddPrimitive("TeamState.LooseBall", true);
                         factor.AddVector("PlayerLocation", this.PlayerLocation.Location);
-                        factor.AddVector("BallLocation", team.TargetRingLocation.Location);
+                        factor.AddVector("BallLocation", this.currentGame.Ball.Location.Location);
                         foreach (var p in team.Players)
                             factor.AddVector("TeammateLocation", p.PlayerLocation.Location);
                         break;

@@ -27,6 +27,7 @@ namespace AI
 
                 var playerDistance = ploc.Distance(bloc);
                 ret.state = PlayerState.FindBall;
+
                 foreach (var tloc in tlocs)
                 {
                     if (playerDistance > tloc.Distance(bloc))
@@ -66,16 +67,16 @@ namespace AI
                         Vector3f ploc;
                         factor.GetVector("PlayerLocation", out ploc);
 
-                        Vector3f bloc;
-                        factor.GetVector("BallLocation", out bloc);
+                        Vector3f rloc;
+                        factor.GetVector("RingLocation", out rloc);
 
                         Vector3f[] tlocs;
                         factor.GetVectors("TeammateLocation", out tlocs);
 
-                        var playerDistance = ploc.Distance(bloc);
+                        var playerDistance = ploc.Distance(rloc);
                         foreach (var tloc in tlocs)
                         {
-                            if (playerDistance > tloc.Distance(bloc))
+                            if (playerDistance > tloc.Distance(rloc))
                             {
                                 ret.state = PlayerState.Pass;
                                 return ret;
