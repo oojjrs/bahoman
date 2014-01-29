@@ -47,10 +47,10 @@ namespace bball
             {
                 case State.Bounding:    // 원래 scaleRate 값 유지(일단은 아무 일도 하지 않음)
                     break;
-                case State.Passing:    
+                case State.Passing:
                     var vDirect = this.targetPos - this.currentPos;
                     vDirect.Location.Normalize();
-                    currentPos = this.currentPos + vDirect;
+                    currentPos = this.currentPos + vDirect * (float)3;
                     break;
                 case State.Shooting:
                     // Note : 아직 여러 가지 물리 지수가 없으므로 공의 속도, 뜨는 높이, 거리비는 대충 사용한다.

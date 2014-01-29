@@ -14,6 +14,8 @@ namespace bball
         private int lastThinkTick = 0;
         private Boolean hasBall = false;
         private Team team = null;
+        private float speed = 1;
+        private Vector3f diretion = null;
         //private PlayerState prevState = new PlayerState();
         private IImage image = null;
         private IPlayerAIType ai = null;
@@ -135,7 +137,7 @@ namespace bball
                     {
                         if (playerDistance > player.PlayerLocation.DistanceTo(team.TargetRingLocation))
                         {
-                            this.CurrentGame.Ball.TargetLocation = player.PlayerLocation;
+                            this.CurrentGame.Ball.TargetLocation = player.PlayerLocation + CourtPos.FromVector(player.Direction) * 3;
                             this.CurrentGame.Ball.CurrentState = Ball.State.Passing;
                             currentState = PlayerState.Free;
                         }
@@ -147,14 +149,15 @@ namespace bball
 
         public void Move(CourtPos target)
         {
-            var vDirect = target - playerLocation;
-            vDirect.Location.Normalize();
-            playerLocation = playerLocation + vDirect;
+            var dir = target - playerLocation;
+            this.diretion = dir.Location;
+            dir.Location.Normalize();
+            playerLocation = playerLocation + dir;
             
             if (hasBall)
             {
                 this.CurrentGame.Ball.CurrentState = Ball.State.Dribbling;
-                this.CurrentGame.Ball.Location = this.CurrentGame.Ball.Location + vDirect;
+                this.CurrentGame.Ball.Location = this.CurrentGame.Ball.Location + dir;
             }
         }
 
@@ -211,6 +214,18 @@ namespace bball
         {
             get { return ai; }
             set { ai = value; }
+        }
+
+        public  Vector3f Direction
+        {
+            get { return diretion; }
+            set { diretion = value; }
+        }
+
+        public float Speed
+        {
+            get { return speed; }
+            set { speed = value; }
         }
 
         public Game CurrentGame
