@@ -5,8 +5,8 @@ using System.Text;
 
 namespace AI
 {
-    public class PlayerAIResult
+    public struct PlayerAIResult
     {
-        public PlayerState state;
+        public PlayerState State;
     }
 }

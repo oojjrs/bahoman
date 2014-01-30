@@ -168,7 +168,7 @@ namespace bball
                         break;
                 }
 
-                var s = this.AI.Determine(factor).state;
+                var s = this.AI.Determine(factor).State;
                 currentState = s;
             }
         }

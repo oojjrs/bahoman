@@ -26,13 +26,13 @@ namespace AI
                 factor.GetVectors("TeammateLocation", out tlocs);
 
                 var playerDistance = ploc.Distance(bloc);
-                ret.state = PlayerState.FindBall;
+                ret.State = PlayerState.FindBall;
 
                 foreach (var tloc in tlocs)
                 {
                     if (playerDistance > tloc.Distance(bloc))
                     {
-                        ret.state = PlayerState.Free;
+                        ret.State = PlayerState.Free;
                         break;
                     }
                     else
@@ -46,17 +46,17 @@ namespace AI
             {
                 if (factor.IsFlagOn("PlayerState.Free"))
                 {
-                    ret.state = PlayerState.Free;
+                    ret.State = PlayerState.Free;
                     return ret;
                 }
                 else if (factor.IsFlagOn("PlayerState.Pass"))
                 {
-                    ret.state = PlayerState.Pass;
+                    ret.State = PlayerState.Pass;
                     return ret;
                 }
                 else if (factor.IsFlagOn("PlayerState.FindBall"))
                 {
-                    ret.state = PlayerState.Free;
+                    ret.State = PlayerState.Free;
                     return ret;
                 }
                 else if (factor.IsFlagOn("PlayerState.Dribble"))
@@ -79,7 +79,7 @@ namespace AI
                             var dis = playerDistance - tloc.Distance(rloc);
                             if (dis > 20)
                             {
-                                ret.state = PlayerState.Pass;
+                                ret.State = PlayerState.Pass;
                                 return ret;
                             }
                         }
@@ -88,12 +88,12 @@ namespace AI
                         if (factor.IsFlagOn("CanShoot"))
                         {
                             //현재 상태를 슛상태로 변환
-                            ret.state = PlayerState.Shoot;
+                            ret.State = PlayerState.Shoot;
                             return ret;
                         }
                         else
                         {
-                            ret.state = PlayerState.Dribble;
+                            ret.State = PlayerState.Dribble;
                             return ret;
                         }
                     }
@@ -104,12 +104,12 @@ namespace AI
                 }
                 else if (factor.IsFlagOn("PlayerState.Shoot"))
                 {
-                    ret.state = PlayerState.Rebound;
+                    ret.State = PlayerState.Rebound;
                     return ret;
                 }
                 else if (factor.IsFlagOn("PlayerState.Rebound"))
                 {
-                    ret.state = PlayerState.Rebound;
+                    ret.State = PlayerState.Rebound;
                     return ret;
                 }
                 else
@@ -130,7 +130,7 @@ namespace AI
         private PlayerAIResult StateDefence(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.state = PlayerState.Free;
+            ret.State = PlayerState.Free;
             return ret;
         }
 
