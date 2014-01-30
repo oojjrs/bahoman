@@ -70,6 +70,7 @@ namespace bball
 
         private void StartNewGame()
         {
+            OutputManager.RemoveAll();
             game = new Game();
             if (game.Initialize(dataManager.AllTeams[0], dataManager.AllTeams[1]))
                 globalTimer.Enabled = true;

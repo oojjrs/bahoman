@@ -79,6 +79,7 @@ namespace bball
             {
                 entry.Value.CurrentGame = currentGame;
                 entry.Value.PlayerLocation = Court.CreateRandomPos();
+                entry.Value.Visible = true;
             }
             return true;
         }

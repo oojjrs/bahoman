@@ -56,11 +56,6 @@ namespace bball
             return CourtPos.FromVector(v);
         }
 
-        public Court()
-        {
-            OutputManager.MoveToFirst(this);
-        }
-
         #endregion
 
         #region Properties

@@ -15,6 +15,9 @@ namespace bball
 
         public bool Initialize(Team home, Team away)
         {
+            court.Visible = true;
+            court.Ball.Visible = true;  // 볼은 어디에 있어야 맞는 걸까?
+
             homeTeam = home;
             if (homeTeam.Initialize(this, away, Court.RightGoalPos) == false)
                 return false;

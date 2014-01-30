@@ -32,14 +32,15 @@ namespace bball
             return !l.Equals(r);
         }
 
-        public Object()
+        public bool Visible
         {
-            OutputManager.Add(this);
-        }
-
-        ~Object()
-        {
-            OutputManager.Remove(this);
+            set
+            {
+                if (value)
+                    OutputManager.Add(this);
+                else
+                    OutputManager.Remove(this);
+            }
         }
     }
 }
