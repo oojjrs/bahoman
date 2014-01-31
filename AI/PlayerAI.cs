@@ -15,113 +15,124 @@ namespace AI
         {
             log.AITrace(factor.ToString());
 
-            var ret = new PlayerAIResult();
             if (factor.IsFlagOn("TeamState.LooseBall"))
             {
-                Vector3f ploc = new Vector3f();
-                factor.GetPrimitive("PlayerLocation", ref ploc);
-
-                Vector3f bloc = new Vector3f();
-                factor.GetPrimitive("BallLocation", ref bloc);
-
-                Vector3f[] tlocs;
-                factor.GetPrimitives("TeammateLocation", out tlocs);
-
-                var playerDistance = ploc.Distance(bloc);
-                ret.State = PlayerState.FindBall;
-
-                foreach (var tloc in tlocs)
-                {
-                    if (playerDistance > tloc.Distance(bloc))
-                    {
-                        ret.State = PlayerState.Free;
-                        break;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                return ret;
+                return this.StateLooseBall(factor);
             }
             else if (factor.IsFlagOn("TeamState.Attack"))
             {
-                if (factor.IsFlagOn("PlayerState.Free"))
+                return this.StateAttack(factor);
+            }
+            else if (factor.IsFlagOn("TeamState.Defence"))
+            {
+                return this.StateDefence(factor);
+            }
+            else
+            {
+                throw new Exception { };
+            }
+        }
+
+        private PlayerAIResult StateLooseBall(PropertyBag factor)
+        {
+            var ret = new PlayerAIResult();
+            Vector3f ploc = new Vector3f();
+            factor.GetPrimitive("PlayerLocation", ref ploc);
+
+            Vector3f bloc = new Vector3f();
+            factor.GetPrimitive("BallLocation", ref bloc);
+
+            Vector3f[] tlocs;
+            factor.GetPrimitives("TeammateLocation", out tlocs);
+
+            var playerDistance = ploc.Distance(bloc);
+            ret.State = PlayerState.FindBall;
+
+            foreach (var tloc in tlocs)
+            {
+                if (playerDistance > tloc.Distance(bloc))
                 {
                     ret.State = PlayerState.Free;
-                    return ret;
+                    break;
                 }
-                else if (factor.IsFlagOn("PlayerState.Pass"))
+                else
                 {
-                    ret.State = PlayerState.Pass;
-                    return ret;
+                    break;
                 }
-                else if (factor.IsFlagOn("PlayerState.FindBall"))
+            }
+            return ret;
+        }
+
+        private PlayerAIResult StateAttack(PropertyBag factor)
+        {
+            var ret = new PlayerAIResult();
+            if (factor.IsFlagOn("PlayerState.Free"))
+            {
+                ret.State = PlayerState.Free;
+                return ret;
+            }
+            else if (factor.IsFlagOn("PlayerState.Pass"))
+            {
+                ret.State = PlayerState.Pass;
+                return ret;
+            }
+            else if (factor.IsFlagOn("PlayerState.FindBall"))
+            {
+                ret.State = PlayerState.Free;
+                return ret;
+            }
+            else if (factor.IsFlagOn("PlayerState.Dribble"))
+            {
+                if (factor.IsFlagOn("TargetInfo.Type.Goal"))
                 {
-                    ret.State = PlayerState.Free;
-                    return ret;
-                }
-                else if (factor.IsFlagOn("PlayerState.Dribble"))
-                {
-                    if (factor.IsFlagOn("TargetInfo.Type.Goal"))
+                    //패스할 데가 있나 확인
+                    Vector3f ploc = new Vector3f();
+                    factor.GetPrimitive("PlayerLocation", ref ploc);
+
+                    Vector3f rloc = new Vector3f();
+                    factor.GetPrimitive("RingLocation", ref rloc);
+
+                    Vector3f[] tlocs;
+                    factor.GetPrimitives("TeammateLocation", out tlocs);
+
+                    var playerDistance = ploc.Distance(rloc);
+                    foreach (var tloc in tlocs)
                     {
-                        //패스할 데가 있나 확인
-                        Vector3f ploc = new Vector3f();
-                        factor.GetPrimitive("PlayerLocation", ref ploc);
-
-                        Vector3f rloc = new Vector3f();
-                        factor.GetPrimitive("RingLocation", ref rloc);
-
-                        Vector3f[] tlocs;
-                        factor.GetPrimitives("TeammateLocation", out tlocs);
-
-                        var playerDistance = ploc.Distance(rloc);
-                        foreach (var tloc in tlocs)
+                        var dis = playerDistance - tloc.Distance(rloc);
+                        if (dis > 20)
                         {
-                            var dis = playerDistance - tloc.Distance(rloc);
-                            if (dis > 20)
-                            {
-                                ret.State = PlayerState.Pass;
-                                return ret;
-                            }
-                        }
-
-                        //슛이 가능한지 현재 위치 확인
-                        if (factor.IsFlagOn("CanShoot"))
-                        {
-                            //현재 상태를 슛상태로 변환
-                            ret.State = PlayerState.Shoot;
+                            ret.State = PlayerState.Pass;
                             return ret;
                         }
-                        else
-                        {
-                            ret.State = PlayerState.Dribble;
-                            return ret;
-                        }
+                    }
+
+                    //슛이 가능한지 현재 위치 확인
+                    if (factor.IsFlagOn("CanShoot"))
+                    {
+                        //현재 상태를 슛상태로 변환
+                        ret.State = PlayerState.Shoot;
+                        return ret;
                     }
                     else
                     {
-                        throw new Exception { };
+                        ret.State = PlayerState.Dribble;
+                        return ret;
                     }
-                }
-                else if (factor.IsFlagOn("PlayerState.Shoot"))
-                {
-                    ret.State = PlayerState.Rebound;
-                    return ret;
-                }
-                else if (factor.IsFlagOn("PlayerState.Rebound"))
-                {
-                    ret.State = PlayerState.Rebound;
-                    return ret;
                 }
                 else
                 {
                     throw new Exception { };
                 }
             }
-            else if (factor.IsFlagOn("TeamState.Defence"))
+            else if (factor.IsFlagOn("PlayerState.Shoot"))
             {
-                return this.StateDefence(factor);
+                ret.State = PlayerState.Rebound;
+                return ret;
+            }
+            else if (factor.IsFlagOn("PlayerState.Rebound"))
+            {
+                ret.State = PlayerState.Rebound;
+                return ret;
             }
             else
             {
