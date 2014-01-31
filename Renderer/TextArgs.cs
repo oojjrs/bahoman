@@ -12,7 +12,7 @@ namespace Renderer
     public class TextArgs
     {
         private bool isDrawBoundary = false;
-        private Point pos = new Point();
+        private Vector3f pos = new Vector3f();
         private Size size = new Size();
         private System.Windows.Forms.TextFormatFlags format = 0;
         private int lineWidth = 1;
@@ -23,26 +23,32 @@ namespace Renderer
 
         public override string ToString()
         {
-            var r = new System.Drawing.Rectangle(pos, size);
-
             string s;
             if (font == null)
             {
-                s = String.Format("'{0}'Font(None){1}{2}Format(0x{3})",
-                    text, textColor.ToString(), r.ToString(), format.ToString("X"));
+                s = String.Format("'{0}'Font(None){1}{2}{3}Format(0x{4})",
+                    text, textColor.ToString(), pos.ToString(), size.ToString(), format.ToString("X"));
             }
             else
             {
-                s = String.Format("'{0}'Font({1}){2}{3}Format(0x{4})",
-                    text, font.ToString(), textColor.ToString(), r.ToString(), format.ToString("X"));
+                s = String.Format("'{0}'Font({1}){2}{3}{4}Format(0x{5})",
+                    text, font.ToString(), textColor.ToString(), pos.ToString(), size.ToString(), format.ToString("X"));
             }
             return s;
         }
 
+        public static TextArgs Create(string text, System.Drawing.Font font)
+        {
+            var t = new TextArgs();
+            t.Font = font;
+            t.text = text;
+            return t;
+        }
+
         public int Bottom
         {
-            get { return pos.Y + size.Height; }
-            set { size.Height = value - pos.Y; }
+            get { return this.Top + size.Height; }
+            set { size.Height = value - this.Top; }
         }
 
         public LineArgs BoundaryLine
@@ -50,7 +56,7 @@ namespace Renderer
             get
             {
                 var s = new LineArgs();
-                s.AddPoint(this.Location);
+                s.AddPoint(this.LeftTop);
                 s.AddPoint(this.RightTop);
                 s.AddPoint(this.RightBottom);
                 s.AddPoint(this.LeftBottom);
@@ -82,11 +88,12 @@ namespace Renderer
         public bool IsDrawBoundary
         {
             get { return isDrawBoundary; }
+            set { isDrawBoundary = value; }
         }
 
         public bool IsEmpty
         {
-            get { return pos.IsEmpty || size.IsEmpty; }
+            get { return size.IsEmpty; }
         }
 
         public bool IsValid
@@ -96,7 +103,7 @@ namespace Renderer
 
         public int Left
         {
-            get { return pos.X; }
+            get { return (int)pos.X; }
             set { pos.X = value; }
         }
 
@@ -107,7 +114,7 @@ namespace Renderer
 
         public Point LeftTop
         {
-            get { return pos; }
+            get { return new Point(this.Left, this.Top); }
         }
 
         public MyColor LineColor
@@ -122,7 +129,7 @@ namespace Renderer
             set { lineWidth = value; }
         }
 
-        public Point Location
+        public Vector3f Location
         {
             get { return pos; }
             set { pos = value; }
@@ -130,14 +137,14 @@ namespace Renderer
 
         public Rectangle Rect
         {
-            get { return new Rectangle(pos, size); }
-            set { this.Location = value.Location; this.Size = value.Size; }
+            get { return new Rectangle(this.LeftTop, this.Size); }
+            set { this.Location = new Vector3f(value.X, 0, value.Y); this.Size = value.Size; }
         }
 
         public int Right
         {
-            get { return pos.X + size.Width; }
-            set { size.Width = value - pos.X; }
+            get { return this.Left + size.Width; }
+            set { size.Width = value - this.Left; }
         }
 
         public Point RightBottom
@@ -170,8 +177,8 @@ namespace Renderer
 
         public int Top
         {
-            get { return pos.Y; }
-            set { pos.Y = value; }
+            get { return (int)pos.Z; }
+            set { pos.Z = value; }
         }
 
         public int Width

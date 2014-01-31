@@ -200,6 +200,11 @@ namespace Renderer
             return this.OnFlip(x, y, cx, cy);
         }
 
+        public IntPtr GetHandle()
+        {
+            return this.mainWindow.Handle;
+        }
+
         public IImage GetImage(string path, MyColor key, string identifier)
         {
             if (isInit == false)

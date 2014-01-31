@@ -11,6 +11,12 @@ using Renderer;
 
 namespace bball
 {
+    enum BaseCourt
+    {
+        Left,
+        Right,
+    }
+
     sealed class Court : Object
     {
         private IImage image = ImageFactory.Create("res/court.png");
@@ -56,6 +62,24 @@ namespace bball
             return CourtPos.FromVector(v);
         }
 
+        public static CourtPos GetDefaultPositionalLocation(Position pos)
+        {
+            switch(pos)
+            {
+                case Position.PointGuard:
+                    return CourtPos.FromCoord(265, 0, 0);
+                case Position.ShootingGuard:
+                    return CourtPos.FromCoord(335, 0, -186);
+                case Position.SmallFoward:
+                    return CourtPos.FromCoord(520, 0, 186);
+                case Position.PowerFoward:
+                    return CourtPos.FromCoord(507, 0, -97);
+                case Position.Center:
+                    return CourtPos.FromCoord(432, 0, 78);
+            }
+            return CourtPos.Center;
+        }
+
         #endregion
 
         #region Properties
@@ -80,12 +104,7 @@ namespace bball
             get { return 665; }
         }
 
-        public static CourtPos LeftGoalPos
-        {
-            get { return CourtPos.FromCoord(-550, 0, 0); }
-        }
-
-        public static CourtPos RightGoalPos
+        public static CourtPos RingLocation
         {
             get { return CourtPos.FromCoord(550, 0, 0); }
         }

@@ -22,6 +22,7 @@ namespace Renderer
 	    bool Flip();
 	    bool Flip(int x, int y);
 	    bool Flip(int x, int y, int cx, int cy);
+        IntPtr GetHandle();
         IImage GetImage(string path, MyColor key, string identifier);
 	    bool Initialize(Form mainWindow);
 	    bool PutImage(ImageArgs r);

@@ -130,7 +130,12 @@ namespace AI
         private PlayerAIResult StateDefence(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.State = PlayerState.Free;
+            Vector3f v;
+            if (factor.GetVector("TargetLocation", out v))
+            {
+                ret.State = PlayerState.Move;
+                ret.TargetLocation = v;
+            }
             return ret;
         }
 

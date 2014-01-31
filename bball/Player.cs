@@ -76,16 +76,32 @@ namespace bball
         //private PlayerState prevState = new PlayerState();
         private Game currentGame = null;
         private Position currentPosition = Position.Bench;
+        private CourtPos targetLocation = null;
 
         #region From IDrawable
 
         public override void OnDraw(IRenderer r)
         {
+            var loc = Court.ToGlobalLocation(this.PlayerLocation);
             ImageArgs ia = new ImageArgs(playerInfo.Image);
-            ia.Location = Court.ToGlobalLocation(playerLocation).Location;
+            ia.Location = loc.Location;
             ia.Scale = new Vector3f(0.5f, 0.5f, 0.5f);
             ia.CorrectToCenter = true;
             r.PutImage(ia);
+
+            var rc = new System.Drawing.Rectangle((int)loc.X, (int)loc.Y, 0, 0);
+            using (var g = System.Drawing.Graphics.FromHwnd(r.GetHandle()))
+            {
+                var sizef = g.MeasureString(this.Name, OutputManager.DefaultFont);
+                rc.Width = (int)sizef.Width + 1;
+                rc.Height = (int)sizef.Height + 1;
+                rc.Offset(-rc.Width / 2, (int)(rc.Height * 1.5));    // 위에서 이미지가 height/2 만큼 내려오므로 적당히 아래로 더 내린다.
+            }
+
+            var ta = TextArgs.Create(this.Name, OutputManager.DefaultFont);
+            ta.Format = TextFormatFlags.SingleLine | TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter;
+            ta.Rect = rc;
+            r.PutText(ta);
         }
 
         public override void OnUpdate()
@@ -154,7 +170,7 @@ namespace bball
                         }
                         break;
                     case TeamState.Defence:
-                        factor.AddPrimitive("TeamState.Defence", true);
+                        this.SetStateFactorDefence(factor);
                         break;
                     case TeamState.LooseBall:
                         factor.AddPrimitive("TeamState.LooseBall", true);
@@ -168,9 +184,16 @@ namespace bball
                         break;
                 }
 
-                var s = this.AI.Determine(factor).State;
-                currentState = s;
+                var s = this.AI.Determine(factor);
+                currentState = s.State;
+                targetLocation = CourtPos.FromVector(s.TargetLocation);
             }
+        }
+
+        private void SetStateFactorDefence(PropertyBag factor)
+        {
+            factor.AddPrimitive("TeamState.Defence", true);
+            factor.AddVector("TargetLocation", team.GetDefaultPositionalLocation(this.CurrentPosition).Location);
         }
 
         private void Action()
@@ -220,6 +243,10 @@ namespace bball
 
                     }
                 }
+            }
+            else if (currentState == PlayerState.Move)
+            {
+                this.Move(this.targetLocation);
             }
         }
 
@@ -305,6 +332,11 @@ namespace bball
         {
             get { return speed; }
             set { speed = value; }
+        }
+
+        public string Name
+        {
+            get { return playerInfo.Name; }
         }
 
         public Game CurrentGame

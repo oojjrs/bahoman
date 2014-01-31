@@ -9,7 +9,8 @@ namespace AI
         Pass,
         Rebound,
         Free,
-        FindBall
+        FindBall,
+        Move,
     }
     public enum TeamState
     {

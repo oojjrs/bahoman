@@ -43,6 +43,7 @@ namespace bball
         private CourtPos targetRingLocation;
         private Team away;
         private Dictionary<Position, Player> entries = new Dictionary<Position, Player>();
+        private BaseCourt baseCourt;
 
         public override bool Equals(object obj)
         {
@@ -62,9 +63,9 @@ namespace bball
             teamInfo = ti;
         }
 
-        public bool Initialize(Game currentGame, Team away, CourtPos targetRing)
+        public bool Initialize(Game currentGame, Team away, BaseCourt baseCourt)
         {
-            this.TargetRingLocation = targetRing;
+            this.BaseCourt = baseCourt;
             this.TeamState = AI.TeamState.LooseBall;
             this.Away = away;
 
@@ -105,6 +106,16 @@ namespace bball
             entries[pos] = ret.First();  // 무조건 첫번째 걸리는 선수로 일단 합니다 ^^;
         }
 
+        public CourtPos GetDefaultPositionalLocation(Position pos)
+        {
+            var loc = Court.GetDefaultPositionalLocation(pos);
+            if (baseCourt == BaseCourt.Left)
+                return loc;
+            else if (baseCourt == BaseCourt.Right)
+                return loc.InvertX;
+            return CourtPos.Center;
+        }
+
         public UID ID
         {
             get { return teamInfo.ID; }
@@ -129,13 +140,29 @@ namespace bball
         public CourtPos TargetRingLocation
         {
             get { return targetRingLocation; }
-            private set { targetRingLocation = value; }
         }
 
         public Team Away
         {
             get { return away; }
             private set { away = value; }
+        }
+
+        public BaseCourt BaseCourt
+        {
+            get { return baseCourt; }
+            set
+            {
+                baseCourt = value;
+                if (baseCourt == BaseCourt.Left)
+                {
+                    targetRingLocation = Court.RingLocation;
+                }
+                else if (baseCourt == BaseCourt.Right)
+                {
+                    targetRingLocation = Court.RingLocation.InvertX;
+                }
+            }
         }
     }
 }

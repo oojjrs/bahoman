@@ -206,16 +206,18 @@ namespace Renderer
                 r.PosY = r.PosZ;
                 r.PosZ = 0.0f;
 
+                var desc = image.Texture.GetLevelDescription(0);
+                var srcRect = new Rectangle(0, 0, desc.Width, desc.Height);
+                var center = new Vector3();
                 if (r.CorrectToCenter)
                 {
-                    var desc = image.Texture.GetLevelDescription(0);
-                    r.PosX = r.PosX - (int)(desc.Width * r.ScaleX / 2);
-                    r.PosY = r.PosY - (int)(desc.Height * r.ScaleY / 2);
+                    center.X = desc.Width / 2;
+                    center.Y = desc.Height / 2;
                 }
 
                 sprite.Transform = MyExtractor.GetScaleMatrix(r) * MyExtractor.GetTranslationMatrix(r);
 
-                sprite.Draw(image.Texture, ColorBGRA.FromRgba(0xFFFFFFFF));
+                sprite.Draw(image.Texture, ColorBGRA.FromRgba(0xFFFFFFFF), srcRect, center);
                 sprite.Flush();
                 sprite.Transform = matOld;
             }
@@ -290,10 +292,9 @@ namespace Renderer
             try
             {
                 var vp = device.Viewport;
-                var rc = new Rectangle(vp.X + r.Left, vp.Y + r.Top, vp.X + r.Right, vp.Y + r.Bottom);
-                var font = new SharpDX.Direct3D9.Font(device, r.Font);
-
-                font.DrawText(null, r.Text, rc, MyConvert.ToDX(r.Format), MyConvert.ToDX(r.TextColor));
+                var rc = new Rectangle(vp.X + r.Left, vp.Y + r.Top, Math.Min(vp.Width, r.Width), Math.Min(vp.Height, r.Height));
+                using (var font = new SharpDX.Direct3D9.Font(device, r.Font))
+                    font.DrawText(null, r.Text, rc, MyConvert.ToDX(r.Format), MyConvert.ToDX(r.TextColor));
             }
             catch (SharpDXException e)
             {

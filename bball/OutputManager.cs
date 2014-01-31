@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -10,6 +11,7 @@ namespace bball
     static class OutputManager
     {
         private static List<IOutputModel> objects = new List<IOutputModel>();
+        private static Font defaultFont = new Font("돋움체", 12, FontStyle.Bold);
 
         public static void Add(IOutputModel obj)
         {
@@ -42,6 +44,11 @@ namespace bball
         {
             foreach (var o in objects)
                 o.OnUpdate();
+        }
+
+        public static Font DefaultFont
+        {
+            get { return defaultFont; }
         }
     }
 }

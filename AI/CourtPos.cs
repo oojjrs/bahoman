@@ -50,6 +50,36 @@ namespace AI
             return Vector3f.Distance(pos, target.pos);
         }
 
+        public CourtPos InvertX
+        {
+            get
+            {
+                var dup = CourtPos.FromVector(this.Location);
+                dup.X = -dup.X;
+                return dup;
+            }
+        }
+
+        public CourtPos InvertY
+        {
+            get
+            {
+                var dup = CourtPos.FromVector(this.Location);
+                dup.Y = -dup.Y;
+                return dup;
+            }
+        }
+
+        public CourtPos InvertZ
+        {
+            get
+            {
+                var dup = CourtPos.FromVector(this.Location);
+                dup.Z = -dup.Z;
+                return dup;
+            }
+        }
+
         public Vector3f Location
         {
             get { return pos; }

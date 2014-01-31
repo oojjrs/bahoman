@@ -25,6 +25,8 @@ namespace bball
         {
             InitializeComponent();
             this.ResizeRedraw = true;
+
+            Log.Instance.Path = "$bball.log";
         }
 
         private void MainForm_Load(object sender, EventArgs e)
