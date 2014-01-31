@@ -7,23 +7,40 @@ namespace Core
 {
     sealed public class PropertyBag
     {
-        private Dictionary<Type, List<KeyValuePair<string, object>>> containers = new Dictionary<Type, List<KeyValuePair<string, object>>>();
+        // Note : 값의 순서를 보존하기 위해 사전 대신 리스트 사용
+        private List<KeyValuePair<Type, List<KeyValuePair<string, object>>>> containers = new List<KeyValuePair<Type, List<KeyValuePair<string, object>>>>();
 
         public override string ToString()
         {
-            return base.ToString();
+            var ret = new StringBuilder("\r\n");
+            foreach (var c in containers)
+            {
+                ret.AppendFormat("Type : {0}\r\n", c.Key);
+                foreach (var pair in c.Value)
+                    ret.AppendFormat("    {0} : {1}\r\n", pair.Key, pair.Value);
+            }
+            return ret.ToString();
         }
 
         public void AddPrimitive<T>(string key, T value)
         {
-            List<KeyValuePair<string, object>> container;
-            if (containers.TryGetValue(typeof(T), out container) == false)
+            var container = this.GetContainer(typeof(T));
+            if (container == null)
             {
                 container = new List<KeyValuePair<string, object>>();
-                containers[typeof(T)] = container;
+                containers.Add(new KeyValuePair<Type, List<KeyValuePair<string, object>>>(typeof(T), container));
             }
-
             container.Add(new KeyValuePair<string, object>(key, value));
+        }
+
+        private List<KeyValuePair<string, object>> GetContainer(Type t)
+        {
+            foreach (var c in containers)
+            {
+                if (c.Key == t)
+                    return c.Value;
+            }
+            return null;
         }
 
         public bool GetPrimitive<T>(string key, ref T value, bool raiseException = true)
@@ -42,8 +59,8 @@ namespace Core
 
         public bool GetPrimitives<T>(string key, out T[] values, bool raiseException = true)
         {
-            List<KeyValuePair<string, object>> container;
-            if (containers.TryGetValue(typeof(T), out container) == false)
+            var container = this.GetContainer(typeof(T));
+            if (container == null)
             {
                 if (raiseException)
                     throw new Exception(typeof(T) + " 타입 팩터가 입력되지 않았습니다");

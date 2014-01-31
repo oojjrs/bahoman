@@ -34,11 +34,13 @@
             // logText
             // 
             this.logText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logText.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logText.Location = new System.Drawing.Point(0, 0);
             this.logText.MaxLength = 0;
             this.logText.Multiline = true;
             this.logText.Name = "logText";
             this.logText.ReadOnly = true;
+            this.logText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.logText.Size = new System.Drawing.Size(430, 458);
             this.logText.TabIndex = 0;
             // 

@@ -11,5 +11,14 @@ namespace AI
     {
         public PlayerState State;
         public Vector3f TargetLocation;
+
+        public override string ToString()
+        {
+            var ret = new StringBuilder("\r\n");
+            ret.AppendFormat("{0}\r\n", this.GetType());
+            ret.AppendFormat("    State : {0}\r\n", State);
+            ret.AppendFormat("    TargetLocation : {0}\r\n", TargetLocation);
+            return ret.ToString();
+        }
     }
 }

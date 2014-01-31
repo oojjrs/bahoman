@@ -15,6 +15,10 @@ namespace bball
         private void OnDraw(IRenderer r)
         {
             OutputManager.OutputAll(r);
+
+            var ta = TextArgs.Create("F5 : 재시작, F9 : 업데이트 정지", OutputManager.DefaultFont);
+            ta.Rect = new Rectangle(10, 10, 500, 50);
+            r.PutText(ta);
         }
     }
 }

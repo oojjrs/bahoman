@@ -15,22 +15,26 @@ namespace AI
         {
             log.AITrace(factor.ToString());
 
+            PlayerAIResult ret;
             if (factor.IsFlagOn("TeamState.LooseBall"))
             {
-                return this.StateLooseBall(factor);
+                ret = this.StateLooseBall(factor);
             }
             else if (factor.IsFlagOn("TeamState.Attack"))
             {
-                return this.StateAttack(factor);
+                ret = this.StateAttack(factor);
             }
             else if (factor.IsFlagOn("TeamState.Defence"))
             {
-                return this.StateDefence(factor);
+                ret = this.StateDefence(factor);
             }
             else
             {
                 throw new Exception { };
             }
+
+            log.AITrace(ret.ToString());
+            return ret;
         }
 
         private PlayerAIResult StateLooseBall(PropertyBag factor)
