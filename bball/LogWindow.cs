@@ -15,5 +15,10 @@ namespace bball
         {
             InitializeComponent();
         }
+
+        private void LogWindow_Load(object sender, EventArgs e)
+        {
+            Log.Instance.TargetControl = logText;
+        }
     }
 }

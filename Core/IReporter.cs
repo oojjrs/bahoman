@@ -15,6 +15,8 @@ namespace Core
         StdOut,
         Success,
         Warning,
+
+        AITrace,
     }
 
     public interface IReporter

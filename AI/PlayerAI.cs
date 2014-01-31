@@ -13,6 +13,8 @@ namespace AI
 
         public PlayerAIResult Determine(PropertyBag factor)
         {
+            log.AITrace(factor.ToString());
+
             var ret = new PlayerAIResult();
             if (factor.IsFlagOn("TeamState.LooseBall"))
             {

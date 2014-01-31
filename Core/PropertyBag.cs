@@ -10,6 +10,11 @@ namespace Core
         private Dictionary<Type, List<KeyValuePair<string, object>>> containers = new Dictionary<Type, List<KeyValuePair<string, object>>>();
         private List<KeyValuePair<string, Vector3f>> vectors = new List<KeyValuePair<string, Vector3f>>();
 
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
         public void AddPrimitive<T>(string key, T value)
         {
             List<KeyValuePair<string, object>> container;

@@ -109,6 +109,12 @@ namespace Core
                 reporter.WriteLog(t, code, String.Format(fmt, objs));
         }
 
+        public void AITrace(string fmt, params object[] objs)
+        {
+            if (reporter != null)
+                reporter.WriteLog(ReportType.AITrace, 0, String.Format(fmt, objs));
+        }
+
         public void SetReporter(IReporter r)
         {
             reporter = r;

@@ -54,6 +54,7 @@
             this.MinimizeBox = false;
             this.Name = "LogWindow";
             this.Text = "LogWindow";
+            this.Load += new System.EventHandler(this.LogWindow_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

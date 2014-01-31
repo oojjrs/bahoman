@@ -15,35 +15,53 @@ namespace bball
         private static readonly Log instance = new Log();
         private string path = "";
         private List<string> logs = new List<string>();
+        private TextBox logControl = null;
 
         #region From IReporter
         public void WriteLog(ReportType t, int code, string log)
         {
             var now = DateTime.Now.ToString("YYYY-MM-DD HH:mm:ss");
+            string formatted = "";
             switch (t)
             {
                 case ReportType.Abort:
-                    logs.Add(String.Format("[{0}][CRITICAL] {1}", now, log));
+                    formatted = String.Format("[{0}][CRITICAL] {1}", now, log);
+                    break;
+                case ReportType.Assert:
+                    formatted = String.Format("[{0}][ASSERT] {1}", now, log);
+                    break;
+                case ReportType.Error:
+                    formatted = String.Format("[{0}][ERROR] {1}", now, log);
+                    break;
+                case ReportType.Log:
+                    formatted = String.Format("[{0}][LOG] {1}", now, log);
+                    break;
+                case ReportType.StdOut:
+                    formatted = String.Format("[{0}] {1}", now, log);
+                    break;
+                case ReportType.Success:
+                    formatted = String.Format("[{0}][SUCCESS] {1}", now, log);
+                    break;
+                case ReportType.Warning:
+                    formatted = String.Format("[{0}][WARNING] {1}", now, log);
+                    break;
+                case ReportType.AITrace:
+                    formatted = String.Format("[{0}] {1}", now, log);
+                    break;
+                default:
+                    throw new Exception("새로운 에러 타입에 대한 동작을 정의해주세요");
+            }
+
+            logControl.AppendText(formatted + "\r\n");
+            logs.Add(formatted);
+
+            switch (t)
+            {
+                case ReportType.Abort:
                     this.SaveLogs();
                     throw new ApplicationException("더 이상 정상적인 진행을 할 수 없습니다. 로그 파일을 확인해주세요.");
                 case ReportType.Assert:
-                    logs.Add(String.Format("[{0}][ASSERT] {1}", now, log));
                     Debug.Assert(false, log);
-                    break;
-                case ReportType.Error:
-                    logs.Add(String.Format("[{0}][ERROR] {1}", now, log));
-                    break;
-                case ReportType.Log:
-                    logs.Add(String.Format("[{0}][LOG] {1}", now, log));
-                    break;
-                case ReportType.StdOut:
-                    logs.Add(String.Format("[{0}] {1}", now, log));
-                    break;
-                case ReportType.Success:
-                    logs.Add(String.Format("[{0}][SUCCESS] {1}", now, log));
-                    break;
-                case ReportType.Warning:
-                    logs.Add(String.Format("[{0}][WARNING] {1}", now, log));
                     break;
             }
         }
@@ -69,6 +87,12 @@ namespace bball
         {
             get { return path; }
             set { path = value; }
+        }
+
+        public TextBox TargetControl
+        {
+            get { return logControl; }
+            set { logControl = value; }
         }
     }
 }
