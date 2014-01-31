@@ -89,7 +89,7 @@ namespace bball
             ia.CorrectToCenter = true;
             r.PutImage(ia);
 
-            var rc = new System.Drawing.Rectangle((int)loc.X, (int)loc.Y, 0, 0);
+            var rc = new System.Drawing.Rectangle((int)loc.X, (int)loc.Z, 0, 0);
             using (var g = System.Drawing.Graphics.FromHwnd(r.GetHandle()))
             {
                 var sizef = g.MeasureString(this.Name, OutputManager.DefaultFont);

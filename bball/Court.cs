@@ -40,11 +40,9 @@ namespace bball
         #region Methods
         public static CourtPos ToGlobalLocation(CourtPos pos)
         {
-            var np = new CourtPos();
-            np.X = pos.X + Court.ImageWidth / 2;
-            np.Y = pos.Y;
-            np.Z = pos.Z + Court.ImageHeight / 2;
-            return np;
+            pos.X += Court.ImageWidth / 2;
+            pos.Z += Court.ImageHeight / 2;
+            return pos;
         }
 
         public static CourtPos ToLogicalLocation(Vector3f v)
