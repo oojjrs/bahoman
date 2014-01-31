@@ -47,7 +47,8 @@ namespace bball
             dataManager.BuildData();
             this.StartNewGame();
 
-            this.WindowState = FormWindowState.Maximized;
+            this.Width = Court.ImageWidth;
+            this.Height = Court.ImageHeight;
         }
 
         private void globalTimer_Tick(object sender, EventArgs e)
