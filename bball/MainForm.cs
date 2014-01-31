@@ -16,6 +16,7 @@ namespace bball
     public partial class MainForm : Form
     {
         private IRenderer renderer = Renderer.Container.GetInterface(Renderer.Type.Direct3D9);
+        private LogWindow logWindow = new LogWindow();
 
         // Note : 다음 요소들은 추후 UserManager가 생기면 그 아래로 이동할 요소들이다.
         private Game game = null;
@@ -49,6 +50,10 @@ namespace bball
 
             this.Width = Court.ImageWidth;
             this.Height = Court.ImageHeight;
+            logWindow.Show(this);
+            logWindow.Left = this.Right;
+            logWindow.Top = this.Top;
+            logWindow.Height = this.Height;
         }
 
         private void globalTimer_Tick(object sender, EventArgs e)
@@ -79,6 +84,17 @@ namespace bball
             game = new Game();
             if (game.Initialize(dataManager.AllTeams[0], dataManager.AllTeams[1]))
                 globalTimer.Enabled = true;
+        }
+
+        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        {
+            logWindow.Height = this.Height;
+        }
+
+        private void MainForm_LocationChanged(object sender, EventArgs e)
+        {
+            logWindow.Left = this.Right;
+            logWindow.Top = this.Top;
         }
     }
 }

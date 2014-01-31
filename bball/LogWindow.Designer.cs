@@ -1,6 +1,6 @@
 ﻿namespace bball
 {
-    partial class MainForm
+    partial class LogWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,35 +28,39 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.globalTimer = new System.Windows.Forms.Timer(this.components);
+            this.logText = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // globalTimer
+            // logText
             // 
-            this.globalTimer.Interval = 30;
-            this.globalTimer.Tick += new System.EventHandler(this.globalTimer_Tick);
+            this.logText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logText.Location = new System.Drawing.Point(0, 0);
+            this.logText.MaxLength = 0;
+            this.logText.Multiline = true;
+            this.logText.Name = "logText";
+            this.logText.ReadOnly = true;
+            this.logText.Size = new System.Drawing.Size(430, 458);
+            this.logText.TabIndex = 0;
             // 
-            // MainForm
+            // LogWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(523, 415);
-            this.DoubleBuffered = true;
-            this.KeyPreview = true;
-            this.Name = "MainForm";
-            this.Text = "MainForm";
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
-            this.LocationChanged += new System.EventHandler(this.MainForm_LocationChanged);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.ClientSize = new System.Drawing.Size(430, 458);
+            this.ControlBox = false;
+            this.Controls.Add(this.logText);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "LogWindow";
+            this.Text = "LogWindow";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Timer globalTimer;
+        private System.Windows.Forms.TextBox logText;
     }
 }
