@@ -19,13 +19,13 @@ namespace AI
             if (factor.IsFlagOn("TeamState.LooseBall"))
             {
                 Vector3f ploc = new Vector3f();
-                factor.GetVector("PlayerLocation", ref ploc);
+                factor.GetPrimitive("PlayerLocation", ref ploc);
 
                 Vector3f bloc = new Vector3f();
-                factor.GetVector("BallLocation", ref bloc);
+                factor.GetPrimitive("BallLocation", ref bloc);
 
                 Vector3f[] tlocs;
-                factor.GetVectors("TeammateLocation", out tlocs);
+                factor.GetPrimitives("TeammateLocation", out tlocs);
 
                 var playerDistance = ploc.Distance(bloc);
                 ret.State = PlayerState.FindBall;
@@ -67,13 +67,13 @@ namespace AI
                     {
                         //패스할 데가 있나 확인
                         Vector3f ploc = new Vector3f();
-                        factor.GetVector("PlayerLocation", ref ploc);
+                        factor.GetPrimitive("PlayerLocation", ref ploc);
 
                         Vector3f rloc = new Vector3f();
-                        factor.GetVector("RingLocation", ref rloc);
+                        factor.GetPrimitive("RingLocation", ref rloc);
 
                         Vector3f[] tlocs;
-                        factor.GetVectors("TeammateLocation", out tlocs);
+                        factor.GetPrimitives("TeammateLocation", out tlocs);
 
                         var playerDistance = ploc.Distance(rloc);
                         foreach (var tloc in tlocs)
@@ -133,7 +133,7 @@ namespace AI
         {
             var ret = new PlayerAIResult();
             Vector3f v = new Vector3f();
-            if (factor.GetVector("TargetLocation", ref v))
+            if (factor.GetPrimitive("TargetLocation", ref v))
             {
                 ret.State = PlayerState.Move;
                 ret.TargetLocation = v;
