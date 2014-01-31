@@ -20,7 +20,7 @@ namespace bball
         #region From IReporter
         public void WriteLog(ReportType t, int code, string log)
         {
-            var now = DateTime.Now.ToString("YYYY-MM-DD HH:mm:ss");
+            var now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string formatted = "";
             switch (t)
             {
