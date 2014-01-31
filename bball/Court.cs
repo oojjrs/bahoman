@@ -66,6 +66,8 @@ namespace bball
         {
             switch(pos)
             {
+                case Position.Bench:
+                    throw new Exception("벤치 플레이어는 기본 위치를 갖고 있지 않습니다.");
                 case Position.PointGuard:
                     return CourtPos.FromCoord(265, 0, 0);
                 case Position.ShootingGuard:
@@ -76,8 +78,9 @@ namespace bball
                     return CourtPos.FromCoord(507, 0, -97);
                 case Position.Center:
                     return CourtPos.FromCoord(432, 0, 78);
+                default:
+                    throw new Exception("Position 타입에 대한 핸들링이 필요합니다.");
             }
-            return CourtPos.Center;
         }
 
         #endregion

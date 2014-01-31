@@ -104,15 +104,16 @@ namespace bball
                 throw new Exception("팀에 선수가 부족합니다");
 
             entries[pos] = ret.First();  // 무조건 첫번째 걸리는 선수로 일단 합니다 ^^;
+            entries[pos].CurrentPosition = pos;
         }
 
         public CourtPos GetDefaultPositionalLocation(Position pos)
         {
             var loc = Court.GetDefaultPositionalLocation(pos);
             if (baseCourt == BaseCourt.Left)
-                return loc;
-            else if (baseCourt == BaseCourt.Right)
                 return loc.InvertX;
+            else if (baseCourt == BaseCourt.Right)
+                return loc;
             return CourtPos.Center;
         }
 
