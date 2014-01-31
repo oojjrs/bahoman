@@ -66,17 +66,17 @@ namespace bball
     class Player : Object
     {
         private readonly PlayerInfo playerInfo;
-        private CourtPos playerLocation = null;
+        private CourtPos playerLocation;
         private PlayerState currentState = new PlayerState();
         private int lastThinkTick = 0;
         private Boolean hasBall = false;
         private Team team = null;
         private float speed = 1;
-        private Vector3f diretion = null;
+        private Vector3f diretion;
         //private PlayerState prevState = new PlayerState();
         private Game currentGame = null;
         private Position currentPosition = Position.Bench;
-        private CourtPos targetLocation = null;
+        private CourtPos targetLocation;
 
         #region From IDrawable
 
@@ -254,7 +254,7 @@ namespace bball
         {
             var dir = target - playerLocation;
             this.diretion = dir.Location;
-            dir.Location.Normalize();
+            dir.Location = dir.Location.Normalize();
             playerLocation = playerLocation + dir;
             
             if (hasBall)

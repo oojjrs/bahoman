@@ -50,7 +50,7 @@ namespace bball
                     break;
                 case State.Passing:
                     var vDirect = this.targetPos - this.currentPos;
-                    vDirect.Location.Normalize();
+                    vDirect.Location = vDirect.Location.Normalize();
                     currentPos = this.currentPos + vDirect * force;
                     break;
                 case State.Shooting:
@@ -86,7 +86,7 @@ namespace bball
         public void Move()
         {
             var vDirect = this.targetPos - this.currentPos;
-            vDirect.Location.Normalize();
+            vDirect.Location = vDirect.Location.Normalize();
             currentPos = this.currentPos + vDirect;
         }
 

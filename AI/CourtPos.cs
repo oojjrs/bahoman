@@ -4,10 +4,10 @@ using Physics;
 
 namespace AI
 {
-    public class CourtPos
+    public struct CourtPos
     {
         // Note : (0, 0) = Center of Court
-        private Vector3f pos = new Vector3f();
+        private Vector3f pos;
 
         public static readonly CourtPos Center = new CourtPos();
 
@@ -34,10 +34,6 @@ namespace AI
         public static CourtPos FromVector(Vector3f v)
         {
             return new CourtPos(v);
-        }
-
-        public CourtPos()
-        {
         }
 
         public CourtPos(Vector3f v)
@@ -83,6 +79,7 @@ namespace AI
         public Vector3f Location
         {
             get { return pos; }
+            set { pos = value; }
         }
 
         public float X

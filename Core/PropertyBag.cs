@@ -72,15 +72,13 @@ namespace Core
             return true;
         }
 
-        public bool GetVector(string key, out Vector3f value, bool raiseException = true)
+        public bool GetVector(string key, ref Vector3f value, bool raiseException = true)
         {
             Vector3f[] values;
             if (this.GetVectors(key, out values, raiseException) == false)
             {
                 if (raiseException)
                     throw new Exception(key + " 팩터가 필요합니다");
-
-                value = null;
                 return false;
             }
 

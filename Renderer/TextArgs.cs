@@ -12,7 +12,7 @@ namespace Renderer
     public class TextArgs
     {
         private bool isDrawBoundary = false;
-        private Vector3f pos = new Vector3f();
+        private Vector3f pos;
         private Size size = new Size();
         private System.Windows.Forms.TextFormatFlags format = 0;
         private int lineWidth = 1;

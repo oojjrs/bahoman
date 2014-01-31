@@ -18,11 +18,11 @@ namespace AI
             var ret = new PlayerAIResult();
             if (factor.IsFlagOn("TeamState.LooseBall"))
             {
-                Vector3f ploc;
-                factor.GetVector("PlayerLocation", out ploc);
+                Vector3f ploc = new Vector3f();
+                factor.GetVector("PlayerLocation", ref ploc);
 
-                Vector3f bloc;
-                factor.GetVector("BallLocation", out bloc);
+                Vector3f bloc = new Vector3f();
+                factor.GetVector("BallLocation", ref bloc);
 
                 Vector3f[] tlocs;
                 factor.GetVectors("TeammateLocation", out tlocs);
@@ -66,11 +66,11 @@ namespace AI
                     if (factor.IsFlagOn("TargetInfo.Type.Goal"))
                     {
                         //패스할 데가 있나 확인
-                        Vector3f ploc;
-                        factor.GetVector("PlayerLocation", out ploc);
+                        Vector3f ploc = new Vector3f();
+                        factor.GetVector("PlayerLocation", ref ploc);
 
-                        Vector3f rloc;
-                        factor.GetVector("RingLocation", out rloc);
+                        Vector3f rloc = new Vector3f();
+                        factor.GetVector("RingLocation", ref rloc);
 
                         Vector3f[] tlocs;
                         factor.GetVectors("TeammateLocation", out tlocs);
@@ -132,8 +132,8 @@ namespace AI
         private PlayerAIResult StateDefence(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            Vector3f v;
-            if (factor.GetVector("TargetLocation", out v))
+            Vector3f v = new Vector3f();
+            if (factor.GetVector("TargetLocation", ref v))
             {
                 ret.State = PlayerState.Move;
                 ret.TargetLocation = v;

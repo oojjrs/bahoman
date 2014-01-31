@@ -5,24 +5,22 @@ using System.Text;
 
 namespace Core
 {
-    public class Vector3f
+    public struct Vector3f
     {
-        private float x = 0.0f;
-        private float y = 0.0f;
-        private float z = 0.0f;
+        private float x;
+        private float y;
+        private float z;
 
         public override string ToString()
         {
             return String.Format("VECTOR3F(X{0}Y{1}Z{2})", x, y, z);
         }
 
-        public Vector3f()
-        {
-        }
-
         public Vector3f(float x, float y, float z)
         {
-            this.Set(x, y, z);
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
 
         public void Set(float x, float y, float z)
@@ -185,7 +183,7 @@ namespace Core
             }
         }
 
-        public void Normalize()
+        public Vector3f Normalize()
         {
             float length = Length();
 
@@ -195,6 +193,7 @@ namespace Core
                 Y /= length;
                 Z /= length;
             }
+            return this;
         }
 
         public static void Normalize(Vector3f v1)
@@ -226,10 +225,8 @@ namespace Core
 
         public override bool Equals(object obj)
         {
-            Vector3f v2 = obj as Vector3f;
-
-            if (v2 != null)
-                return v2 == this;
+            if (obj is Vector3f)
+                return this.Equals((Vector3f)obj);
             else
                 return false;
         }

@@ -49,7 +49,7 @@ namespace bball
 
         public static CourtPos ToLogicalLocation(Vector3f v)
         {
-            var np = new CourtPos();
+            var np = CourtPos.FromVector(v);
             np.X = v.X - Court.ImageWidth / 2;
             np.Y = v.Y;
             np.Z = v.Z - Court.ImageHeight / 2;
@@ -58,8 +58,7 @@ namespace bball
 
         public static CourtPos CreateRandomPos()
         {
-            var v = new Vector3f(random.Next(Court.Width) - Court.Width / 2, 0, random.Next(Court.Height) - Court.Height / 2);
-            return CourtPos.FromVector(v);
+            return CourtPos.FromCoord(random.Next(Court.Width) - Court.Width / 2, 0, random.Next(Court.Height) - Court.Height / 2);
         }
 
         public static CourtPos GetDefaultPositionalLocation(Position pos)
