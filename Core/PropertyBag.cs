@@ -8,7 +8,6 @@ namespace Core
     sealed public class PropertyBag
     {
         private Dictionary<Type, List<KeyValuePair<string, object>>> containers = new Dictionary<Type, List<KeyValuePair<string, object>>>();
-        private List<KeyValuePair<string, Vector3f>> vectors = new List<KeyValuePair<string, Vector3f>>();
 
         public override string ToString()
         {
