@@ -140,33 +140,33 @@ namespace bball
                 switch (team.TeamState)
                 {
                     case TeamState.Attack:
-                        factor.AddPrimitive("TeamState.Attack", true);
+                        factor.AddValue("TeamState.Attack", true);
                         switch (currentState)
                         {
                             case PlayerState.Dribble:
-                                factor.AddPrimitive("PlayerState.Dribble", true);
-                                factor.AddPrimitive("TargetInfo.Type.Goal", true);
-                                factor.AddPrimitive("PlayerLocation", this.Location.Location);
-                                factor.AddPrimitive("RingLocation", team.TargetRingLocation.Location);
-                                factor.AddPrimitive("BallLocation", currentGame.Ball.Location.Location);
+                                factor.AddValue("PlayerState.Dribble", true);
+                                factor.AddValue("TargetInfo.Type.Goal", true);
+                                factor.AddValue("PlayerLocation", this.Location.Location);
+                                factor.AddValue("RingLocation", team.TargetRingLocation.Location);
+                                factor.AddValue("BallLocation", currentGame.Ball.Location.Location);
                                 foreach (var p in team.CurrentEntries)
-                                    factor.AddPrimitive("TeammateLocation", p.Location.Location);
-                                factor.AddPrimitive("CanShoot", this.GetShootingPoint(this.Location, team.TargetRingLocation) > 80);
+                                    factor.AddValue("TeammateLocation", p.Location.Location);
+                                factor.AddValue("CanShoot", this.GetShootingPoint(this.Location, team.TargetRingLocation) > 80);
                                 break;
                             case PlayerState.Shoot:
-                                factor.AddPrimitive("PlayerState.Shoot", true);
+                                factor.AddValue("PlayerState.Shoot", true);
                                 break;
                             case PlayerState.Pass:
-                                factor.AddPrimitive("PlayerState.Pass", true);
+                                factor.AddValue("PlayerState.Pass", true);
                                 break;
                             case PlayerState.Rebound:
-                                factor.AddPrimitive("PlayerState.Rebound", true);
+                                factor.AddValue("PlayerState.Rebound", true);
                                 break;
                             case PlayerState.Free:
-                                factor.AddPrimitive("PlayerState.Free", true);
+                                factor.AddValue("PlayerState.Free", true);
                                 break;
                             case PlayerState.FindBall:
-                                factor.AddPrimitive("PlayerState.FindBall", true);
+                                factor.AddValue("PlayerState.FindBall", true);
                                 break;
                         }
                         break;
@@ -174,14 +174,14 @@ namespace bball
                         this.SetStateFactorDefence(factor);
                         break;
                     case TeamState.LooseBall:
-                        factor.AddPrimitive("TeamState.LooseBall", true);
-                        factor.AddPrimitive("PlayerLocation", this.Location.Location);
-                        factor.AddPrimitive("BallLocation", this.currentGame.Ball.Location.Location);
+                        factor.AddValue("TeamState.LooseBall", true);
+                        factor.AddValue("PlayerLocation", this.Location.Location);
+                        factor.AddValue("BallLocation", this.currentGame.Ball.Location.Location);
                         foreach (var p in team.CurrentEntries)
-                            factor.AddPrimitive("TeammateLocation", p.Location.Location);
+                            factor.AddValue("TeammateLocation", p.Location.Location);
                         break;
                     case TeamState.StrategyTime:
-                        factor.AddPrimitive("TeamState.StrategyTime", true);
+                        factor.AddValue("TeamState.StrategyTime", true);
                         break;
                 }
 
@@ -193,8 +193,8 @@ namespace bball
 
         private void SetStateFactorDefence(PropertyBag factor)
         {
-            factor.AddPrimitive("TeamState.Defence", true);
-            factor.AddPrimitive("TargetLocation", team.GetDefaultPositionalLocation(this.CurrentPosition).Location);
+            factor.AddValue("TeamState.Defence", true);
+            factor.AddValue("TargetLocation", team.GetDefaultPositionalLocation(this.CurrentPosition).Location);
         }
 
         private void Action()

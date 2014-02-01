@@ -22,7 +22,7 @@ namespace Core
             return ret.ToString();
         }
 
-        public void AddPrimitive<T>(string key, T value)
+        public void AddValue<T>(string key, T value)
         {
             var container = this.GetContainer(typeof(T));
             if (container == null)
@@ -43,10 +43,10 @@ namespace Core
             return null;
         }
 
-        public bool GetPrimitive<T>(string key, ref T value, bool raiseException = true)
+        public bool GetValue<T>(string key, ref T value, bool raiseException = true)
         {
             T[] values;
-            if (this.GetPrimitives<T>(key, out values, raiseException) == false)
+            if (this.GetValues<T>(key, out values, raiseException) == false)
             {
                 if (raiseException)
                     throw new Exception(key + " 팩터가 필요합니다");
@@ -57,7 +57,7 @@ namespace Core
             return true;
         }
 
-        public bool GetPrimitives<T>(string key, out T[] values, bool raiseException = true)
+        public bool GetValues<T>(string key, out T[] values, bool raiseException = true)
         {
             var container = this.GetContainer(typeof(T));
             if (container == null)
@@ -86,7 +86,7 @@ namespace Core
         public bool IsFlagOn(string key)
         {
             bool isOn = false;
-            return this.GetPrimitive(key, ref isOn, false) && isOn;
+            return this.GetValue(key, ref isOn, false) && isOn;
         }
     }
 }
