@@ -86,6 +86,8 @@ namespace bball
         public void Move()
         {
             var vDirect = this.targetPos - this.currentPos;
+            if (vDirect.Location.Length() <= 1)
+                return;
             vDirect.Location = vDirect.Location.Normalize();
             currentPos = this.currentPos + vDirect;
         }

@@ -17,7 +17,9 @@ namespace bball
     {
         private IRenderer renderer = Renderer.Container.GetInterface(Renderer.Type.Direct3D9);
         private LogWindow logWindow = new LogWindow();
+        private int totalTickCount = 0;
         private bool pauseToUpdate = false;
+        private bool playOneFrameUpdate = false;
 
         // Note : 다음 요소들은 추후 UserManager가 생기면 그 아래로 이동할 요소들이다.
         private Game game = null;
@@ -55,8 +57,12 @@ namespace bball
 
         private void globalTimer_Tick(object sender, EventArgs e)
         {
-            if (pauseToUpdate == false)
+            if (pauseToUpdate == false || playOneFrameUpdate == true)
+            {
+                playOneFrameUpdate = false;
+                ++totalTickCount;
                 OutputManager.UpdateAll();
+            }
 
             if (renderer.Clear(new MyColor(Color.Blue)))
             {
@@ -93,6 +99,10 @@ namespace bball
                     break;
                 case Keys.F9:
                     pauseToUpdate = !pauseToUpdate;
+                    break;
+                case Keys.F10:
+                    if (pauseToUpdate)
+                        playOneFrameUpdate = true;
                     break;
             }
         }

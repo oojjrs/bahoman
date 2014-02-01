@@ -177,7 +177,7 @@ namespace bball
                         factor.AddValue("TeamState.LooseBall", true);
                         factor.AddValue("PlayerLocation", this.Location.Location);
                         factor.AddValue("BallLocation", this.currentGame.Ball.Location.Location);
-                        foreach (var p in team.CurrentEntries)
+                        foreach (var p in this.GetTeammates())
                             factor.AddValue("TeammateLocation", p.Location.Location);
                         break;
                     case TeamState.StrategyTime:
@@ -273,6 +273,9 @@ namespace bball
         public void Move(CourtPos target)
         {
             var dir = target - playerLocation;
+            if (dir.Location.Length() < 1)
+                return;
+
             dir.Location = dir.Location.Normalize();
             diretion = dir.Location;
             playerLocation = playerLocation + dir;
