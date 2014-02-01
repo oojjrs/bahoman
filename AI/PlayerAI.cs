@@ -111,7 +111,7 @@ namespace AI
                     }
 
                     //슛이 가능한지 현재 위치 확인
-                    if (factor.IsFlagOn("CanShoot"))
+                    if (this.GetShootingPoint(ploc, rloc) > 80)
                     {
                         //현재 상태를 슛상태로 변환
                         ret.State = PlayerState.Shoot;
@@ -161,10 +161,10 @@ namespace AI
             log.SetReporter(er);
         }
 
-        private int GetShootingPoint(CourtPos playerpoint, CourtPos ringpoint)
+        private int GetShootingPoint(Vector3f bp, Vector3f ep)
         {
             //슛을 쏠지 말지 결정하는 팩터들을 수치화
-            float distancefromRing = playerpoint.DistanceTo(ringpoint);
+            float distancefromRing = bp.Distance(ep);
 
             //일단 골대 근처에 있으면 100점으로 리턴
             if (60 > (int)distancefromRing)

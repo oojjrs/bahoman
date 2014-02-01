@@ -172,7 +172,6 @@ namespace bball
                     factor.AddValue("BallLocation", currentGame.Ball.Location.Location);
                     foreach (var p in this.GetTeammates())
                         factor.AddValue("TeammateLocation", p.Location.Location);
-                    factor.AddValue("CanShoot", this.GetShootingPoint(this.Location, team.TargetRingLocation) > 80);
                     break;
                 case PlayerState.Shoot:
                     factor.AddValue("PlayerState.Shoot", true);
@@ -304,22 +303,6 @@ namespace bball
             {
                 currentGame.SetTeamState(team, TeamState.Attack);
                 this.CurrentGame.Ball.CurrentState = Ball.State.Dribbling;
-            }
-        }
-
-        private int GetShootingPoint(CourtPos bp, CourtPos ep)
-        {
-            //슛을 쏠지 말지 결정하는 팩터들을 수치화
-            float distancefromRing = bp.DistanceTo(ep);
-
-            //일단 골대 근처에 있으면 100점으로 리턴
-            if (60 > (int)distancefromRing)
-            {
-                return 100;
-            }
-            else
-            {
-                return 0;
             }
         }
 
