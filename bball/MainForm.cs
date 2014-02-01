@@ -40,6 +40,9 @@ namespace bball
                     renderer = Renderer.Container.GetInterface(Renderer.Type.Stream);
             }
 
+            this.Width = Court.ImageWidth;
+            this.Height = Court.ImageHeight;
+
             renderer.Initialize(this);
             renderer.SetReporter(Log.Instance);
             renderer.ResizeBackBuffer(Court.ImageWidth, Court.ImageHeight);
@@ -48,13 +51,6 @@ namespace bball
             // Note : 원래는 메뉴에서 게임 스타트를 눌러야 실행되는 부분이나 테스트를 위해 삽입
             dataManager.BuildData();
             this.StartNewGame();
-
-            this.Width = Court.ImageWidth;
-            this.Height = Court.ImageHeight;
-            logWindow.Show(this);
-            logWindow.Left = this.Right;
-            logWindow.Top = this.Top;
-            logWindow.Height = this.Height;
         }
 
         private void globalTimer_Tick(object sender, EventArgs e)
@@ -78,6 +74,20 @@ namespace bball
         {
             switch(e.KeyData)
             {
+                case Keys.F4:
+                    if (logWindow.Visible)
+                    {
+                        logWindow.Hide();
+                    }
+                    else
+                    {
+                        logWindow.Show(this);
+                        logWindow.Left = this.Right;
+                        logWindow.Top = this.Top;
+                        logWindow.Height = this.Height;
+                        this.Focus();
+                    }
+                    break;
                 case Keys.F5:
                     this.StartNewGame();
                     break;

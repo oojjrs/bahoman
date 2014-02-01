@@ -52,7 +52,8 @@ namespace bball
                     throw new Exception("새로운 에러 타입에 대한 동작을 정의해주세요");
             }
 
-            logControl.AppendText(formatted + "\r\n");
+            if (logControl != null)
+                logControl.AppendText(formatted + "\r\n");
             logs.Add(formatted);
 
             switch (t)
