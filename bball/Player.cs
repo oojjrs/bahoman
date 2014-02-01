@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Core;
 using Renderer;
@@ -82,7 +83,7 @@ namespace bball
 
         public override void OnDraw(IRenderer r)
         {
-            var loc = Court.ToGlobalLocation(this.PlayerLocation);
+            var loc = Court.ToGlobalLocation(this.Location);
             ImageArgs ia = new ImageArgs(playerInfo.Image);
             ia.Location = loc.Location;
             ia.Scale = new Vector3f(0.5f, 0.5f, 0.5f);
@@ -145,12 +146,12 @@ namespace bball
                             case PlayerState.Dribble:
                                 factor.AddPrimitive("PlayerState.Dribble", true);
                                 factor.AddPrimitive("TargetInfo.Type.Goal", true);
-                                factor.AddPrimitive("PlayerLocation", this.PlayerLocation.Location);
+                                factor.AddPrimitive("PlayerLocation", this.Location.Location);
                                 factor.AddPrimitive("RingLocation", team.TargetRingLocation.Location);
                                 factor.AddPrimitive("BallLocation", currentGame.Ball.Location.Location);
                                 foreach (var p in team.CurrentEntries)
-                                    factor.AddPrimitive("TeammateLocation", p.PlayerLocation.Location);
-                                factor.AddPrimitive("CanShoot", this.GetShootingPoint(this.PlayerLocation, team.TargetRingLocation) > 80);
+                                    factor.AddPrimitive("TeammateLocation", p.Location.Location);
+                                factor.AddPrimitive("CanShoot", this.GetShootingPoint(this.Location, team.TargetRingLocation) > 80);
                                 break;
                             case PlayerState.Shoot:
                                 factor.AddPrimitive("PlayerState.Shoot", true);
@@ -174,10 +175,10 @@ namespace bball
                         break;
                     case TeamState.LooseBall:
                         factor.AddPrimitive("TeamState.LooseBall", true);
-                        factor.AddPrimitive("PlayerLocation", this.PlayerLocation.Location);
+                        factor.AddPrimitive("PlayerLocation", this.Location.Location);
                         factor.AddPrimitive("BallLocation", this.currentGame.Ball.Location.Location);
                         foreach (var p in team.CurrentEntries)
-                            factor.AddPrimitive("TeammateLocation", p.PlayerLocation.Location);
+                            factor.AddPrimitive("TeammateLocation", p.Location.Location);
                         break;
                     case TeamState.StrategyTime:
                         factor.AddPrimitive("TeamState.StrategyTime", true);
@@ -229,18 +230,14 @@ namespace bball
             {
                 if (this.CurrentGame.Ball.CurrentState != Ball.State.Passing)
                 {
-                    var playerDistance = playerLocation.DistanceTo(team.TargetRingLocation);
-                    foreach (var player in team.CurrentEntries)
+                    var t = this.GetPassableTarget();
+                    if (t != null)
                     {
-                        if (playerDistance > player.PlayerLocation.DistanceTo(team.TargetRingLocation))
-                        {
-                            hasBall = false;
-                            this.CurrentGame.Ball.TargetLocation = player.PlayerLocation + CourtPos.FromVector(player.Direction) * (playerLocation.DistanceTo(player.PlayerLocation) / (float) 5);
-                            this.CurrentGame.Ball.Force = 5;
-                            this.CurrentGame.Ball.CurrentState = Ball.State.Passing;
-                            currentState = PlayerState.Free;
-                        }
-
+                        hasBall = false;
+                        this.CurrentGame.Ball.TargetLocation = t.Location + CourtPos.FromVector(t.Direction) * (playerLocation.DistanceTo(t.Location) / (float)5);
+                        this.CurrentGame.Ball.Force = 5;
+                        this.CurrentGame.Ball.CurrentState = Ball.State.Passing;
+                        currentState = PlayerState.Free;
                     }
                 }
             }
@@ -250,11 +247,34 @@ namespace bball
             }
         }
 
+        private Player GetPassableTarget()
+        {
+            Player ret = null;
+            var distanceToRing = playerLocation.DistanceTo(team.TargetRingLocation);
+            foreach (var t in this.GetTeammates())
+            {
+                var d = t.Location.DistanceTo(team.TargetRingLocation);
+                if (d < distanceToRing)
+                {
+                    distanceToRing = d;
+                    ret = t;
+                }
+            }
+            return ret;
+        }
+
+        private List<Player> GetTeammates()
+        {
+            var entries = team.CurrentEntries;
+            entries.Remove(this);
+            return entries;
+        }
+
         public void Move(CourtPos target)
         {
             var dir = target - playerLocation;
-            this.diretion = dir.Location;
             dir.Location = dir.Location.Normalize();
+            diretion = dir.Location;
             playerLocation = playerLocation + dir;
             
             if (hasBall)
@@ -295,7 +315,7 @@ namespace bball
             get { return playerInfo.ID; }
         }
 
-        public CourtPos PlayerLocation
+        public CourtPos Location
         {
             get { return playerLocation; }
             set { playerLocation = value; }

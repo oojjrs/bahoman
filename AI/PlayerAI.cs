@@ -99,10 +99,10 @@ namespace AI
                     Vector3f[] tlocs;
                     factor.GetPrimitives("TeammateLocation", out tlocs);
 
-                    var playerDistance = ploc.Distance(rloc);
+                    var distanceToRing = ploc.Distance(rloc);
                     foreach (var tloc in tlocs)
                     {
-                        var dis = playerDistance - tloc.Distance(rloc);
+                        var dis = distanceToRing - tloc.Distance(rloc);
                         if (dis > 20)
                         {
                             ret.State = PlayerState.Pass;
