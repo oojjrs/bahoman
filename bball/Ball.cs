@@ -37,7 +37,7 @@ namespace bball
         {
             var ia = new ImageArgs(image);
             ia.CorrectToCenter = true;
-            ia.Location = Court.ToGlobalLocation(currentPos).Location;
+            ia.Location = Court.ToGlobalLocation(currentPos).Vector;
             ia.Scale = new Vector3f(scaleRate, scaleRate, scaleRate);
             r.PutImage(ia);
         }

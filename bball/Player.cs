@@ -85,7 +85,7 @@ namespace bball
         {
             var loc = Court.ToGlobalLocation(this.Location);
             ImageArgs ia = new ImageArgs(playerInfo.Image);
-            ia.Location = loc.Location;
+            ia.Location = loc.Vector;
             ia.Scale = new Vector3f(0.5f, 0.5f, 0.5f);
             ia.CorrectToCenter = true;
             r.PutImage(ia);
@@ -286,7 +286,7 @@ namespace bball
                 return;
 
             dir = dir.Normalize;
-            diretion = dir.Location;
+            diretion = dir.Vector;
             playerLocation = playerLocation + dir;
             
             if (hasBall)

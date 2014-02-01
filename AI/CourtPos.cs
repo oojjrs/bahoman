@@ -91,7 +91,7 @@ namespace AI
             get { return pos.Length(); }
         }
 
-        public Vector3f Location
+        public Vector3f Vector
         {
             get { return pos; }
             set { pos = value; }
