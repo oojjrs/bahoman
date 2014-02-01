@@ -66,7 +66,7 @@ namespace bball
         public bool Initialize(Game currentGame, Team away, BaseCourt baseCourt)
         {
             this.BaseCourt = baseCourt;
-            this.TeamState = AI.TeamState.LooseBall;
+            this.TeamState = TeamState.LooseBall;
             this.Away = away;
 
             // Note : 선발 엔트리를 집어넣음

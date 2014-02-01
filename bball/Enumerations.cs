@@ -14,4 +14,20 @@ namespace bball
         PowerFoward,
         Center,
     }
+
+    public enum TeamState
+    {
+        Attack,
+        Defence,
+        StrategyTime,
+        LooseBall
+    }
+
+    public enum GameState
+    {
+        JumpBall,
+        OutOfBound,
+        StrategyTime,
+        FreeThrow
+    }
 }

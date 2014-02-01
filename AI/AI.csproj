@@ -45,7 +45,6 @@
     <Compile Include="PlayerAIFactory.cs" />
     <Compile Include="PlayerAIResult.cs" />
     <Compile Include="CourtPos.cs" />
-    <Compile Include="DetermineFactor.cs" />
     <Compile Include="IPlayerAIType.cs" />
     <Compile Include="PlayerAI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
