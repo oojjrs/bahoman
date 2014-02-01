@@ -10,7 +10,7 @@ namespace AI
     public struct PlayerAIResult
     {
         public PlayerState State;
-        public Vector3f TargetLocation;
+        public CourtPos TargetLocation;
 
         public override string ToString()
         {

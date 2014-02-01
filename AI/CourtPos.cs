@@ -46,11 +46,21 @@ namespace AI
             return Vector3f.Distance(pos, target.pos);
         }
 
+        public CourtPos Normalize
+        {
+            get
+            {
+                var dup = this;
+                dup.pos.Normalize();
+                return dup;
+            }
+        }
+
         public CourtPos InvertX
         {
             get
             {
-                var dup = CourtPos.FromVector(this.Location);
+                var dup = this;
                 dup.X = -dup.X;
                 return dup;
             }
@@ -60,7 +70,7 @@ namespace AI
         {
             get
             {
-                var dup = CourtPos.FromVector(this.Location);
+                var dup = this;
                 dup.Y = -dup.Y;
                 return dup;
             }
@@ -70,10 +80,15 @@ namespace AI
         {
             get
             {
-                var dup = CourtPos.FromVector(this.Location);
+                var dup = this;
                 dup.Z = -dup.Z;
                 return dup;
             }
+        }
+
+        public float Length
+        {
+            get { return pos.Length(); }
         }
 
         public Vector3f Location

@@ -155,7 +155,7 @@ namespace bball
 
                 var s = this.AI.Determine(factor);
                 currentState = s.State;
-                targetLocation = CourtPos.FromVector(s.TargetLocation);
+                targetLocation = s.TargetLocation;
             }
         }
 
@@ -167,11 +167,11 @@ namespace bball
                 case PlayerState.Dribble:
                     factor.AddValue("PlayerState.Dribble", true);
                     factor.AddValue("TargetInfo.Type.Goal", true);
-                    factor.AddValue("PlayerLocation", this.Location.Location);
-                    factor.AddValue("RingLocation", team.TargetRingLocation.Location);
-                    factor.AddValue("BallLocation", currentGame.Ball.Location.Location);
+                    factor.AddValue("PlayerLocation", this.Location);
+                    factor.AddValue("RingLocation", team.TargetRingLocation);
+                    factor.AddValue("BallLocation", currentGame.Ball.Location);
                     foreach (var p in this.GetTeammates())
-                        factor.AddValue("TeammateLocation", p.Location.Location);
+                        factor.AddValue("TeammateLocation", p.Location);
                     break;
                 case PlayerState.Shoot:
                     factor.AddValue("PlayerState.Shoot", true);
@@ -194,16 +194,16 @@ namespace bball
         private void SetStateFactorDefence(PropertyBag factor)
         {
             factor.AddValue("TeamState.Defence", true);
-            factor.AddValue("TargetLocation", team.GetDefaultPositionalLocation(this.CurrentPosition).Location);
+            factor.AddValue("TargetLocation", team.GetDefaultPositionalLocation(this.CurrentPosition));
         }
 
         private void SetStateFactorLooseBall(PropertyBag factor)
         {
             factor.AddValue("TeamState.LooseBall", true);
-            factor.AddValue("PlayerLocation", this.Location.Location);
-            factor.AddValue("BallLocation", this.currentGame.Ball.Location.Location);
+            factor.AddValue("PlayerLocation", this.Location);
+            factor.AddValue("BallLocation", this.currentGame.Ball.Location);
             foreach (var p in this.GetTeammates())
-                factor.AddValue("TeammateLocation", p.Location.Location);
+                factor.AddValue("TeammateLocation", p.Location);
         }
 
         private void Action()
@@ -282,10 +282,10 @@ namespace bball
         public void Move(CourtPos target)
         {
             var dir = target - playerLocation;
-            if (dir.Location.Length() < 1)
+            if (dir.Length < 1.0f)
                 return;
 
-            dir.Location = dir.Location.Normalize();
+            dir = dir.Normalize;
             diretion = dir.Location;
             playerLocation = playerLocation + dir;
             

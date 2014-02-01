@@ -40,21 +40,21 @@ namespace AI
         private PlayerAIResult StateLooseBall(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            Vector3f ploc = new Vector3f();
+            CourtPos ploc = new CourtPos();
             factor.GetValue("PlayerLocation", ref ploc);
 
-            Vector3f bloc = new Vector3f();
+            CourtPos bloc = new CourtPos();
             factor.GetValue("BallLocation", ref bloc);
 
-            Vector3f[] tlocs;
+            CourtPos[] tlocs;
             factor.GetValues("TeammateLocation", out tlocs);
 
-            var playerDistance = ploc.Distance(bloc);
+            var playerDistance = ploc.DistanceTo(bloc);
             ret.State = PlayerState.FindBall;
 
             foreach (var tloc in tlocs)
             {
-                if (playerDistance > tloc.Distance(bloc))
+                if (playerDistance > tloc.DistanceTo(bloc))
                 {
                     ret.State = PlayerState.Free;
                     break;
@@ -90,19 +90,19 @@ namespace AI
                 if (factor.IsFlagOn("TargetInfo.Type.Goal"))
                 {
                     //패스할 데가 있나 확인
-                    Vector3f ploc = new Vector3f();
+                    CourtPos ploc = new CourtPos();
                     factor.GetValue("PlayerLocation", ref ploc);
 
-                    Vector3f rloc = new Vector3f();
+                    CourtPos rloc = new CourtPos();
                     factor.GetValue("RingLocation", ref rloc);
 
-                    Vector3f[] tlocs;
+                    CourtPos[] tlocs;
                     factor.GetValues("TeammateLocation", out tlocs);
 
-                    var distanceToRing = ploc.Distance(rloc);
+                    var distanceToRing = ploc.DistanceTo(rloc);
                     foreach (var tloc in tlocs)
                     {
-                        var dis = distanceToRing - tloc.Distance(rloc);
+                        var dis = distanceToRing - tloc.DistanceTo(rloc);
                         if (dis > 20)
                         {
                             ret.State = PlayerState.Pass;
@@ -147,7 +147,7 @@ namespace AI
         private PlayerAIResult StateDefence(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            Vector3f v = new Vector3f();
+            CourtPos v = new CourtPos();
             if (factor.GetValue("TargetLocation", ref v))
             {
                 ret.State = PlayerState.Move;
@@ -161,10 +161,10 @@ namespace AI
             log.SetReporter(er);
         }
 
-        private int GetShootingPoint(Vector3f bp, Vector3f ep)
+        private int GetShootingPoint(CourtPos bp, CourtPos ep)
         {
             //슛을 쏠지 말지 결정하는 팩터들을 수치화
-            float distancefromRing = bp.Distance(ep);
+            float distancefromRing = bp.DistanceTo(ep);
 
             //일단 골대 근처에 있으면 100점으로 리턴
             if (60 > (int)distancefromRing)

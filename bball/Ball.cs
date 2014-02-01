@@ -49,8 +49,7 @@ namespace bball
                 case State.Bounding:    // 원래 scaleRate 값 유지(일단은 아무 일도 하지 않음)
                     break;
                 case State.Passing:
-                    var vDirect = this.targetPos - this.currentPos;
-                    vDirect.Location = vDirect.Location.Normalize();
+                    var vDirect = (this.targetPos - this.currentPos).Normalize;
                     currentPos = this.currentPos + vDirect * force;
                     break;
                 case State.Shooting:
@@ -86,9 +85,9 @@ namespace bball
         public void Move()
         {
             var vDirect = this.targetPos - this.currentPos;
-            if (vDirect.Location.Length() <= 1)
+            if (vDirect.Length <= 1.0f)
                 return;
-            vDirect.Location = vDirect.Location.Normalize();
+            vDirect = vDirect.Normalize;
             currentPos = this.currentPos + vDirect;
         }
 
