@@ -82,7 +82,6 @@
     <Compile Include="DataManager.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GlobalVariables.cs" />
     <Compile Include="ImageFactory.cs" />
     <Compile Include="IOutputModel.cs" />
     <Compile Include="Log.cs" />

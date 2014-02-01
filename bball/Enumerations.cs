@@ -15,7 +15,7 @@ namespace bball
         Center,
     }
 
-    public enum TeamState
+    enum TeamState
     {
         Attack,
         Defence,
@@ -23,7 +23,7 @@ namespace bball
         LooseBall
     }
 
-    public enum GameState
+    enum GameState
     {
         JumpBall,
         OutOfBound,
