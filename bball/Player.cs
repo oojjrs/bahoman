@@ -74,7 +74,7 @@ namespace bball
         private Team team = null;
         private float speed = 1;
         private Vector3f diretion;
-        //private PlayerState prevState = new PlayerState();
+        private Vector3f sight;
         private Game currentGame = null;
         private Position currentPosition = Position.Bench;
         private CourtPos targetLocation;
@@ -342,6 +342,12 @@ namespace bball
         {
             get { return diretion; }
             set { diretion = value; }
+        }
+
+        public Vector3f Sight
+        {
+            get { return sight; }
+            set { sight = value; }
         }
 
         public float Speed

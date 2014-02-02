@@ -11,5 +11,6 @@ namespace AI
         Free,
         FindBall,
         Move,
+        CatchBall
     }
 }
