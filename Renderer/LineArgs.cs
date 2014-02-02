@@ -48,6 +48,11 @@ namespace Renderer
             this.points.Add(pt);
         }
 
+        public void AddPoint(Vector3f v)
+        {
+            this.AddPoint((int)v.X, (int)v.Z);
+        }
+
         public MyColor LineColor
         {
             get { return this.color; }

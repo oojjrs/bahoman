@@ -84,6 +84,11 @@ namespace bball
         public override void OnDraw(IRenderer r)
         {
             var loc = Court.ToGlobalLocation(this.Location);
+            var la = new LineArgs(2);
+            la.AddPoint(loc.Vector);
+            la.AddPoint(loc.Vector + this.Sight * 3);
+            r.PutLine(la);
+
             ImageArgs ia = new ImageArgs(playerInfo.Image);
             ia.Location = loc.Vector;
             ia.Scale = new Vector3f(0.5f, 0.5f, 0.5f);
