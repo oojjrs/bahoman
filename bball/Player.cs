@@ -73,8 +73,8 @@ namespace bball
         private Boolean hasBall = false;
         private Team team = null;
         private float speed = 1;
-        private Vector3f diretion;
-        private Vector3f sight;
+        private CourtPos direction;
+        private CourtPos sight;
         private Game currentGame = null;
         private Position currentPosition = Position.Bench;
         private CourtPos targetLocation;
@@ -86,7 +86,7 @@ namespace bball
             var loc = Court.ToGlobalLocation(this.Location);
             var la = new LineArgs(2);
             la.AddPoint(loc.Vector);
-            la.AddPoint(loc.Vector + this.Sight * 3);
+            la.AddPoint(loc.Vector + this.Sight.Vector * 3);
             r.PutLine(la);
 
             ImageArgs ia = new ImageArgs(playerInfo.Image);
@@ -248,7 +248,7 @@ namespace bball
                     if (t != null)
                     {
                         hasBall = false;
-                        this.CurrentGame.Ball.TargetLocation = t.Location + CourtPos.FromVector(t.Direction) * (playerLocation.DistanceTo(t.Location) / (float)5);
+                        this.CurrentGame.Ball.TargetLocation = t.Location + t.Direction * (playerLocation.DistanceTo(t.Location) / (float)5);
                         this.CurrentGame.Ball.Force = 5;
                         this.CurrentGame.Ball.CurrentState = Ball.State.Passing;
                         currentState = PlayerState.Free;
@@ -290,9 +290,8 @@ namespace bball
             if (dir.Length < 1.0f)
                 return;
 
-            dir = dir.Normalize;
-            diretion = dir.Vector;
-            playerLocation = playerLocation + dir;
+            direction = dir.Normalize;
+            playerLocation = playerLocation + direction;
             
             if (hasBall)
             {
@@ -343,13 +342,13 @@ namespace bball
             get { return playerInfo.AI; }
         }
 
-        public  Vector3f Direction
+        public CourtPos Direction
         {
-            get { return diretion; }
-            set { diretion = value; }
+            get { return direction; }
+            set { direction = value; }
         }
 
-        public Vector3f Sight
+        public CourtPos Sight
         {
             get { return sight; }
             set { sight = value; }
