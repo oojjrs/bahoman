@@ -287,13 +287,13 @@ namespace bball
             {
                 var teammateDir = entry.Location - this.Location;
                 var cosineTheta = ((this.Sight.X * teammateDir.X) + (this.Sight.Y * teammateDir.Y) + (this.Sight.Z * teammateDir.Z));
-                var innerD = (Math.Acos(cosineTheta) * (180 / Math.PI));
+                var innerD = Math.Acos(MyMath.DegreeToRadian(cosineTheta));
                 if(innerD < 60)
                 {
                     showentries.Add(entry);
                 }
             }
-            return showentries;
+            return entries;
         }
 
         public void Move(CourtPos target)
