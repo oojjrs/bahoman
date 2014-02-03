@@ -13,4 +13,16 @@ namespace AI
         Move,
         CatchBall
     }
+
+    public enum BallState
+    {
+        Bounding,
+        Dribbling,
+        //Holding,
+        //Intercepting,
+        Passing,
+        //Rolling,
+        Shooting,
+        //Stealing,
+    }
 }

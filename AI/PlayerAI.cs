@@ -74,7 +74,15 @@ namespace AI
             var ret = new PlayerAIResult();
             if (factor.IsFlagOn("PlayerState.Free"))
             {
-                ret.State = PlayerState.Free;
+                if (factor.IsFlagOn("Ball"))
+                {
+                    ret.State = PlayerState.CatchBall;
+
+                }
+                else
+                {
+                    ret.State = PlayerState.Free;
+                }
                 return ret;
             }
             else if (factor.IsFlagOn("PlayerState.Pass"))

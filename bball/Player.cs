@@ -177,6 +177,18 @@ namespace bball
         private void SetStateFactorAttack(PropertyBag factor)
         {
             factor.AddValue("TeamState.Attack", true);
+
+            var ballDir = (this.currentGame.Ball.Location - this.Location).Normalize;
+            var cosineTheta = ((this.Sight.X * ballDir.X) + (this.Sight.Y * ballDir.Y) + (this.Sight.Z * ballDir.Z));
+            var innerD = MyMath.RadianToDegree(Math.Acos(cosineTheta));
+
+            if (innerD < 60)
+            {
+                factor.AddValue("Ball", true);
+                factor.AddValue("BallLocation", this.currentGame.Ball.Location);
+                factor.AddValue("BallState", this.currentGame.Ball.CurrentState);
+            }
+
             switch (currentState)
             {
                 case PlayerState.Dribble:
@@ -230,7 +242,7 @@ namespace bball
             else if (currentState == PlayerState.Shoot)
             {
                 this.CurrentGame.Ball.TargetLocation = team.TargetRingLocation;
-                this.CurrentGame.Ball.CurrentState = Ball.State.Shooting;
+                this.CurrentGame.Ball.CurrentState = BallState.Shooting;
             }
             else if (currentState == PlayerState.Free)
             {
@@ -252,7 +264,7 @@ namespace bball
             }
             else if (currentState == PlayerState.Pass)
             {
-                if (this.CurrentGame.Ball.CurrentState != Ball.State.Passing)
+                if (this.CurrentGame.Ball.CurrentState != BallState.Passing)
                 {
                     var t = this.GetPassableTarget();
                     if (t != null)
@@ -260,7 +272,7 @@ namespace bball
                         hasBall = false;
                         this.CurrentGame.Ball.TargetLocation = t.Location + t.Direction * (playerLocation.DistanceTo(t.Location) / (float)5);
                         this.CurrentGame.Ball.Force = 5;
-                        this.CurrentGame.Ball.CurrentState = Ball.State.Passing;
+                        this.CurrentGame.Ball.CurrentState = BallState.Passing;
                         currentState = PlayerState.Free;
                     }
                 }
@@ -318,7 +330,7 @@ namespace bball
             
             if (hasBall)
             {
-                this.CurrentGame.Ball.CurrentState = Ball.State.Dribbling;
+                this.CurrentGame.Ball.CurrentState = BallState.Dribbling;
                 this.CurrentGame.Ball.Location = this.CurrentGame.Ball.Location + direction;
             }
         }
@@ -329,7 +341,7 @@ namespace bball
             if (currentState == PlayerState.Dribble)
             {
                 currentGame.SetTeamState(team, TeamState.Attack);
-                this.CurrentGame.Ball.CurrentState = Ball.State.Dribbling;
+                this.CurrentGame.Ball.CurrentState = BallState.Dribbling;
             }
         }
 
