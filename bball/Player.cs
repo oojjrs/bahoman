@@ -86,7 +86,7 @@ namespace bball
             var loc = Court.ToGlobalLocation(this.Location);
             var la = new LineArgs(2);
             la.AddPoint(loc.Vector);
-            la.AddPoint(loc.Vector + this.Sight.Vector * 3);
+            la.AddPoint(loc.Vector + this.Sight.Vector * 30);
             r.PutLine(la);
 
             ImageArgs ia = new ImageArgs(playerInfo.Image);
