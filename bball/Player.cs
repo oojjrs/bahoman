@@ -281,19 +281,19 @@ namespace bball
         {
             var entries = team.CurrentEntries;
             entries.Remove(this);
+            var showentries = new List<Player>();
 
             foreach (var entry in entries)
             {
                 var teammateDir = entry.Location - this.Location;
                 var cosineTheta = ((this.Sight.X * teammateDir.X) + (this.Sight.Y * teammateDir.Y) + (this.Sight.Z * teammateDir.Z));
                 var innerD = (Math.Acos(cosineTheta) * (180 / Math.PI));
-                if(innerD > 60)
+                if(innerD < 60)
                 {
-                    entries.Remove(entry);
+                    showentries.Add(entry);
                 }
-
             }
-            return entries;
+            return showentries;
         }
 
         public void Move(CourtPos target)

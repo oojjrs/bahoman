@@ -47,21 +47,23 @@ namespace AI
             factor.GetValue("BallLocation", ref bloc);
 
             CourtPos[] tlocs;
-            factor.GetValues("TeammateLocation", out tlocs);
+            factor.GetValues("TeammateLocation", out tlocs, false);
 
             var playerDistance = ploc.DistanceTo(bloc);
             ret.State = PlayerState.FindBall;
-
-            foreach (var tloc in tlocs)
+            if (tlocs != null)
             {
-                if (playerDistance > tloc.DistanceTo(bloc))
+                foreach (var tloc in tlocs)
                 {
-                    ret.State = PlayerState.Free;
-                    break;
-                }
-                else
-                {
-                    break;
+                    if (playerDistance > tloc.DistanceTo(bloc))
+                    {
+                        ret.State = PlayerState.Free;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
             return ret;
@@ -97,16 +99,19 @@ namespace AI
                     factor.GetValue("RingLocation", ref rloc);
 
                     CourtPos[] tlocs;
-                    factor.GetValues("TeammateLocation", out tlocs);
+                    factor.GetValues("TeammateLocation", out tlocs,false);
 
                     var distanceToRing = ploc.DistanceTo(rloc);
-                    foreach (var tloc in tlocs)
+                    if (tlocs != null)
                     {
-                        var dis = distanceToRing - tloc.DistanceTo(rloc);
-                        if (dis > 20)
+                        foreach (var tloc in tlocs)
                         {
-                            ret.State = PlayerState.Pass;
-                            return ret;
+                            var dis = distanceToRing - tloc.DistanceTo(rloc);
+                            if (dis > 20)
+                            {
+                                ret.State = PlayerState.Pass;
+                                return ret;
+                            }
                         }
                     }
 
