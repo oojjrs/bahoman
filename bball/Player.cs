@@ -96,17 +96,27 @@ namespace bball
             r.PutImage(ia);
 
             var rc = new System.Drawing.Rectangle((int)loc.X, (int)loc.Z, 0, 0);
+            var rc2 = new System.Drawing.Rectangle((int)loc.X, 0, 0, 0);
             using (var g = System.Drawing.Graphics.FromHwnd(r.GetHandle()))
             {
                 var sizef = g.MeasureString(this.Name, OutputManager.DefaultFont);
                 rc.Width = (int)sizef.Width + 1;
                 rc.Height = (int)sizef.Height + 1;
                 rc.Offset(-rc.Width / 2, (int)(rc.Height * 1.5));    // 위에서 이미지가 height/2 만큼 내려오므로 적당히 아래로 더 내린다.
+
+                var sizef2 = g.MeasureString(currentState.ToString(), OutputManager.DefaultFont);
+                rc2.Width = (int)sizef2.Width + 20;
+                rc2.Height = (int)sizef2.Height + 1;
+                rc2.Offset(-rc2.Width / 2, (int)rc2.Height + rc.Top);
             }
 
             var ta = TextArgs.Create(this.Name, OutputManager.DefaultFont);
             ta.Format = TextFormatFlags.SingleLine | TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter;
             ta.Rect = rc;
+            r.PutText(ta);
+
+            ta.Text = currentState.ToString();
+            ta.Rect = rc2;
             r.PutText(ta);
         }
 
