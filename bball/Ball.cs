@@ -17,6 +17,7 @@ namespace bball
         private IImage image = null;
         private float scaleRate;
         private BallState state;
+        private Player thrower;
 
         public override void OnDraw(IRenderer r)
         {
@@ -143,6 +144,12 @@ namespace bball
         {
             get { return targetPos; }
             set { targetPos = value; }
+        }
+
+        public Player Thrower
+        {
+            get { return thrower; }
+            set { thrower = value; }
         }
     }
 }

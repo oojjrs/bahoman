@@ -187,6 +187,7 @@ namespace bball
                 factor.AddValue("Ball", true);
                 factor.AddValue("BallLocation", this.currentGame.Ball.Location);
                 factor.AddValue("BallState", this.currentGame.Ball.CurrentState);
+                factor.AddValue("IsThrower", currentGame.Ball.Thrower == this);
             }
 
             switch (currentState)
@@ -196,7 +197,6 @@ namespace bball
                     factor.AddValue("TargetInfo.Type.Goal", true);
                     factor.AddValue("PlayerLocation", this.Location);
                     factor.AddValue("RingLocation", team.TargetRingLocation);
-                    factor.AddValue("BallLocation", currentGame.Ball.Location);
                     foreach (var p in this.GetTeammates())
                         factor.AddValue("TeammateLocation", p.Location);
                     break;
@@ -210,6 +210,7 @@ namespace bball
                     factor.AddValue("PlayerState.Rebound", true);
                     break;
                 case PlayerState.Free:
+                    factor.AddValue("PlayerLocation", this.Location);
                     factor.AddValue("PlayerState.Free", true);
                     break;
                 case PlayerState.FindBall:

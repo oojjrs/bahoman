@@ -74,14 +74,20 @@ namespace AI
             var ret = new PlayerAIResult();
             if (factor.IsFlagOn("PlayerState.Free"))
             {
-                if (factor.IsFlagOn("Ball"))
+                ret.State = PlayerState.Free;
+                if (factor.IsFlagOn("Ball") && !factor.IsFlagOn("IsThrower"))
                 {
-                    ret.State = PlayerState.CatchBall;
+                    CourtPos ploc = new CourtPos();
+                    factor.GetValue("PlayerLocation", ref ploc);
 
-                }
-                else
-                {
-                    ret.State = PlayerState.Free;
+                    CourtPos bloc = new CourtPos();
+                    factor.GetValue("BallLocation", ref bloc);
+
+                    var distanceToBall = ploc.DistanceTo(bloc);
+                    if (distanceToBall < 10)
+                    {
+                        ret.State = PlayerState.CatchBall;
+                    }
                 }
                 return ret;
             }
