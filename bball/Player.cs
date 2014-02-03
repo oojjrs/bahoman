@@ -309,7 +309,7 @@ namespace bball
             if (hasBall)
             {
                 this.CurrentGame.Ball.CurrentState = Ball.State.Dribbling;
-                this.CurrentGame.Ball.Location = this.CurrentGame.Ball.Location + dir;
+                this.CurrentGame.Ball.Location = this.CurrentGame.Ball.Location + direction;
             }
         }
 
