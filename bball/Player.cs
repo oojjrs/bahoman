@@ -285,15 +285,15 @@ namespace bball
 
             foreach (var entry in entries)
             {
-                var teammateDir = entry.Location - this.Location;
+                var teammateDir = (entry.Location - this.Location).Normalize;
                 var cosineTheta = ((this.Sight.X * teammateDir.X) + (this.Sight.Y * teammateDir.Y) + (this.Sight.Z * teammateDir.Z));
-                var innerD = Math.Acos(MyMath.DegreeToRadian(cosineTheta));
+                var innerD = MyMath.RadianToDegree(Math.Acos(cosineTheta));
                 if(innerD < 60)
                 {
                     showentries.Add(entry);
                 }
             }
-            return entries;
+            return showentries;
         }
 
         public void Move(CourtPos target)
