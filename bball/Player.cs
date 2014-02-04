@@ -17,6 +17,7 @@ namespace bball
         private IImage image;
         private IPlayerAIType ai;
         private Position position;
+        private PropertyBag factors;
 
         public PlayerInfo(UID id)
         {
@@ -26,8 +27,26 @@ namespace bball
             image = null;
             ai = null;
             position = Position.Bench;
+            factors = new PropertyBag();
         }
 
+        public float GetFactor(string key)
+        {
+            float value = 0.0f;
+            factors.GetValue(key, ref value);
+            return value;
+        }
+
+        public void SetFactor(string key, float value)
+        {
+            if (value > 1.0f)
+                value = 1.0f;
+            if (value < 0.0f)
+                value = 0.0f;
+            factors.AddValue(key, value);
+        }
+
+        #region Properties
         public UID ID
         {
             get { return id; }
@@ -62,6 +81,7 @@ namespace bball
             get { return position; }
             set { position = value; }
         }
+        #endregion
     }
 
     class Player : Object
@@ -79,6 +99,7 @@ namespace bball
         private Game currentGame = null;
         private Position currentPosition = Position.Bench;
         private CourtPos targetLocation;
+        private int elapsedTick = 0;
 
         #region From IDrawable
 
@@ -172,6 +193,7 @@ namespace bball
                 var s = this.AI.Determine(factor);
                 currentState = s.State;
                 targetLocation = s.TargetLocation;
+                ++elapsedTick;
             }
         }
 
@@ -246,6 +268,11 @@ namespace bball
             }
             else if (currentState == PlayerState.Free)
             {
+                if ((int)(elapsedTick * playerInfo.GetFactor("Sight")) % 10 == 0)
+                {
+                    // Note : 회전 행렬을 사용하여 Sight 벡터를 120도 돌린다.
+                }
+
                 Move(team.TargetRingLocation);
             }
             else if (currentState == PlayerState.FindBall)

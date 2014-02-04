@@ -16,32 +16,33 @@ namespace bball
         {
             {
                 var tid = tp.Add("A팀");
-                this.AddDummyPlayer(tid, "PG", "res/Player.png", Position.PointGuard);
-                this.AddDummyPlayer(tid, "SG", "res/Player.png", Position.ShootingGuard);
-                this.AddDummyPlayer(tid, "SF", "res/Player.png", Position.SmallFoward);
-                this.AddDummyPlayer(tid, "PF", "res/Player.png", Position.PowerFoward);
-                this.AddDummyPlayer(tid, "C", "res/Player.png", Position.Center);
+                this.AddDummyPlayer(tid, "PG", "res/Player.png", Position.PointGuard, 1.0f);
+                this.AddDummyPlayer(tid, "SG", "res/Player.png", Position.ShootingGuard, 0.8f);
+                this.AddDummyPlayer(tid, "SF", "res/Player.png", Position.SmallFoward, 0.6f);
+                this.AddDummyPlayer(tid, "PF", "res/Player.png", Position.PowerFoward, 0.4f);
+                this.AddDummyPlayer(tid, "C", "res/Player.png", Position.Center, 0.2f);
             }
 
             {
                 var tid = tp.Add("B팀");
-                this.AddDummyPlayer(tid, "PG", "res/Player2.png", Position.PointGuard);
-                this.AddDummyPlayer(tid, "SG", "res/Player2.png", Position.ShootingGuard);
-                this.AddDummyPlayer(tid, "SF", "res/Player2.png", Position.SmallFoward);
-                this.AddDummyPlayer(tid, "PF", "res/Player2.png", Position.PowerFoward);
-                this.AddDummyPlayer(tid, "C", "res/Player2.png", Position.Center);
+                this.AddDummyPlayer(tid, "PG", "res/Player2.png", Position.PointGuard, 1.0f);
+                this.AddDummyPlayer(tid, "SG", "res/Player2.png", Position.ShootingGuard, 0.8f);
+                this.AddDummyPlayer(tid, "SF", "res/Player2.png", Position.SmallFoward, 0.6f);
+                this.AddDummyPlayer(tid, "PF", "res/Player2.png", Position.PowerFoward, 0.4f);
+                this.AddDummyPlayer(tid, "C", "res/Player2.png", Position.Center, 0.2f);
             }
 
             return true;
         }
 
-        private void AddDummyPlayer(UID tid, string name, string imageSubPath, Position position)
+        private void AddDummyPlayer(UID tid, string name, string imageSubPath, Position position, float sight)
         {
             var image = ImageFactory.Create(imageSubPath);
             var ai = PlayerAIFactory.Create(PlayerAIFactory.Type.ExpertSystem);
             ai.SetReporter(Log.Instance);
 
-            var pid = pp.Add(name, new DateTime(), image, ai, position);
+            // Note : sight는 현재 임시값이지만 디버깅을 위해 랜덤을 사용하지 않는다.
+            var pid = pp.Add(name, new DateTime(), image, ai, position, sight);
             if (tid != UID.Null)
                 tp.AddPlayer(tid, pp.Get(pid));
         }
