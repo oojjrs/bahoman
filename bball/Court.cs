@@ -106,7 +106,7 @@ namespace bball
 
         public static CourtPos RingLocation
         {
-            get { return CourtPos.FromCoord(550, 0, 0); }
+            get { return CourtPos.FromCoord(542, 2, 0); }
         }
 
         public IImage Image
