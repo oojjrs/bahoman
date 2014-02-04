@@ -157,6 +157,11 @@ namespace AI
                 ret.State = PlayerState.Rebound;
                 return ret;
             }
+            else if (factor.IsFlagOn("PlayerState.CatchBall"))
+            {
+                ret.State = PlayerState.CatchBall;
+                return ret;
+            }
             else
             {
                 throw new Exception { };

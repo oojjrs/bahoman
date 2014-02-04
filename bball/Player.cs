@@ -182,7 +182,7 @@ namespace bball
             var cosineTheta = ((this.Sight.X * ballDir.X) + (this.Sight.Y * ballDir.Y) + (this.Sight.Z * ballDir.Z));
             var innerD = MyMath.RadianToDegree(Math.Acos(cosineTheta));
 
-            if (innerD < 60)
+            if (innerD < 120)
             {
                 factor.AddValue("Ball", true);
                 factor.AddValue("BallLocation", this.currentGame.Ball.Location);
@@ -215,6 +215,9 @@ namespace bball
                     break;
                 case PlayerState.FindBall:
                     factor.AddValue("PlayerState.FindBall", true);
+                    break;
+                case PlayerState.CatchBall:
+                    factor.AddValue("PlayerState.CatchBall", true);
                     break;
             }
         }
@@ -270,9 +273,11 @@ namespace bball
                     var t = this.GetPassableTarget();
                     if (t != null)
                     {
+
                         hasBall = false;
                         this.CurrentGame.Ball.TargetLocation = t.Location + t.Direction * (playerLocation.DistanceTo(t.Location) / (float)5);
-                        this.CurrentGame.Ball.Force = 5;
+                        this.CurrentGame.Ball.Force = 6;
+                        this.CurrentGame.Ball.Thrower = this; 
                         this.CurrentGame.Ball.CurrentState = BallState.Passing;
                         currentState = PlayerState.Free;
                     }
@@ -311,7 +316,7 @@ namespace bball
                 var teammateDir = (entry.Location - this.Location).Normalize;
                 var cosineTheta = ((this.Sight.X * teammateDir.X) + (this.Sight.Y * teammateDir.Y) + (this.Sight.Z * teammateDir.Z));
                 var innerD = MyMath.RadianToDegree(Math.Acos(cosineTheta));
-                if(innerD < 60)
+                if(innerD < 120)
                 {
                     showentries.Add(entry);
                 }
