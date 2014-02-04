@@ -18,6 +18,7 @@ namespace bball
         private float scaleRate;
         private BallState state;
         private Player thrower;
+        private CourtPos shootingDirection;
 
         public override void OnDraw(IRenderer r)
         {
@@ -52,7 +53,7 @@ namespace bball
                         var highestPoint = distance / 2.0f + distance * 0.15f;
                         scaleRate = ((float)Math.Cos(MyMath.DegreeToRadian((highestPoint - remain) / highestPoint * 90))) * 0.4f + 0.4f;
                     }
-                    currentPos += CourtPos.FromCoord(5, 0, 0);
+                    currentPos += shootingDirection * 5;
                     break;
                 case BallState.Dribbling:
                     break;
@@ -124,6 +125,7 @@ namespace bball
                     case BallState.Shooting:
                         scaleRate = 0.5f;
                         beganPos = currentPos;
+                        shootingDirection = (targetPos - beganPos).Normalize;
                         break;
                     case BallState.Dribbling:
                         scaleRate = 0.5f;
