@@ -73,6 +73,7 @@ namespace bball
         private Boolean hasBall = false;
         private Team team = null;
         private float speed = 1;
+        private double playSightDegree = 120;
         private CourtPos direction;
         private CourtPos sight;
         private Game currentGame = null;
@@ -177,12 +178,7 @@ namespace bball
         private void SetStateFactorAttack(PropertyBag factor)
         {
             factor.AddValue("TeamState.Attack", true);
-
-            var ballDir = (this.currentGame.Ball.Location - this.Location).Normalize;
-            var cosineTheta = ((this.Sight.X * ballDir.X) + (this.Sight.Y * ballDir.Y) + (this.Sight.Z * ballDir.Z));
-            var innerD = MyMath.RadianToDegree(Math.Acos(cosineTheta));
-
-            if (innerD < 120)
+            if (IsShow(this.Location, this.currentGame.Ball.Location))
             {
                 factor.AddValue("Ball", true);
                 factor.AddValue("BallLocation", this.currentGame.Ball.Location);
@@ -262,7 +258,6 @@ namespace bball
                 }
                 else
                 {
-                    //볼 주우러 이동
                     this.Move(this.CurrentGame.Ball.Location);
                 }
             }
@@ -273,7 +268,6 @@ namespace bball
                     var t = this.GetPassableTarget();
                     if (t != null)
                     {
-
                         hasBall = false;
                         this.CurrentGame.Ball.TargetLocation = t.Location + t.Direction * (playerLocation.DistanceTo(t.Location) / (float)5);
                         this.CurrentGame.Ball.Force = 6;
@@ -283,9 +277,45 @@ namespace bball
                     }
                 }
             }
+            else if (currentState == PlayerState.CatchBall)
+            {
+                if (hasBall)
+                {
+                    SetState(PlayerState.Dribble);
+                }
+                else
+                {
+                    if (playerLocation.DistanceTo(this.CurrentGame.Ball.Location) < 5)
+                    {
+                        hasBall = true;
+                        SetState(PlayerState.Dribble);
+                    }
+                    else
+                    {
+                        this.Move(this.CurrentGame.Ball.Location);
+                    }
+                }
+            }
             else if (currentState == PlayerState.Move)
             {
                 this.Move(this.targetLocation);
+            }
+
+
+        }
+
+        private Boolean IsShow(CourtPos began, CourtPos target){
+            var targetDir = (target - began).Normalize;
+            var cosineTheta = ((this.Sight.X * targetDir.X) + (this.Sight.Y * targetDir.Y) + (this.Sight.Z * targetDir.Z));
+            var innerD = MyMath.RadianToDegree(Math.Acos(cosineTheta));
+
+            if (innerD < playSightDegree)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -313,10 +343,7 @@ namespace bball
 
             foreach (var entry in entries)
             {
-                var teammateDir = (entry.Location - this.Location).Normalize;
-                var cosineTheta = ((this.Sight.X * teammateDir.X) + (this.Sight.Y * teammateDir.Y) + (this.Sight.Z * teammateDir.Z));
-                var innerD = MyMath.RadianToDegree(Math.Acos(cosineTheta));
-                if(innerD < 120)
+                if (IsShow(this.Location, entry.Location))
                 {
                     showentries.Add(entry);
                 }
