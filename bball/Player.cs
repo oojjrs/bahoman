@@ -268,11 +268,6 @@ namespace bball
             }
             else if (currentState == PlayerState.Free)
             {
-                if ((int)(elapsedTick * playerInfo.GetFactor("Sight")) % 10 == 0)
-                {
-                    // Note : 회전 행렬을 사용하여 Sight 벡터를 120도 돌린다.
-                }
-
                 Move(team.TargetRingLocation);
             }
             else if (currentState == PlayerState.FindBall)
@@ -385,7 +380,13 @@ namespace bball
                 return;
 
             direction = dir.Normalize;
-            sight = dir.Normalize;
+            sight = direction;
+            if ((int)(elapsedTick * playerInfo.GetFactor("Sight")) % 10 == 0)
+            {
+                sight.RotateY((float)MyMath.DegreeToRadian(60.0 * (elapsedTick % 3)));
+                sight = sight.Normalize;
+            }
+
             playerLocation = playerLocation + direction;
             
             if (hasBall)

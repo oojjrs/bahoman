@@ -46,6 +46,12 @@ namespace AI
             return Vector3f.Distance(pos, target.pos);
         }
 
+        public void RotateY(float radian)
+        {
+            this.X = (float)(this.X * Math.Cos(radian) - this.Z * Math.Sin(radian));
+            this.Z = (float)(this.X * Math.Sin(radian) + this.Z * Math.Cos(radian));
+        }
+
         public CourtPos Normalize
         {
             get
