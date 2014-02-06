@@ -51,13 +51,18 @@ namespace AI
 
             var playerDistance = ploc.DistanceTo(bloc);
             ret.State = PlayerState.FindBall;
+            ret.TargetLocation = bloc;
             if (tlocs != null)
             {
                 foreach (var tloc in tlocs)
                 {
                     if (playerDistance > tloc.DistanceTo(bloc))
                     {
+                        CourtPos posLoc = new CourtPos();
+                        factor.GetValue("PositionLocation", ref posLoc);
+
                         ret.State = PlayerState.Free;
+                        ret.TargetLocation = posLoc;
                         break;
                     }
                     else
@@ -74,7 +79,11 @@ namespace AI
             var ret = new PlayerAIResult();
             if (factor.IsFlagOn("PlayerState.Free"))
             {
+                CourtPos posLoc = new CourtPos();
+                factor.GetValue("PositionLocation", ref posLoc);
+
                 ret.State = PlayerState.Free;
+                ret.TargetLocation = posLoc;
                 if (factor.IsFlagOn("Ball") && !factor.IsFlagOn("IsThrower"))
                 {
                     CourtPos ploc = new CourtPos();
@@ -87,6 +96,7 @@ namespace AI
                     if (distanceToBall < 10)
                     {
                         ret.State = PlayerState.CatchBall;
+                        ret.TargetLocation = bloc;
                     }
                 }
                 return ret;
@@ -98,7 +108,11 @@ namespace AI
             }
             else if (factor.IsFlagOn("PlayerState.FindBall"))
             {
+                CourtPos posLoc = new CourtPos();
+                factor.GetValue("BallLocation", ref posLoc);
+
                 ret.State = PlayerState.Free;
+                ret.TargetLocation = posLoc;
                 return ret;
             }
             else if (factor.IsFlagOn("PlayerState.Dribble"))
@@ -134,11 +148,13 @@ namespace AI
                     {
                         //현재 상태를 슛상태로 변환
                         ret.State = PlayerState.Shoot;
+                        ret.TargetLocation = rloc;
                         return ret;
                     }
                     else
                     {
                         ret.State = PlayerState.Dribble;
+                        ret.TargetLocation = rloc;
                         return ret;
                     }
                 }
@@ -159,7 +175,11 @@ namespace AI
             }
             else if (factor.IsFlagOn("PlayerState.CatchBall"))
             {
+                CourtPos bloc = new CourtPos();
+                factor.GetValue("BallLocation", ref bloc);
+
                 ret.State = PlayerState.CatchBall;
+                ret.TargetLocation = bloc;
                 return ret;
             }
             else

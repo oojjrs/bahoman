@@ -69,6 +69,9 @@ namespace bball
             this.TeamState = TeamState.LooseBall;
             this.Away = away;
 
+            foreach (var p in this.AllPlayers)
+                p.Clear();
+
             // Note : 선발 엔트리를 집어넣음
             this.ChooseRandomPlayerToEntry(Position.PointGuard);
             this.ChooseRandomPlayerToEntry(Position.ShootingGuard);

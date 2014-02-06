@@ -112,7 +112,10 @@ namespace bball
             OutputManager.RemoveAll();
             game = new Game();
             if (game.Initialize(dataManager.AllTeams[0], dataManager.AllTeams[1]))
+            {
+                totalTickCount = 0;
                 globalTimer.Enabled = true;
+            }
         }
 
         private void MainForm_ResizeEnd(object sender, EventArgs e)

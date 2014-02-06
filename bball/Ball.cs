@@ -16,7 +16,7 @@ namespace bball
         private float force = 1;
         private IImage image = null;
         private float scaleRate;
-        private BallState state;
+        private BallState state = BallState.Bounding;
         private Player thrower;
         private CourtPos shootingDirection;
 

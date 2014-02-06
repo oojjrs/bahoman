@@ -97,8 +97,8 @@ namespace bball
     {
         private readonly PlayerInfo playerInfo;
         private CourtPos playerLocation;
-        private PlayerState currentState = new PlayerState();
-        private int lastThinkTick = 0;
+        private PlayerState currentState;
+        private int lastThinkTick;
         private Boolean hasBall = false;
         private Team team = null;
         private float speed = 1;
@@ -153,8 +153,18 @@ namespace bball
 
         public override void OnUpdate()
         {
-            this.Thinking();
+            var curTick = Environment.TickCount;
+            if (curTick - lastThinkTick > 10 || lastThinkTick == 0)
+            {
+                var ret = this.Thinking();
+                this.SetTargetLocation(ret.TargetLocation);
+                this.SetState(ret.State);
+
+                lastThinkTick = curTick;
+            }
+
             this.Action();
+            ++elapsedTick;
         }
 
         #endregion
@@ -177,33 +187,43 @@ namespace bball
             playerInfo = pi;
         }
 
-        private void Thinking()
+        public void Clear()
         {
-            if (Environment.TickCount - lastThinkTick > 10)
+            playerLocation = CourtPos.Center;
+            currentState = PlayerState.Free;
+            lastThinkTick = 0;
+            hasBall = false;
+            speed = 1;
+            playSightDegree = 120;
+            direction = CourtPos.Center;
+            sight = CourtPos.Center;
+            currentGame = null;
+            currentPosition = Position.Bench;
+            targetLocation = CourtPos.Center;
+            elapsedTick = 0;
+        }
+
+        private PlayerAIResult Thinking()
+        {
+            var factor = new PropertyBag();
+
+            switch (team.TeamState)
             {
-                var factor = new PropertyBag();
-
-                switch (team.TeamState)
-                {
-                    case TeamState.Attack:
-                        this.SetStateFactorAttack(factor);
-                        break;
-                    case TeamState.Defence:
-                        this.SetStateFactorDefence(factor);
-                        break;
-                    case TeamState.LooseBall:
-                        this.SetStateFactorLooseBall(factor);
-                        break;
-                    case TeamState.StrategyTime:
-                        factor.AddValue("TeamState.StrategyTime", true);
-                        break;
-                }
-
-                var s = this.AI.Determine(factor);
-                currentState = s.State;
-                targetLocation = s.TargetLocation;
-                ++elapsedTick;
+                case TeamState.Attack:
+                    this.SetStateFactorAttack(factor);
+                    break;
+                case TeamState.Defence:
+                    this.SetStateFactorDefence(factor);
+                    break;
+                case TeamState.LooseBall:
+                    this.SetStateFactorLooseBall(factor);
+                    break;
+                case TeamState.StrategyTime:
+                    factor.AddValue("TeamState.StrategyTime", true);
+                    break;
             }
+
+            return this.AI.Determine(factor);
         }
 
         private void SetStateFactorAttack(PropertyBag factor)
@@ -224,6 +244,7 @@ namespace bball
                     factor.AddValue("TargetInfo.Type.Goal", true);
                     factor.AddValue("PlayerLocation", this.Location);
                     factor.AddValue("RingLocation", team.TargetRingLocation);
+                    factor.AddValue("PositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
                     foreach (var p in this.GetTeammates())
                         factor.AddValue("TeammateLocation", p.Location);
                     break;
@@ -239,12 +260,19 @@ namespace bball
                 case PlayerState.Free:
                     factor.AddValue("PlayerLocation", this.Location);
                     factor.AddValue("PlayerState.Free", true);
+                    factor.AddValue("RingLocation", team.TargetRingLocation);
+                    factor.AddValue("BallLocation", this.currentGame.Ball.Location);
+                    factor.AddValue("PositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
                     break;
                 case PlayerState.FindBall:
                     factor.AddValue("PlayerState.FindBall", true);
+                    factor.AddValue("RingLocation", team.TargetRingLocation);
+                    factor.AddValue("BallLocation", this.currentGame.Ball.Location);
+                    factor.AddValue("PositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
                     break;
                 case PlayerState.CatchBall:
                     factor.AddValue("PlayerState.CatchBall", true);
+                    factor.AddValue("BallLocation", this.currentGame.Ball.Location);
                     break;
             }
         }
@@ -260,82 +288,91 @@ namespace bball
             factor.AddValue("TeamState.LooseBall", true);
             factor.AddValue("PlayerLocation", this.Location);
             factor.AddValue("BallLocation", this.currentGame.Ball.Location);
+            factor.AddValue("RingLocation", team.TargetRingLocation);
+            factor.AddValue("PositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
             foreach (var p in this.GetTeammates())
                 factor.AddValue("TeammateLocation", p.Location);
         }
 
         private void Action()
         {
-            if (currentState == PlayerState.Dribble)
+            switch(currentState)
             {
-                Move(team.TargetRingLocation);
+                case PlayerState.Dribble:
+                    this.Move(targetLocation);
+                    break;
+                case PlayerState.Shoot:
+                    break;
+                case PlayerState.Free:
+                    this.Move(targetLocation);
+                    break;
+                case PlayerState.FindBall:
+                    this.DoFindBall();
+                    break;
+                case PlayerState.Pass:
+                    this.DoPass();
+                    break;
+                case PlayerState.CatchBall:
+                    this.DoCatchBall();
+                    break;
+                case PlayerState.Move:
+                    this.Move(targetLocation);
+                    break;
             }
-            else if (currentState == PlayerState.Shoot)
+        }
+
+        private void DoFindBall()
+        {
+            if (playerLocation.DistanceTo(this.CurrentGame.Ball.Location) < 5)
             {
-                this.CurrentGame.Ball.TargetLocation = team.TargetRingLocation;
-                this.CurrentGame.Ball.CurrentState = BallState.Shooting;
+                hasBall = true;
+                SetState(PlayerState.Dribble);
             }
-            else if (currentState == PlayerState.Free)
+            else
             {
-                Move(team.TargetRingLocation);
+                this.Move(targetLocation);
             }
-            else if (currentState == PlayerState.FindBall)
+        }
+
+        private void DoPass()
+        {
+            if (this.CurrentGame.Ball.CurrentState != BallState.Passing)
+            {
+                var t = this.GetPassableTarget();
+                if (t != null)
+                {
+                    hasBall = false;
+                    this.CurrentGame.Ball.TargetLocation = t.Location + t.Direction * (playerLocation.DistanceTo(t.Location) / (float)5);
+                    this.CurrentGame.Ball.Force = 6;
+                    this.CurrentGame.Ball.Thrower = this;
+                    this.CurrentGame.Ball.CurrentState = BallState.Passing;
+                    currentState = PlayerState.Free;
+                }
+            }
+        }
+
+        private void DoCatchBall()
+        {
+            if (hasBall)
+            {
+                SetState(PlayerState.Dribble);
+            }
+            else
             {
                 if (playerLocation.DistanceTo(this.CurrentGame.Ball.Location) < 5)
                 {
-                    //MessageBox.Show("볼 잡았스");
                     hasBall = true;
                     SetState(PlayerState.Dribble);
                 }
                 else
                 {
-                    this.Move(this.CurrentGame.Ball.Location);
+                    this.Move(targetLocation);
                 }
             }
-            else if (currentState == PlayerState.Pass)
-            {
-                if (this.CurrentGame.Ball.CurrentState != BallState.Passing)
-                {
-                    var t = this.GetPassableTarget();
-                    if (t != null)
-                    {
-                        hasBall = false;
-                        this.CurrentGame.Ball.TargetLocation = t.Location + t.Direction * (playerLocation.DistanceTo(t.Location) / (float)5);
-                        this.CurrentGame.Ball.Force = 6;
-                        this.CurrentGame.Ball.Thrower = this; 
-                        this.CurrentGame.Ball.CurrentState = BallState.Passing;
-                        currentState = PlayerState.Free;
-                    }
-                }
-            }
-            else if (currentState == PlayerState.CatchBall)
-            {
-                if (hasBall)
-                {
-                    SetState(PlayerState.Dribble);
-                }
-                else
-                {
-                    if (playerLocation.DistanceTo(this.CurrentGame.Ball.Location) < 5)
-                    {
-                        hasBall = true;
-                        SetState(PlayerState.Dribble);
-                    }
-                    else
-                    {
-                        this.Move(this.CurrentGame.Ball.Location);
-                    }
-                }
-            }
-            else if (currentState == PlayerState.Move)
-            {
-                this.Move(this.targetLocation);
-            }
-
-
         }
 
-        private Boolean IsShow(CourtPos began, CourtPos target){
+        private Boolean IsShow(CourtPos began, CourtPos target)
+        {
             var targetDir = (target - began).Normalize;
             var cosineTheta = ((this.Sight.X * targetDir.X) + (this.Sight.Y * targetDir.Y) + (this.Sight.Z * targetDir.Z));
             var innerD = MyMath.RadianToDegree(Math.Acos(cosineTheta));
@@ -384,19 +421,14 @@ namespace bball
 
         public void Move(CourtPos target)
         {
-            var dir = target - playerLocation;
-            if (dir.Length < 1.0f)
-                return;
-
-            direction = dir.Normalize;
-            sight = direction;
             if ((int)(elapsedTick * playerInfo.GetFactor("Sight")) % 10 == 0)
             {
-                sight.RotateY((float)MyMath.DegreeToRadian(60.0 * (elapsedTick % 3)));
+                sight.RotateY((float)MyMath.DegreeToRadian(60.0));
                 sight = sight.Normalize;
             }
 
-            playerLocation = playerLocation + direction;
+            if ((target - playerLocation).Length >= 1.0f)
+                playerLocation = playerLocation + direction;
             
             if (hasBall)
             {
@@ -405,13 +437,78 @@ namespace bball
             }
         }
 
+        private void SetTargetLocation(CourtPos target)
+        {
+            targetLocation = target;
+            direction = (target - playerLocation).Normalize;
+        }
+
         public void SetState(PlayerState playerstate)
         {
-            currentState = playerstate;
-            if (currentState == PlayerState.Dribble)
+            if (playerstate != currentState)
             {
-                currentGame.SetTeamState(team, TeamState.Attack);
-                this.CurrentGame.Ball.CurrentState = BallState.Dribbling;
+                this.EndState(currentState);
+                this.BeginState(playerstate);
+            }
+
+            currentState = playerstate;
+        }
+
+        public void BeginState(PlayerState state)
+        {
+            switch(state)
+            {
+                case PlayerState.CatchBall:
+                    break;
+                case PlayerState.Dribble:
+                    sight = direction;
+                    this.CurrentGame.SetTeamState(team, TeamState.Attack);
+                    this.CurrentGame.Ball.CurrentState = BallState.Dribbling;
+                    break;
+                case PlayerState.FindBall:
+                    sight = direction;
+                    break;
+                case PlayerState.Free:
+                    sight = direction;
+                    break;
+                case PlayerState.Move:
+                    sight = direction;
+                    break;
+                case PlayerState.Pass:
+                    break;
+                case PlayerState.Rebound:
+                    break;
+                case PlayerState.Shoot:
+                    this.CurrentGame.Ball.TargetLocation = targetLocation;
+                    this.CurrentGame.Ball.CurrentState = BallState.Shooting;
+                    break;
+                default:
+                    throw new Exception("추가된 PlayerState에 대한 처리가 필요합니다.");
+            }
+        }
+
+        public void EndState(PlayerState state)
+        {
+            switch (state)
+            {
+                case PlayerState.CatchBall:
+                    break;
+                case PlayerState.Dribble:
+                    break;
+                case PlayerState.FindBall:
+                    break;
+                case PlayerState.Free:
+                    break;
+                case PlayerState.Move:
+                    break;
+                case PlayerState.Pass:
+                    break;
+                case PlayerState.Rebound:
+                    break;
+                case PlayerState.Shoot:
+                    break;
+                default:
+                    throw new Exception("추가된 PlayerState에 대한 처리가 필요합니다.");
             }
         }
 
