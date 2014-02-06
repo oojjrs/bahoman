@@ -7,6 +7,7 @@ namespace AI
 {
     class PlayerAwareness
     {
+
         private CourtPos playerLocation;
         private PlayerState playerState;
         private Boolean isTeammate;

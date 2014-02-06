@@ -18,6 +18,8 @@ namespace bball
         private IPlayerAIType ai;
         private Position position;
         private PropertyBag factors;
+        private int backNumber;
+
 
         public PlayerInfo(UID id)
         {
@@ -27,6 +29,7 @@ namespace bball
             image = null;
             ai = null;
             position = Position.Bench;
+            backNumber = -1;
             factors = new PropertyBag();
         }
 
@@ -80,6 +83,12 @@ namespace bball
         {
             get { return position; }
             set { position = value; }
+        }
+
+        public int BackNumber
+        {
+            get { return backNumber; }
+            set { backNumber = value; }
         }
         #endregion
     }

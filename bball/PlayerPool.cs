@@ -12,7 +12,7 @@ namespace bball
     {
         private Dictionary<UID, Player> players = new Dictionary<UID, Player>();
 
-        public UID Add(string name, DateTime birthday, IImage image, IPlayerAIType ai, Position position, float sight)
+        public UID Add(string name, DateTime birthday, IImage image, IPlayerAIType ai, Position position, float sight,int backnumber)
         {
             var uid = UID.Create(UID.Type.Player);
             if (uid != UID.Null)
@@ -22,6 +22,7 @@ namespace bball
                 pi.Birthday = birthday;
                 pi.Image = image;
                 pi.AI = ai;
+                pi.BackNumber = backnumber;
                 pi.Position = position;
                 pi.SetFactor("Sight", sight);
                 players[uid] = new Player(pi);
