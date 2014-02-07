@@ -190,7 +190,7 @@ namespace bball
         public void Clear()
         {
             playerLocation = CourtPos.Center;
-            currentState = PlayerState.Free;
+            currentState = PlayerState.Ready;
             lastThinkTick = 0;
             hasBall = false;
             speed = 1;
@@ -428,6 +428,8 @@ namespace bball
         {
             switch(state)
             {
+                case PlayerState.Ready:
+                    break;
                 case PlayerState.CatchBall:
                     break;
                 case PlayerState.Dribble:
@@ -461,6 +463,8 @@ namespace bball
         {
             switch (state)
             {
+                case PlayerState.Ready:
+                    break;
                 case PlayerState.CatchBall:
                     break;
                 case PlayerState.Dribble:

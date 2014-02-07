@@ -4,6 +4,7 @@ namespace AI
 {
     public enum PlayerState
     {
+        Ready,
         Dribble,
         Shoot,
         Pass,
