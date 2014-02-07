@@ -109,6 +109,7 @@ namespace bball
         private Position currentPosition = Position.Bench;
         private CourtPos targetLocation;
         private int elapsedTick = 0;
+        private AwarenessInfo awarenessInfo = new AwarenessInfo();
 
         #region From IDrawable
 
@@ -387,6 +388,35 @@ namespace bball
                 }
             }
             return showentries;
+        }
+
+        private void Seeing()
+        {
+            var teamEntries = team.CurrentEntries;
+            teamEntries.Remove(this);
+            foreach (var entry in teamEntries)
+            {
+                if (IsShow(this.Location, entry.Location))
+                {
+                    awarenessInfo.PlayerAwarenessInfos.Add(new PlayerAwareness(entry.Location, entry.currentState, true, entry.playerInfo.BackNumber, entry.hasBall, Environment.TickCount));
+                }
+            }
+           
+            var awayTeamEntries = team.Away.CurrentEntries;
+            foreach (var entry in awayTeamEntries)
+            {
+                if (IsShow(this.Location, entry.Location))
+                {
+                    awarenessInfo.PlayerAwarenessInfos.Add(new PlayerAwareness(entry.Location, entry.currentState, false, entry.playerInfo.BackNumber, entry.hasBall, Environment.TickCount));
+                }
+            }
+
+            if (IsShow(this.Location, currentGame.Ball.Location))
+            {
+                awarenessInfo.BallInfo.BallState = currentGame.Ball.CurrentState;
+                awarenessInfo.BallInfo.Location = currentGame.Ball.Location;
+                awarenessInfo.BallInfo.LastAwarenessTick = Environment.TickCount;
+            }
         }
 
         public void Move(CourtPos target)

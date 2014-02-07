@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AI
 {
-    class PlayerAwareness
+    public class PlayerAwareness
     {
 
         private CourtPos playerLocation;
@@ -56,7 +56,7 @@ namespace AI
         }
     }
 
-    class BallAwareness
+    public class BallAwareness
     {
         private BallState ballState;
         private CourtPos ballLocation;
@@ -88,13 +88,15 @@ namespace AI
         }
     }
     
-    class AwarenessInfo
+    public class AwarenessInfo
     {
-        private List<PlayerAwareness> playerAwarenessInfos = new List<PlayerAwareness>();
-        private BallAwareness ballInfo = null;
+        private List<PlayerAwareness> playerAwarenessInfos;
+        private BallAwareness ballInfo;
 
         public AwarenessInfo()
-        { 
+        {
+            playerAwarenessInfos = new List<PlayerAwareness>();
+            ballInfo = null;
         }
 
         public List<PlayerAwareness> PlayerAwarenessInfos
