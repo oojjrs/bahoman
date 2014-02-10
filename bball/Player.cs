@@ -46,6 +46,8 @@ namespace bball
                 value = 1.0f;
             if (value < 0.0f)
                 value = 0.0f;
+            if (factors.HasKey<float>(key))
+                throw new Exception("귀찮아서 아직 처리 안함");
             factors.AddValue(key, value);
         }
 
@@ -513,6 +515,11 @@ namespace bball
                 default:
                     throw new Exception("추가된 PlayerState에 대한 처리가 필요합니다.");
             }
+        }
+
+        public void SetFactor(string key, float value)
+        {
+            playerInfo.SetFactor(key, value);
         }
 
         public UID ID

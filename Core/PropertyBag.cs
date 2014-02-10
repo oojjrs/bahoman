@@ -83,6 +83,18 @@ namespace Core
             return true;
         }
 
+        public bool HasKey<T>(string key)
+        {
+            var container = this.GetContainer(typeof(T));
+            if (container != null)
+            {
+                var ret = from entry in container where entry.Key == key select (T)entry.Value;
+                if (ret.Count() > 0)
+                    return true;
+            }
+            return false;
+        }
+
         public bool IsFlagOn(string key)
         {
             bool isOn = false;
