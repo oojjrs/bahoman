@@ -117,50 +117,43 @@ namespace AI
             }
             else if (factor.IsFlagOn("PlayerState.Dribble"))
             {
-                if (factor.IsFlagOn("TargetInfo.Type.Goal"))
+                //패스할 데가 있나 확인
+                CourtPos ploc = new CourtPos();
+                factor.GetValue("PlayerLocation", ref ploc);
+
+                CourtPos rloc = new CourtPos();
+                factor.GetValue("RingLocation", ref rloc);
+
+                CourtPos[] tlocs;
+                factor.GetValues("TeammateLocation", out tlocs,false);
+
+                var distanceToRing = ploc.DistanceTo(rloc);
+                if (tlocs != null)
                 {
-                    //패스할 데가 있나 확인
-                    CourtPos ploc = new CourtPos();
-                    factor.GetValue("PlayerLocation", ref ploc);
-
-                    CourtPos rloc = new CourtPos();
-                    factor.GetValue("RingLocation", ref rloc);
-
-                    CourtPos[] tlocs;
-                    factor.GetValues("TeammateLocation", out tlocs,false);
-
-                    var distanceToRing = ploc.DistanceTo(rloc);
-                    if (tlocs != null)
+                    foreach (var tloc in tlocs)
                     {
-                        foreach (var tloc in tlocs)
+                        var dis = distanceToRing - tloc.DistanceTo(rloc);
+                        if (dis > 20)
                         {
-                            var dis = distanceToRing - tloc.DistanceTo(rloc);
-                            if (dis > 20)
-                            {
-                                ret.State = PlayerState.Pass;
-                                return ret;
-                            }
+                            ret.State = PlayerState.Pass;
+                            return ret;
                         }
                     }
+                }
 
-                    //슛이 가능한지 현재 위치 확인
-                    if (this.GetShootingPoint(ploc, rloc) > 80)
-                    {
-                        //현재 상태를 슛상태로 변환
-                        ret.State = PlayerState.Shoot;
-                        ret.TargetLocation = rloc;
-                        return ret;
-                    }
-                    else
-                    {
-                        ret.State = PlayerState.Dribble;
-                        ret.TargetLocation = rloc;
-                        return ret;
-                    }
+                //슛이 가능한지 현재 위치 확인
+                if (this.GetShootingPoint(ploc, rloc) > 80)
+                {
+                    //현재 상태를 슛상태로 변환
+                    ret.State = PlayerState.Shoot;
+                    ret.TargetLocation = rloc;
+                    return ret;
                 }
                 else
                 {
-                    throw new Exception { };
+                    ret.State = PlayerState.Dribble;
+                    ret.TargetLocation = rloc;
+                    return ret;
                 }
             }
             else if (factor.IsFlagOn("PlayerState.Shoot"))

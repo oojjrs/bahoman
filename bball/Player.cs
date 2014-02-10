@@ -239,7 +239,6 @@ namespace bball
             }
 
             factor.AddValue("PlayerState." + currentState.ToString(), true);
-            factor.AddValue("TargetInfo.Type.Goal", true);
             factor.AddValue("PlayerLocation", this.Location);
             factor.AddValue("RingLocation", team.TargetRingLocation);
             factor.AddValue("BallLocation", this.currentGame.Ball.Location);
