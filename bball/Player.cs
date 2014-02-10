@@ -265,7 +265,7 @@ namespace bball
         {
             factor.AddValue("TeamState.LooseBall", true);
             factor.AddValue("PlayerLocation", this.Location);
-            factor.AddValue("BallLocation", this.currentGame.Ball.Location);
+            factor.AddValue("AwarenessInfo", this.awarenessInfo);
             factor.AddValue("RingLocation", team.TargetRingLocation);
             factor.AddValue("PositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
             foreach (var p in this.GetTeammates())
@@ -432,6 +432,7 @@ namespace bball
             {
                 sight.RotateY((float)MyMath.DegreeToRadian(60.0));
                 sight = sight.Normalize;
+                Seeing();
             }
 
             if ((target - playerLocation).Length >= 1.0f)

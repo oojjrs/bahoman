@@ -62,11 +62,8 @@ namespace AI
         private CourtPos ballLocation;
         private int lastAwarenessTick = 0;
 
-        public BallAwareness(BallState state, CourtPos location, int lastawarenesstick)
+        public BallAwareness()
         {
-            ballLocation = location;
-            ballState = state;
-            lastAwarenessTick = lastawarenesstick;
         }
 
         public BallState BallState
@@ -96,7 +93,7 @@ namespace AI
         public AwarenessInfo()
         {
             playerAwarenessInfos = new List<PlayerAwareness>();
-            ballInfo = null;
+            ballInfo = new BallAwareness();
         }
 
         public List<PlayerAwareness> PlayerAwarenessInfos

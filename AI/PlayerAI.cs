@@ -40,11 +40,13 @@ namespace AI
         private PlayerAIResult StateLooseBall(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
+            AwarenessInfo awarenessInfo = new AwarenessInfo();
+            factor.GetValue("AwarenessInfo", ref awarenessInfo);
+
             CourtPos ploc = new CourtPos();
             factor.GetValue("PlayerLocation", ref ploc);
 
-            CourtPos bloc = new CourtPos();
-            factor.GetValue("BallLocation", ref bloc);
+            CourtPos bloc = awarenessInfo.BallInfo.Location;
 
             CourtPos[] tlocs;
             factor.GetValues("TeammateLocation", out tlocs, false);
@@ -52,23 +54,17 @@ namespace AI
             var playerDistance = ploc.DistanceTo(bloc);
             ret.State = PlayerState.FindBall;
             ret.TargetLocation = bloc;
-            if (tlocs != null)
-            {
-                foreach (var tloc in tlocs)
-                {
-                    if (playerDistance > tloc.DistanceTo(bloc))
-                    {
-                        CourtPos posLoc = new CourtPos();
-                        factor.GetValue("PositionLocation", ref posLoc);
 
-                        ret.State = PlayerState.Free;
-                        ret.TargetLocation = posLoc;
-                        break;
-                    }
-                    else
-                    {
-                        break;
-                    }
+            foreach (var teammate in awarenessInfo.PlayerAwarenessInfos)
+            {
+                if (teammate.IsTeammate && playerDistance > teammate.Location.DistanceTo(bloc))
+                {
+                    CourtPos posLoc = new CourtPos();
+                    factor.GetValue("PositionLocation", ref posLoc);
+
+                    ret.State = PlayerState.Free;
+                    ret.TargetLocation = posLoc;
+                    break;
                 }
             }
             return ret;
