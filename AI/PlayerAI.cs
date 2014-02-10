@@ -117,6 +117,9 @@ namespace AI
             }
             else if (factor.IsFlagOn("PlayerState.Dribble"))
             {
+                // Note : 슛 기대치와 패스 난이도를 계산하여 가장 적절한 대상에게 패스하거나 직접 드리블 또는 슛함
+                //        근데 아직 필요한 데이터가 없네
+
                 //패스할 데가 있나 확인
                 CourtPos ploc = new CourtPos();
                 factor.GetValue("PlayerLocation", ref ploc);
