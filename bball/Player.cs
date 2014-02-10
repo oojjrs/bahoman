@@ -87,6 +87,11 @@ namespace bball
             set { position = value; }
         }
 
+        public PropertyBag Factors
+        {
+            get { return factors; }
+        }
+
         public int BackNumber
         {
             get { return backNumber; }
@@ -209,6 +214,7 @@ namespace bball
         private PlayerAIResult Thinking()
         {
             var factor = new PropertyBag();
+            playerInfo.Factors.CopyTo(factor);
 
             switch (team.TeamState)
             {

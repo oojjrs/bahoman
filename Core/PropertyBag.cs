@@ -22,6 +22,15 @@ namespace Core
             return ret.ToString();
         }
 
+        public void CopyTo(PropertyBag props)
+        {
+            foreach (var container in containers)
+            {
+                foreach (var c in container.Value)
+                    props.AddValue(c.Key, c.Value);
+            }
+        }
+
         public void AddValue<T>(string key, T value)
         {
             var container = this.GetContainer(typeof(T));
