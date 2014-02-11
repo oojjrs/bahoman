@@ -251,6 +251,7 @@ namespace bball
             factor.AddValue("RingLocation", team.TargetRingLocation);
             factor.AddValue("BallLocation", this.currentGame.Ball.Location);
             factor.AddValue("PositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
+            factor.AddValue("AwarenessInfo", this.awarenessInfo);
             foreach (var p in this.GetTeammates())
                 factor.AddValue("TeammateLocation", p.Location);
         }
@@ -320,7 +321,7 @@ namespace bball
                 if (t != null)
                 {
                     hasBall = false;
-                    this.CurrentGame.Ball.TargetLocation = t.Location + t.Direction * (playerLocation.DistanceTo(t.Location) / (float)5);
+                    this.CurrentGame.Ball.TargetLocation = targetLocation;
                     this.CurrentGame.Ball.Force = 6;
                     this.CurrentGame.Ball.Thrower = this;
                     this.CurrentGame.Ball.CurrentState = BallState.Passing;
@@ -405,7 +406,7 @@ namespace bball
             {
                 if (IsShow(this.Location, entry.Location))
                 {
-                    awarenessInfo.PlayerAwarenessInfos.Add(new PlayerAwareness(entry.Location, entry.currentState, true, entry.playerInfo.BackNumber, entry.hasBall, Environment.TickCount));
+                    awarenessInfo.PlayerAwarenessInfos.Add(new PlayerAwareness(entry.Location, entry.currentState, true, entry.playerInfo.BackNumber, entry.hasBall, Environment.TickCount, entry.Direction));
                 }
             }
            
@@ -414,7 +415,7 @@ namespace bball
             {
                 if (IsShow(this.Location, entry.Location))
                 {
-                    awarenessInfo.PlayerAwarenessInfos.Add(new PlayerAwareness(entry.Location, entry.currentState, false, entry.playerInfo.BackNumber, entry.hasBall, Environment.TickCount));
+                    awarenessInfo.PlayerAwarenessInfos.Add(new PlayerAwareness(entry.Location, entry.currentState, false, entry.playerInfo.BackNumber, entry.hasBall, Environment.TickCount, entry.Direction));
                 }
             }
 

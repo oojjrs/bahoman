@@ -7,15 +7,15 @@ namespace AI
 {
     public class PlayerAwareness
     {
-
         private CourtPos playerLocation;
         private PlayerState playerState;
         private Boolean isTeammate;
         private int backNumber;
         private Boolean hasBall;
         private int lastAwarenessTick;
+        private CourtPos direction;
 
-        public PlayerAwareness(CourtPos location, PlayerState state, Boolean isteammate, int backnumber ,Boolean hasball, int lastawarenesstick)
+        public PlayerAwareness(CourtPos location, PlayerState state, Boolean isteammate, int backnumber ,Boolean hasball, int lastawarenesstick, CourtPos dir)
         {
             playerLocation = location;
             playerState = state;
@@ -23,6 +23,7 @@ namespace AI
             hasBall = hasball;
             backNumber = backnumber;
             lastAwarenessTick = lastawarenesstick;
+            direction = dir;
         }
 
         public PlayerState PlayerState
@@ -53,6 +54,11 @@ namespace AI
         {
             get { return lastAwarenessTick; }
             set { lastAwarenessTick = value; }
+        }
+
+        public CourtPos Direction
+        {
+            get { return direction; }
         }
     }
 

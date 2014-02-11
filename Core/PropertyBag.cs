@@ -26,8 +26,15 @@ namespace Core
         {
             foreach (var container in containers)
             {
+                var propsContainer = props.GetContainer(container.Key);
+                if (propsContainer == null)
+                {
+                    propsContainer = new List<KeyValuePair<string, object>>();
+                    props.containers.Add(new KeyValuePair<Type, List<KeyValuePair<string, object>>>(container.Key, propsContainer));
+                }
+
                 foreach (var c in container.Value)
-                    props.AddValue(c.Key, c.Value);
+                    propsContainer.Add(new KeyValuePair<string, object>(c.Key, c.Value));
             }
         }
 

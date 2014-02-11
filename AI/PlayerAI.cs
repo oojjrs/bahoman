@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Physics;
 
@@ -113,43 +114,48 @@ namespace AI
             }
             else if (factor.IsFlagOn("PlayerState.Dribble"))
             {
-                // Note : 슛 기대치와 패스 난이도를 계산하여 가장 적절한 대상에게 패스하거나 직접 드리블 또는 슛함
-                //        근데 아직 필요한 데이터가 없네
-
-                //패스할 데가 있나 확인
                 CourtPos ploc = new CourtPos();
                 factor.GetValue("PlayerLocation", ref ploc);
 
                 CourtPos rloc = new CourtPos();
                 factor.GetValue("RingLocation", ref rloc);
 
-                CourtPos[] tlocs;
-                factor.GetValues("TeammateLocation", out tlocs,false);
-
                 var distanceToRing = ploc.DistanceTo(rloc);
-                if (tlocs != null)
+
+                AwarenessInfo awarenessInfo = new AwarenessInfo();
+                factor.GetValue("AwarenessInfo", ref awarenessInfo);
+
+                float middleShot = 0.0f;
+                factor.GetValue("MiddleShotAbility", ref middleShot);
+
+                float maxScore = 0.0f;
+                PlayerAwareness maxTarget = null;
+                foreach (var pi in awarenessInfo.PlayerAwarenessInfos)
                 {
-                    foreach (var tloc in tlocs)
+                    if (pi.IsTeammate == false)
+                        continue;
+
+                    // Note : 패스적합성판단점수 = (대상위치에서의)슛성공률 + (대상에게로의)패스 성공률
+                    //        지금은 상대평가 자료가 없으므로 계산은 나의 성공률에 기반하여 계산한다.
+                    //        일단 무조건 미들샷(거리가 150픽셀 안쪽일 때 1.0 팩터가 100% 성공률)을 기준으로 계산
+                    //        패스 성공률은 사이에 상대팀을 체크해야 하므로 아직 넣지 않음
+                    float score = 150.0f / Math.Max(pi.Location.DistanceTo(rloc), 150.0f) * middleShot;
+                    if (score > maxScore)
                     {
-                        var dis = distanceToRing - tloc.DistanceTo(rloc);
-                        if (dis > 20)
-                        {
-                            ret.State = PlayerState.Pass;
-                            return ret;
-                        }
+                        maxScore = score;
+                        maxTarget = pi;
                     }
                 }
 
-                //슛이 가능한지 현재 위치 확인
-                if (this.GetShootingPoint(ploc, rloc) > 80)
+                if (maxTarget != null)
                 {
-                    //현재 상태를 슛상태로 변환
-                    ret.State = PlayerState.Shoot;
-                    ret.TargetLocation = rloc;
+                    ret.State = PlayerState.Pass;
+                    ret.TargetLocation = maxTarget.Location + maxTarget.Direction * (ploc.DistanceTo(maxTarget.Location) / 5.0f);
                     return ret;
                 }
                 else
                 {
+                    // Note : 슛을 하거나 직접 드리블한다.
                     ret.State = PlayerState.Dribble;
                     ret.TargetLocation = rloc;
                     return ret;
