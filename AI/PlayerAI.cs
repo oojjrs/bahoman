@@ -100,7 +100,11 @@ namespace AI
             }
             else if (factor.IsFlagOn("PlayerState.Pass"))
             {
-                ret.State = PlayerState.Pass;
+                CourtPos posLoc = new CourtPos();
+                factor.GetValue("PositionLocation", ref posLoc);
+
+                ret.State = PlayerState.Free;
+                ret.TargetLocation = posLoc;
                 return ret;
             }
             else if (factor.IsFlagOn("PlayerState.FindBall"))
@@ -151,15 +155,22 @@ namespace AI
                 {
                     ret.State = PlayerState.Pass;
                     ret.TargetLocation = maxTarget.Location + maxTarget.Direction * (ploc.DistanceTo(maxTarget.Location) / 5.0f);
-                    return ret;
                 }
                 else
                 {
                     // Note : 슛을 하거나 직접 드리블한다.
-                    ret.State = PlayerState.Dribble;
-                    ret.TargetLocation = rloc;
-                    return ret;
+                    if (ploc.DistanceTo(rloc) < 150.0f)
+                    {
+                        ret.State = PlayerState.Shoot;
+                        ret.TargetLocation = rloc;
+                    }
+                    else
+                    {
+                        ret.State = PlayerState.Dribble;
+                        ret.TargetLocation = rloc;
+                    }
                 }
+                return ret;
             }
             else if (factor.IsFlagOn("PlayerState.Shoot"))
             {
