@@ -1,17 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
 using AI;
+using Renderer;
 
 namespace bball
 {
-    class Game
+    class Game : Object
     {
         private Court court = new Court();
         private Team homeTeam = null;
         private Team awayTeam = null;
+
+        public override void OnDraw(IRenderer r)
+        {
+            var msg = String.Format("HomeState : {0}\r\nAwayState : {1}", homeTeam.TeamState, awayTeam.TeamState);
+            var ht = TextArgs.Create(msg, OutputManager.DefaultFont);
+            ht.Rect = new Rectangle(810, 10, 400, 150);
+            r.PutText(ht);
+        }
+
+        public override void OnUpdate()
+        {
+        }
 
         public bool Initialize(Team home, Team away)
         {

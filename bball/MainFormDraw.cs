@@ -20,6 +20,9 @@ namespace bball
             var ta = TextArgs.Create(msg, OutputManager.DefaultFont);
             ta.Rect = new Rectangle(10, 10, 500, 150);
             r.PutText(ta);
+
+            // Note : 귀찮아서 ^^;
+            game.OnDraw(r);
         }
     }
 }
