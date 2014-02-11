@@ -116,7 +116,7 @@ namespace bball
         private Position currentPosition = Position.Bench;
         private CourtPos targetLocation;
         private int elapsedTick = 0;
-        private AwarenessInfo awarenessInfo = new AwarenessInfo();
+        private AwarenessInfo awarenessInfo = null;
 
         #region From IDrawable
 
@@ -209,6 +209,7 @@ namespace bball
             currentPosition = Position.Bench;
             targetLocation = CourtPos.Center;
             elapsedTick = 0;
+            awarenessInfo = new AwarenessInfo();
         }
 
         private PlayerAIResult Thinking()
