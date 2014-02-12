@@ -19,6 +19,7 @@ namespace bball
         private BallState state = BallState.Bounding;
         private Player thrower;
         private CourtPos shootingDirection;
+        private CourtPos passDirection;
 
         public override void OnDraw(IRenderer r)
         {
@@ -36,8 +37,7 @@ namespace bball
                 case BallState.Bounding:    // 원래 scaleRate 값 유지(일단은 아무 일도 하지 않음)
                     break;
                 case BallState.Passing:
-                    var vDirect = (this.targetPos - this.currentPos).Normalize;
-                    currentPos = this.currentPos + vDirect * force;
+                    currentPos = this.currentPos + this.Direction * this.Force;
                     break;
                 case BallState.Shooting:
                     // Note : 아직 여러 가지 물리 지수가 없으므로 공의 속도, 뜨는 높이, 거리비는 대충 사용한다.
@@ -146,6 +146,12 @@ namespace bball
         {
             get { return targetPos; }
             set { targetPos = value; }
+        }
+
+        public CourtPos Direction
+        {
+            get { return passDirection; }
+            set { passDirection = value; }
         }
 
         public Player Thrower

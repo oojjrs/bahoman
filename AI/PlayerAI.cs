@@ -153,8 +153,11 @@ namespace AI
 
                 if (maxTarget != null)
                 {
+                    // Note : ballFloatingTime(t)의 단위가 프레임(tick)이므로 시간(s)으로서는 정확하지 않다. 추후 수정 필요
+                    float ballFloatingTime = 50.0f;
                     ret.State = PlayerState.Pass;
-                    ret.TargetLocation = maxTarget.Location + maxTarget.Direction * (ploc.DistanceTo(maxTarget.Location) / 5.0f);
+                    ret.BallVelocity = maxTarget.Location.DistanceTo(ploc) / ballFloatingTime;
+                    ret.BallDirection = (maxTarget.Location + maxTarget.Direction * ballFloatingTime).Normalize;
                 }
                 else
                 {

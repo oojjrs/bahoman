@@ -118,6 +118,10 @@ namespace bball
         private int elapsedTick = 0;
         private AwarenessInfo awarenessInfo = null;
 
+        // Note : 아래는 임시 변수들
+        private CourtPos ballDirection;
+        private float ballVelocity;
+
         #region From IDrawable
 
         public override void OnDraw(IRenderer r)
@@ -165,6 +169,9 @@ namespace bball
             if (curTick - lastThinkTick > 10 || lastThinkTick == 0)
             {
                 var ret = this.Thinking();
+                ballDirection = ret.BallDirection;
+                ballVelocity = ret.BallVelocity;
+
                 this.SetTargetLocation(ret.TargetLocation);
                 this.SetState(ret.State);
 
@@ -316,19 +323,6 @@ namespace bball
 
         private void DoPass()
         {
-            if (this.CurrentGame.Ball.CurrentState != BallState.Passing)
-            {
-                var t = this.GetPassableTarget();
-                if (t != null)
-                {
-                    hasBall = false;
-                    this.CurrentGame.Ball.TargetLocation = targetLocation;
-                    this.CurrentGame.Ball.Force = 6;
-                    this.CurrentGame.Ball.Thrower = this;
-                    this.CurrentGame.Ball.CurrentState = BallState.Passing;
-                    currentState = PlayerState.Free;
-                }
-            }
         }
 
         private void DoCatchBall()
@@ -487,6 +481,15 @@ namespace bball
                     sight = direction;
                     break;
                 case PlayerState.Pass:
+                    if (this.CurrentGame.Ball.CurrentState != BallState.Passing)
+                    {
+                        hasBall = false;
+                        this.CurrentGame.Ball.Direction = ballDirection;
+                        this.CurrentGame.Ball.Force = ballVelocity;
+                        this.CurrentGame.Ball.Thrower = this;
+                        this.CurrentGame.Ball.CurrentState = BallState.Passing;
+                        currentState = PlayerState.Free;
+                    }
                     break;
                 case PlayerState.Rebound:
                     break;

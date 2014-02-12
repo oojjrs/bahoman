@@ -11,6 +11,8 @@ namespace AI
     {
         public PlayerState State;
         public CourtPos TargetLocation;
+        public CourtPos BallDirection;
+        public float BallVelocity;
 
         public override string ToString()
         {
@@ -18,6 +20,8 @@ namespace AI
             ret.AppendFormat("{0}\r\n", this.GetType());
             ret.AppendFormat("    State : {0}\r\n", State);
             ret.AppendFormat("    TargetLocation : {0}\r\n", TargetLocation);
+            ret.AppendFormat("    BallDirection : {0}\r\n", BallDirection);
+            ret.AppendFormat("    BallVelocity : {0}\r\n", BallVelocity);
             return ret.ToString();
         }
     }
