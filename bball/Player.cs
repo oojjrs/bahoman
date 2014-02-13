@@ -258,10 +258,8 @@ namespace bball
             factor.AddValue("PlayerLocation", this.Location);
             factor.AddValue("RingLocation", team.TargetRingLocation);
             factor.AddValue("BallLocation", this.currentGame.Ball.Location);
-            factor.AddValue("PositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
+            factor.AddValue("AwayPositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
             factor.AddValue("AwarenessInfo", this.awarenessInfo);
-            foreach (var p in this.GetTeammates())
-                factor.AddValue("TeammateLocation", p.Location);
         }
 
         private void SetStateFactorDefence(PropertyBag factor)
@@ -276,9 +274,8 @@ namespace bball
             factor.AddValue("PlayerLocation", this.Location);
             factor.AddValue("AwarenessInfo", this.awarenessInfo);
             factor.AddValue("RingLocation", team.TargetRingLocation);
-            factor.AddValue("PositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
-            foreach (var p in this.GetTeammates())
-                factor.AddValue("TeammateLocation", p.Location);
+            factor.AddValue("HomePositionLocation", team.GetDefaultPositionalLocation(this.CurrentPosition));
+            factor.AddValue("AwayPositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
         }
 
         private void Action()

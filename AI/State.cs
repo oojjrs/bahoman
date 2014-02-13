@@ -12,7 +12,8 @@ namespace AI
         Free,
         FindBall,
         Move,
-        CatchBall
+        CatchBall,
+        Stand,
     }
 
     public enum BallState

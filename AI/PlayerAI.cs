@@ -38,35 +38,55 @@ namespace AI
             return ret;
         }
 
+        private void GetShortestDistanceTo(AwarenessInfo info, CourtPos target, ref float home, ref float away)
+        {
+            foreach (var pi in info.PlayerAwarenessInfos)
+            {
+                var distance = pi.Location.DistanceTo(target);
+                if (pi.IsTeammate)
+                {
+                    if (distance < home)
+                        home = distance;
+                }
+                else
+                {
+                    if (distance < away)
+                        away = distance;
+                }
+            }
+        }
+
         private PlayerAIResult StateLooseBall(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            AwarenessInfo awarenessInfo = new AwarenessInfo();
-            factor.GetValue("AwarenessInfo", ref awarenessInfo);
 
             CourtPos ploc = new CourtPos();
             factor.GetValue("PlayerLocation", ref ploc);
 
-            CourtPos bloc = awarenessInfo.BallInfo.Location;
+            AwarenessInfo info = new AwarenessInfo();
+            factor.GetValue("AwarenessInfo", ref info);
 
-            CourtPos[] tlocs;
-            factor.GetValues("TeammateLocation", out tlocs, false);
+            var bloc = info.BallInfo.Location;
+            var shortestHome = 10000.0f;
+            var shortestAway = 10000.0f;
+            this.GetShortestDistanceTo(info, bloc, ref shortestHome, ref shortestAway);
 
-            var playerDistance = ploc.DistanceTo(bloc);
-            ret.State = PlayerState.FindBall;
-            ret.TargetLocation = bloc;
-
-            foreach (var teammate in awarenessInfo.PlayerAwarenessInfos)
+            var myDistance = ploc.DistanceTo(bloc);
+            if (myDistance < shortestHome && myDistance < shortestAway)
             {
-                if (teammate.IsTeammate && playerDistance > teammate.Location.DistanceTo(bloc))
-                {
-                    CourtPos posLoc = new CourtPos();
-                    factor.GetValue("PositionLocation", ref posLoc);
+                ret.State = PlayerState.FindBall;
+                ret.TargetLocation = bloc;
+            }
+            else
+            {
+                var target = new CourtPos();
+                if (shortestHome < shortestAway)
+                    factor.GetValue("AwayPositionLocation", ref target);
+                else
+                    factor.GetValue("HomePositionLocation", ref target);
 
-                    ret.State = PlayerState.Free;
-                    ret.TargetLocation = posLoc;
-                    break;
-                }
+                ret.State = PlayerState.Move;
+                ret.TargetLocation = target;
             }
             return ret;
         }
@@ -77,15 +97,15 @@ namespace AI
             if (factor.IsFlagOn("PlayerState.Free"))
             {
                 CourtPos posLoc = new CourtPos();
-                factor.GetValue("PositionLocation", ref posLoc);
+                factor.GetValue("AwayPositionLocation", ref posLoc);
 
-                ret.State = PlayerState.Free;
-                ret.TargetLocation = posLoc;
+                CourtPos ploc = new CourtPos();
+                factor.GetValue("PlayerLocation", ref ploc);
+
+                ret.State = PlayerState.Stand;
+                ret.TargetLocation = ploc;
                 if (factor.IsFlagOn("Ball") && !factor.IsFlagOn("IsThrower"))
                 {
-                    CourtPos ploc = new CourtPos();
-                    factor.GetValue("PlayerLocation", ref ploc);
-
                     CourtPos bloc = new CourtPos();
                     factor.GetValue("BallLocation", ref bloc);
 
@@ -101,7 +121,7 @@ namespace AI
             else if (factor.IsFlagOn("PlayerState.Pass"))
             {
                 CourtPos posLoc = new CourtPos();
-                factor.GetValue("PositionLocation", ref posLoc);
+                factor.GetValue("AwayPositionLocation", ref posLoc);
 
                 ret.State = PlayerState.Free;
                 ret.TargetLocation = posLoc;
@@ -187,16 +207,28 @@ namespace AI
             }
             else if (factor.IsFlagOn("PlayerState.CatchBall"))
             {
-                CourtPos bloc = new CourtPos();
-                factor.GetValue("BallLocation", ref bloc);
+                CourtPos ploc = new CourtPos();
+                factor.GetValue("PlayerLocation", ref ploc);
 
                 ret.State = PlayerState.CatchBall;
-                ret.TargetLocation = bloc;
+                ret.TargetLocation = ploc;
+                return ret;
+            }
+            else if (factor.IsFlagOn("PlayerState.Move"))
+            {
+                AwarenessInfo info = new AwarenessInfo();
+                factor.GetValue("AwarenessInfo", ref info);
+
+                foreach (var pi in info.PlayerAwarenessInfos)
+                {
+                }
+
+                ret.State = PlayerState.Move;
                 return ret;
             }
             else
             {
-                throw new Exception { };
+                throw new Exception("새로운 상태에 대한 핸들러가 필요합니다");
             }
         }
 
