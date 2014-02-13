@@ -59,6 +59,7 @@ namespace AI
         private PlayerAIResult StateLooseBall(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
+            ret.UsePreviousResult = false;
 
             CourtPos ploc = new CourtPos();
             factor.GetValue("PlayerLocation", ref ploc);
@@ -94,6 +95,8 @@ namespace AI
         private PlayerAIResult StateAttack(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
+            ret.UsePreviousResult = false;
+
             if (factor.IsFlagOn("PlayerState.Free"))
             {
                 CourtPos posLoc = new CourtPos();
@@ -216,14 +219,43 @@ namespace AI
             }
             else if (factor.IsFlagOn("PlayerState.Move"))
             {
+                CourtPos ploc = new CourtPos();
+                factor.GetValue("PlayerLocation", ref ploc);
+
+                CourtPos dir = new CourtPos();
+                factor.GetValue("Direction", ref dir);
+
                 AwarenessInfo info = new AwarenessInfo();
                 factor.GetValue("AwarenessInfo", ref info);
 
-                foreach (var pi in info.PlayerAwarenessInfos)
+                var iloc = PhysicsEngine.GetIntersectLocation(
+                    ploc.Vector,
+                    (ploc + dir * 1000.0f).Vector,
+                    info.BallInfo.Location.Vector,
+                    (info.BallInfo.Location + info.BallInfo.Direction * 1000.0f).Vector);
+
+                var myDistance = 0.0f;
+                var ballDistance = 0.0f;
+                if (iloc.Length() != 0.0f)
                 {
+                    myDistance = iloc.Distance(ploc.Vector);
+                    ballDistance = iloc.Distance(info.BallInfo.Location.Vector);
                 }
 
-                ret.State = PlayerState.Move;
+                if (ballDistance < myDistance * info.BallInfo.Velocity)
+                {
+                    ret.State = PlayerState.FindBall;
+                    ret.TargetLocation = ploc + dir * 1000.0f;
+                }
+                else
+                {
+                    ret.UsePreviousResult = true;
+                }
+                return ret;
+            }
+            else if (factor.IsFlagOn("PlayerState.Stand"))
+            {
+                ret.UsePreviousResult = true;
                 return ret;
             }
             else if (factor.IsFlagOn("PlayerState.Stand"))
@@ -247,6 +279,8 @@ namespace AI
         private PlayerAIResult StateDefence(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
+            ret.UsePreviousResult = false;
+
             CourtPos v = new CourtPos();
             if (factor.GetValue("TargetLocation", ref v))
             {

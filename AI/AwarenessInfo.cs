@@ -66,6 +66,8 @@ namespace AI
     {
         private BallState ballState;
         private CourtPos ballLocation;
+        private CourtPos ballDirection;
+        private float velocity;
         private int lastAwarenessTick = 0;
 
         public BallAwareness()
@@ -82,6 +84,18 @@ namespace AI
         {
             get { return ballLocation; }
             set { ballLocation = value; }
+        }
+
+        public CourtPos Direction
+        {
+            get { return ballDirection; }
+            set { ballDirection = value; }
+        }
+
+        public float Velocity
+        {
+            get { return velocity; }
+            set { velocity = value; }
         }
 
         public int LastAwarenessTick

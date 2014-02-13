@@ -169,12 +169,14 @@ namespace bball
             if (curTick - lastThinkTick > 10 || lastThinkTick == 0)
             {
                 var ret = this.Thinking();
-                ballDirection = ret.BallDirection;
-                ballVelocity = ret.BallVelocity;
+                if (ret.UsePreviousResult == false)
+                {
+                    ballDirection = ret.BallDirection;
+                    ballVelocity = ret.BallVelocity;
 
-                this.SetTargetLocation(ret.TargetLocation);
-                this.SetState(ret.State);
-
+                    this.SetTargetLocation(ret.TargetLocation);
+                    this.SetState(ret.State);
+                }
                 lastThinkTick = curTick;
             }
 
@@ -260,12 +262,14 @@ namespace bball
             factor.AddValue("BallLocation", this.currentGame.Ball.Location);
             factor.AddValue("AwayPositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
             factor.AddValue("AwarenessInfo", this.awarenessInfo);
+            factor.AddValue("Direction", this.Direction);
         }
 
         private void SetStateFactorDefence(PropertyBag factor)
         {
             factor.AddValue("TeamState.Defence", true);
             factor.AddValue("TargetLocation", team.GetDefaultPositionalLocation(this.CurrentPosition));
+            factor.AddValue("Direction", this.Direction);
         }
 
         private void SetStateFactorLooseBall(PropertyBag factor)
@@ -276,6 +280,7 @@ namespace bball
             factor.AddValue("RingLocation", team.TargetRingLocation);
             factor.AddValue("HomePositionLocation", team.GetDefaultPositionalLocation(this.CurrentPosition));
             factor.AddValue("AwayPositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
+            factor.AddValue("Direction", this.Direction);
         }
 
         private void Action()
@@ -384,6 +389,8 @@ namespace bball
             {
                 awarenessInfo.BallInfo.BallState = currentGame.Ball.CurrentState;
                 awarenessInfo.BallInfo.Location = currentGame.Ball.Location;
+                awarenessInfo.BallInfo.Direction = currentGame.Ball.Direction;
+                awarenessInfo.BallInfo.Velocity = currentGame.Ball.Force;
                 awarenessInfo.BallInfo.LastAwarenessTick = Environment.TickCount;
             }
         }
