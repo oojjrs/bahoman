@@ -226,6 +226,18 @@ namespace AI
                 ret.State = PlayerState.Move;
                 return ret;
             }
+            else if (factor.IsFlagOn("PlayerState.Stand"))
+            {
+                AwarenessInfo info = new AwarenessInfo();
+                factor.GetValue("AwarenessInfo", ref info);
+
+                foreach (var pi in info.PlayerAwarenessInfos)
+                {
+                }
+
+                ret.State = PlayerState.Stand;
+                return ret;
+            }
             else
             {
                 throw new Exception("새로운 상태에 대한 핸들러가 필요합니다");

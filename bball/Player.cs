@@ -358,37 +358,6 @@ namespace bball
             }
         }
 
-        private Player GetPassableTarget()
-        {
-            Player ret = null;
-            var distanceToRing = playerLocation.DistanceTo(team.TargetRingLocation);
-            foreach (var t in this.GetTeammates())
-            {
-                var d = t.Location.DistanceTo(team.TargetRingLocation);
-                if (d < distanceToRing)
-                {
-                    distanceToRing = d;
-                    ret = t;
-                }
-            }
-            return ret;
-        }
-
-        private List<Player> GetTeammates()
-        {
-            var entries = team.CurrentEntries;
-            entries.Remove(this);
-            var showentries = new List<Player>();
-
-            foreach (var entry in entries)
-            {
-                if (IsShow(this.Location, entry.Location))
-                {
-                    showentries.Add(entry);
-                }
-            }
-            return showentries;
-        }
 
         private void Seeing()
         {
@@ -494,6 +463,8 @@ namespace bball
                     this.CurrentGame.Ball.TargetLocation = targetLocation;
                     this.CurrentGame.Ball.CurrentState = BallState.Shooting;
                     break;
+                case PlayerState.Stand:
+                    break;
                 default:
                     throw new Exception("추가된 PlayerState에 대한 처리가 필요합니다.");
             }
@@ -520,6 +491,8 @@ namespace bball
                 case PlayerState.Rebound:
                     break;
                 case PlayerState.Shoot:
+                    break;
+                case PlayerState.Stand:
                     break;
                 default:
                     throw new Exception("추가된 PlayerState에 대한 처리가 필요합니다.");
