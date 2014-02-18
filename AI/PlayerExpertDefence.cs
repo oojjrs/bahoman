@@ -15,7 +15,7 @@ namespace AI
             ret.UsePreviousResult = false;
 
             CourtPos v = new CourtPos();
-            if (factor.GetValue("TargetLocation", ref v))
+            if (factor.GetValue("HomePositionLocation", ref v))
             {
                 ret.State = PlayerState.Move;
                 ret.TargetLocation = v;

@@ -226,28 +226,16 @@ namespace bball
             var factor = new PropertyBag();
             playerInfo.Factors.CopyTo(factor);
 
-            switch (team.TeamState)
-            {
-                case TeamState.Attack:
-                    this.SetStateFactorAttack(factor);
-                    break;
-                case TeamState.Defence:
-                    this.SetStateFactorDefence(factor);
-                    break;
-                case TeamState.LooseBall:
-                    this.SetStateFactorLooseBall(factor);
-                    break;
-                case TeamState.StrategyTime:
-                    factor.AddValue("TeamState.StrategyTime", true);
-                    break;
-            }
+            factor.AddValue("TeamState." + team.TeamState.ToString(), true);
+            factor.AddValue("PlayerState." + currentState.ToString(), true);
+            factor.AddValue("PlayerLocation", this.Location);
+            factor.AddValue("RingLocation", team.TargetRingLocation);
+            factor.AddValue("BallLocation", this.currentGame.Ball.Location);
+            factor.AddValue("HomePositionLocation", team.GetDefaultPositionalLocation(this.CurrentPosition));
+            factor.AddValue("AwayPositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
+            factor.AddValue("AwarenessInfo", this.awarenessInfo);
+            factor.AddValue("Direction", this.Direction);
 
-            return this.AI.Determine(factor);
-        }
-
-        private void SetStateFactorAttack(PropertyBag factor)
-        {
-            factor.AddValue("TeamState.Attack", true);
             if (IsShow(this.Location, this.currentGame.Ball.Location))
             {
                 factor.AddValue("Ball", true);
@@ -256,32 +244,7 @@ namespace bball
                 factor.AddValue("IsThrower", currentGame.Ball.Thrower == this);
             }
 
-            factor.AddValue("PlayerState." + currentState.ToString(), true);
-            factor.AddValue("PlayerLocation", this.Location);
-            factor.AddValue("RingLocation", team.TargetRingLocation);
-            factor.AddValue("BallLocation", this.currentGame.Ball.Location);
-            factor.AddValue("AwayPositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
-            factor.AddValue("AwarenessInfo", this.awarenessInfo);
-            factor.AddValue("Direction", this.Direction);
-        }
-
-        private void SetStateFactorDefence(PropertyBag factor)
-        {
-            factor.AddValue("TeamState.Defence", true);
-            factor.AddValue("TargetLocation", team.GetDefaultPositionalLocation(this.CurrentPosition));
-            factor.AddValue("Direction", this.Direction);
-        }
-
-        private void SetStateFactorLooseBall(PropertyBag factor)
-        {
-            factor.AddValue("PlayerState." + currentState.ToString(), true);
-            factor.AddValue("TeamState.LooseBall", true);
-            factor.AddValue("PlayerLocation", this.Location);
-            factor.AddValue("AwarenessInfo", this.awarenessInfo);
-            factor.AddValue("RingLocation", team.TargetRingLocation);
-            factor.AddValue("HomePositionLocation", team.GetDefaultPositionalLocation(this.CurrentPosition));
-            factor.AddValue("AwayPositionLocation", team.Away.GetDefaultPositionalLocation(this.CurrentPosition));
-            factor.AddValue("Direction", this.Direction);
+            return this.AI.Determine(factor);
         }
 
         private void Action()
