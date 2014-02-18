@@ -245,7 +245,7 @@ namespace bball
                     break;
                 case PlayerState.Shoot:
                     break;
-                case PlayerState.Free:
+                case PlayerState.OffBall:
                     this.DoMove(ret);
                     break;
                 case PlayerState.FindBall:
@@ -351,7 +351,7 @@ namespace bball
                 case PlayerState.FindBall:
                     sight = direction;
                     break;
-                case PlayerState.Free:
+                case PlayerState.OffBall:
                     sight = direction;
                     break;
                 case PlayerState.Move:
@@ -365,7 +365,7 @@ namespace bball
                         this.CurrentGame.Ball.Force = ret.BallVelocity;
                         this.CurrentGame.Ball.Thrower = this;
                         this.CurrentGame.Ball.CurrentState = BallState.Passing;
-                        currentState = PlayerState.Free;
+                        currentState = PlayerState.OffBall;
                     }
                     break;
                 case PlayerState.Rebound:
@@ -393,7 +393,7 @@ namespace bball
                     break;
                 case PlayerState.FindBall:
                     break;
-                case PlayerState.Free:
+                case PlayerState.OffBall:
                     break;
                 case PlayerState.Move:
                     break;

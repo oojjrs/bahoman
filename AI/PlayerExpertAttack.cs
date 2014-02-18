@@ -12,8 +12,8 @@ namespace AI
     {
         private PlayerAIResult StateAttack(PropertyBag factor)
         {
-            if (factor.IsFlagOn("PlayerState.Free"))
-                return this.StateAttackFree(factor);
+            if (factor.IsFlagOn("PlayerState.OffBall"))
+                return this.StateAttackOffBall(factor);
             else if (factor.IsFlagOn("PlayerState.Pass"))
                 return this.StateAttackPass(factor);
             else if (factor.IsFlagOn("PlayerState.FindBall"))
@@ -118,7 +118,7 @@ namespace AI
             CourtPos posLoc = new CourtPos();
             factor.GetValue("AwayPositionLocation", ref posLoc);
 
-            ret.State = PlayerState.Free;
+            ret.State = PlayerState.OffBall;
             ret.TargetLocation = posLoc;
             return ret;
         }
@@ -131,7 +131,7 @@ namespace AI
             return ret;
         }
 
-        private PlayerAIResult StateAttackFree(PropertyBag factor)
+        private PlayerAIResult StateAttackOffBall(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
             ret.UsePreviousResult = false;
@@ -165,7 +165,7 @@ namespace AI
             CourtPos posLoc = new CourtPos();
             factor.GetValue("BallLocation", ref posLoc);
 
-            ret.State = PlayerState.Free;
+            ret.State = PlayerState.OffBall;
             ret.TargetLocation = posLoc;
             return ret;
         }
