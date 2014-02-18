@@ -122,8 +122,6 @@ namespace bball
         private CourtPos ballDirection;
         private float ballVelocity;
 
-        #region From IDrawable
-
         public override void OnDraw(IRenderer r)
         {
             var loc = Court.ToGlobalLocation(this.Location);
@@ -183,8 +181,6 @@ namespace bball
             this.Action();
             ++elapsedTick;
         }
-
-        #endregion
 
         public override bool Equals(object obj)
         {
