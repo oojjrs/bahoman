@@ -34,9 +34,7 @@ namespace AI
 
         private PlayerAIResult StateLooseBallFindBall(PropertyBag factor)
         {
-            var ret = new PlayerAIResult();
-            ret.UsePreviousResult = true;
-            return ret;
+            return this.StateLooseBallReady(factor);
         }
 
         private PlayerAIResult StateLooseBallReady(PropertyBag factor)
