@@ -12,7 +12,6 @@ namespace AI
         private PlayerAIResult StateDefence(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
 
             CourtPos v = new CourtPos();
             if (factor.GetValue("HomePositionLocation", ref v))

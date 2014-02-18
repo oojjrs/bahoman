@@ -26,5 +26,14 @@ namespace AI
             ret.AppendFormat("    UsePreviousResult : {0}\r\n", UsePreviousResult);
             return ret.ToString();
         }
+
+        public PlayerAIResult(int n = 0)    // trick
+        {
+            State = PlayerState.Ready;
+            TargetLocation = CourtPos.Zero;
+            BallDirection = CourtPos.Zero;
+            BallVelocity = 0.0f;
+            UsePreviousResult = false;
+        }
     }
 }

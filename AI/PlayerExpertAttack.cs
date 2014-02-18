@@ -44,7 +44,6 @@ namespace AI
         private PlayerAIResult StateAttackDribble(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
             CourtPos ploc = new CourtPos();
             factor.GetValue("PlayerLocation", ref ploc);
 
@@ -106,7 +105,6 @@ namespace AI
         private PlayerAIResult StateAttackShoot(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
             ret.State = PlayerState.Rebound;
             return ret;
         }
@@ -114,7 +112,6 @@ namespace AI
         private PlayerAIResult StateAttackPass(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
             CourtPos posLoc = new CourtPos();
             factor.GetValue("AwayPositionLocation", ref posLoc);
 
@@ -126,7 +123,6 @@ namespace AI
         private PlayerAIResult StateAttackRebound(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
             ret.State = PlayerState.Rebound;
             return ret;
         }
@@ -134,7 +130,6 @@ namespace AI
         private PlayerAIResult StateAttackFree(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
             CourtPos posLoc = new CourtPos();
             factor.GetValue("AwayPositionLocation", ref posLoc);
 
@@ -161,7 +156,6 @@ namespace AI
         private PlayerAIResult StateAttackFindBall(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
             CourtPos posLoc = new CourtPos();
             factor.GetValue("BallLocation", ref posLoc);
 
@@ -173,7 +167,6 @@ namespace AI
         private PlayerAIResult StateAttackMove(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
             CourtPos ploc = new CourtPos();
             factor.GetValue("PlayerLocation", ref ploc);
 
@@ -212,7 +205,6 @@ namespace AI
         private PlayerAIResult StateAttackCatchBall(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
             CourtPos ploc = new CourtPos();
             factor.GetValue("PlayerLocation", ref ploc);
 
@@ -224,7 +216,6 @@ namespace AI
         private PlayerAIResult StateAttackStand(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
             AwarenessInfo info = new AwarenessInfo();
             factor.GetValue("AwarenessInfo", ref info);
 

@@ -38,7 +38,6 @@ namespace AI
             if (distanceToBall < 10 * factor.GetFactor("CatchableReach"))
             {
                 var ret = new PlayerAIResult();
-                ret.UsePreviousResult = false;
                 ret.State = PlayerState.CatchBall;
                 return ret;
             }
@@ -49,7 +48,6 @@ namespace AI
         private PlayerAIResult StateLooseBallReady(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
 
             CourtPos ploc = new CourtPos();
             factor.GetValue("PlayerLocation", ref ploc);
