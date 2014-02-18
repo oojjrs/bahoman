@@ -1,97 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using Physics;
+using System.Linq;
+using System.Text;
 
 using Core;
+using Physics;
 
 namespace AI
 {
-    class PlayerExpert : IPlayerAIType
+    partial class PlayerExpert : IPlayerAIType
     {
-        private static PlayerExpert instance = new PlayerExpert();
-        private LogHelper log = new LogHelper();
-
-        public PlayerAIResult Determine(PropertyBag factor)
-        {
-            log.AITrace(factor.ToString());
-
-            PlayerAIResult ret;
-            if (factor.IsFlagOn("TeamState.LooseBall"))
-            {
-                ret = this.StateLooseBall(factor);
-            }
-            else if (factor.IsFlagOn("TeamState.Attack"))
-            {
-                ret = this.StateAttack(factor);
-            }
-            else if (factor.IsFlagOn("TeamState.Defence"))
-            {
-                ret = this.StateDefence(factor);
-            }
-            else
-            {
-                throw new Exception { };
-            }
-
-            log.AITrace(ret.ToString());
-            return ret;
-        }
-
-        private void GetShortestDistanceTo(AwarenessInfo info, CourtPos target, ref float home, ref float away)
-        {
-            foreach (var pi in info.PlayerAwarenessInfos)
-            {
-                var distance = pi.Location.DistanceTo(target);
-                if (pi.IsTeammate)
-                {
-                    if (distance < home)
-                        home = distance;
-                }
-                else
-                {
-                    if (distance < away)
-                        away = distance;
-                }
-            }
-        }
-
-        private PlayerAIResult StateLooseBall(PropertyBag factor)
-        {
-            var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
-
-            CourtPos ploc = new CourtPos();
-            factor.GetValue("PlayerLocation", ref ploc);
-
-            AwarenessInfo info = new AwarenessInfo();
-            factor.GetValue("AwarenessInfo", ref info);
-
-            var bloc = info.BallInfo.Location;
-            var shortestHome = 10000.0f;
-            var shortestAway = 10000.0f;
-            this.GetShortestDistanceTo(info, bloc, ref shortestHome, ref shortestAway);
-
-            var myDistance = ploc.DistanceTo(bloc);
-            if (myDistance < shortestHome && myDistance < shortestAway)
-            {
-                ret.State = PlayerState.FindBall;
-                ret.TargetLocation = bloc;
-            }
-            else
-            {
-                var target = new CourtPos();
-                if (shortestHome < shortestAway)
-                    factor.GetValue("AwayPositionLocation", ref target);
-                else
-                    factor.GetValue("HomePositionLocation", ref target);
-
-                ret.State = PlayerState.Move;
-                ret.TargetLocation = target;
-            }
-            return ret;
-        }
-
         private PlayerAIResult StateAttack(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
@@ -274,46 +192,6 @@ namespace AI
             {
                 throw new Exception("새로운 상태에 대한 핸들러가 필요합니다");
             }
-        }
-
-        private PlayerAIResult StateDefence(PropertyBag factor)
-        {
-            var ret = new PlayerAIResult();
-            ret.UsePreviousResult = false;
-
-            CourtPos v = new CourtPos();
-            if (factor.GetValue("TargetLocation", ref v))
-            {
-                ret.State = PlayerState.Move;
-                ret.TargetLocation = v;
-            }
-            return ret;
-        }
-
-        public void SetReporter(IReporter er)
-        {
-            log.SetReporter(er);
-        }
-
-        private int GetShootingPoint(CourtPos bp, CourtPos ep)
-        {
-            //슛을 쏠지 말지 결정하는 팩터들을 수치화
-            float distancefromRing = bp.DistanceTo(ep);
-
-            //일단 골대 근처에 있으면 100점으로 리턴
-            if (60 > (int)distancefromRing)
-            {
-                return 100;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        public static PlayerExpert Instance
-        {
-            get { return instance; }
         }
     }
 }

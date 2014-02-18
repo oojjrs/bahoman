@@ -274,6 +274,7 @@ namespace bball
 
         private void SetStateFactorLooseBall(PropertyBag factor)
         {
+            factor.AddValue("PlayerState." + currentState.ToString(), true);
             factor.AddValue("TeamState.LooseBall", true);
             factor.AddValue("PlayerLocation", this.Location);
             factor.AddValue("AwarenessInfo", this.awarenessInfo);
