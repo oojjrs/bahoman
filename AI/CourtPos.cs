@@ -10,6 +10,7 @@ namespace AI
         private Vector3f pos;
 
         public static readonly CourtPos Center = new CourtPos();
+        public static readonly CourtPos Zero = new CourtPos();
 
         public static CourtPos operator +(CourtPos l, CourtPos r)
         {

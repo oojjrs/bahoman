@@ -34,6 +34,15 @@ namespace AI
 
         private PlayerAIResult StateLooseBallFindBall(PropertyBag factor)
         {
+            var distanceToBall = this.GetDistanceToBall(factor);
+            if (distanceToBall < 10 * factor.GetFactor("CatchableReach"))
+            {
+                var ret = new PlayerAIResult();
+                ret.UsePreviousResult = false;
+                ret.State = PlayerState.CatchBall;
+                return ret;
+            }
+
             return this.StateLooseBallReady(factor);
         }
 

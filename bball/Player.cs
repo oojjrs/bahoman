@@ -342,6 +342,8 @@ namespace bball
                 case PlayerState.Ready:
                     break;
                 case PlayerState.CatchBall:
+                    this.hasBall = true;
+                    this.CurrentGame.SetTeamState(team, TeamState.Attack);
                     break;
                 case PlayerState.Dribble:
                     sight = direction;

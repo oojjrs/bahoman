@@ -37,6 +37,17 @@ namespace AI
             return ret;
         }
 
+        private float GetDistanceToBall(PropertyBag factor)
+        {
+            CourtPos ploc = new CourtPos();
+            factor.GetValue("PlayerLocation", ref ploc);
+
+            AwarenessInfo info = new AwarenessInfo();
+            factor.GetValue("AwarenessInfo", ref info);
+
+            return ploc.DistanceTo(info.BallInfo.Location);
+        }
+
         private void GetShortestDistanceTo(AwarenessInfo info, CourtPos target, ref float home, ref float away)
         {
             if (info.PlayerAwarenessInfos.Count == 0)
