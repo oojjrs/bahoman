@@ -59,6 +59,13 @@ namespace Core
             return null;
         }
 
+        public float GetFactor(string key, bool raiseException = true)
+        {
+            float value = 0.0f;
+            this.GetValue(key, ref value, raiseException);
+            return value;
+        }
+
         public bool GetValue<T>(string key, ref T value, bool raiseException = true)
         {
             T[] values;
