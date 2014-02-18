@@ -9,7 +9,7 @@ namespace AI
         Shoot,
         Pass,
         Rebound,
-        Free,
+        OffBall,
         FindBall,
         Move,
         CatchBall,

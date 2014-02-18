@@ -17,8 +17,8 @@ namespace AI
                 return this.StateLooseBallFindBall(factor);
             else if (factor.IsFlagOn("PlayerState.Ready"))
                 return this.StateLooseBallReady(factor);
-            else if (factor.IsFlagOn("PlayerState.Free"))
-                return this.StateLooseBallFree(factor);
+            else if (factor.IsFlagOn("PlayerState.OffBall"))
+                return this.StateLooseBallOffBall(factor);
             else if (factor.IsFlagOn("PlayerState.Stand"))
                 return this.StateLooseBallStand(factor);
             else if (factor.IsFlagOn("PlayerState.Rebound"))
@@ -80,7 +80,7 @@ namespace AI
             return ret;
         }
 
-        private PlayerAIResult StateLooseBallFree(PropertyBag factor)
+        private PlayerAIResult StateLooseBallOffBall(PropertyBag factor)
         {
             var ret = new PlayerAIResult();
             ret.UsePreviousResult = true;
