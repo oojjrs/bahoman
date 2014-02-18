@@ -39,6 +39,13 @@ namespace AI
 
         private void GetShortestDistanceTo(AwarenessInfo info, CourtPos target, ref float home, ref float away)
         {
+            if (info.PlayerAwarenessInfos.Count == 0)
+            {
+                home = 0.0f;
+                away = 0.0f;
+                return;
+            }
+
             foreach (var pi in info.PlayerAwarenessInfos)
             {
                 var distance = pi.Location.DistanceTo(target);
