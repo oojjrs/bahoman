@@ -204,13 +204,7 @@ namespace AI
 
         private PlayerAIResult StateAttackCatchBall(PropertyBag factor)
         {
-            var ret = new PlayerAIResult();
-            CourtPos ploc = new CourtPos();
-            factor.GetValue("PlayerLocation", ref ploc);
-
-            ret.State = PlayerState.CatchBall;
-            ret.TargetLocation = ploc;
-            return ret;
+            return this.StateAttackDribble(factor);
         }
 
         private PlayerAIResult StateAttackStand(PropertyBag factor)
