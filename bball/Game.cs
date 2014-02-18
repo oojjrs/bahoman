@@ -44,8 +44,20 @@ namespace bball
 
         public void SetTeamState(Team target, TeamState state)
         {
-            target.TeamState = TeamState.Attack;
-            target.Away.TeamState = TeamState.Defence;
+            target.TeamState = state;
+            switch(state)
+            {
+                case TeamState.Attack:
+                    target.Away.TeamState = TeamState.Defence;
+                    break;
+                case TeamState.Defence:
+                    target.Away.TeamState = TeamState.Attack;
+                    break;
+                case TeamState.LooseBall:
+                case TeamState.StrategyTime:
+                    target.Away.TeamState = state;
+                    break;
+            }
         }
 
         public Court Court

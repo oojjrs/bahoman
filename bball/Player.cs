@@ -326,23 +326,25 @@ namespace bball
 
         public void SetState(PlayerAIResult ret)
         {
-            if (ret.State != currentState)
+            var nextState = ret.State;
+            if (nextState != currentState)
             {
                 this.EndState(ret, currentState);
-                this.BeginState(ret);
+                nextState = this.BeginState(ret);
             }
 
-            currentState = ret.State;
+            // Note : 일단 병신 구조지만 나중에 슛을 구현할 때 같이 일반화하도록 한다.
+            currentState = nextState;
         }
 
-        public void BeginState(PlayerAIResult ret)
+        public PlayerState BeginState(PlayerAIResult ret)
         {
             switch(ret.State)
             {
                 case PlayerState.Ready:
                     break;
                 case PlayerState.CatchBall:
-                    this.hasBall = true;
+                    hasBall = true;
                     this.CurrentGame.SetTeamState(team, TeamState.Attack);
                     break;
                 case PlayerState.Dribble:
@@ -360,16 +362,13 @@ namespace bball
                     sight = direction;
                     break;
                 case PlayerState.Pass:
-                    if (this.CurrentGame.Ball.CurrentState != BallState.Passing)
-                    {
-                        hasBall = false;
-                        this.CurrentGame.Ball.Direction = ret.BallDirection;
-                        this.CurrentGame.Ball.Force = ret.BallVelocity;
-                        this.CurrentGame.Ball.Thrower = this;
-                        this.CurrentGame.Ball.CurrentState = BallState.Passing;
-                        currentState = PlayerState.Free;
-                    }
-                    break;
+                    hasBall = false;
+                    this.CurrentGame.Ball.Direction = ret.BallDirection;
+                    this.CurrentGame.Ball.Force = ret.BallVelocity;
+                    this.CurrentGame.Ball.Thrower = this;
+                    this.CurrentGame.Ball.CurrentState = BallState.Passing;
+                    this.CurrentGame.SetTeamState(team, TeamState.LooseBall);
+                    return PlayerState.Free;
                 case PlayerState.Rebound:
                     break;
                 case PlayerState.Shoot:
@@ -381,6 +380,7 @@ namespace bball
                 default:
                     throw new Exception("추가된 PlayerState에 대한 처리가 필요합니다.");
             }
+            return ret.State;
         }
 
         public void EndState(PlayerAIResult ret, PlayerState oldState)
