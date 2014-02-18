@@ -106,21 +106,17 @@ namespace bball
         private CourtPos playerLocation;
         private PlayerState currentState;
         private int lastThinkTick;
-        private Boolean hasBall = false;
-        private Team team = null;
-        private float speed = 1;
-        private double playSightDegree = 120;
+        private Boolean hasBall;
+        private Team team;
+        private float speed;
+        private double playSightDegree;
         private CourtPos direction;
         private CourtPos sight;
-        private Game currentGame = null;
-        private Position currentPosition = Position.Bench;
-        private CourtPos targetLocation;
-        private int elapsedTick = 0;
-        private AwarenessInfo awarenessInfo = null;
-
-        // Note : 아래는 임시 변수들
-        private CourtPos ballDirection;
-        private float ballVelocity;
+        private Game currentGame;
+        private Position currentPosition;
+        private int elapsedTick;
+        private AwarenessInfo awarenessInfo;
+        private PlayerAIResult lastResult;
 
         public override void OnDraw(IRenderer r)
         {
@@ -168,17 +164,11 @@ namespace bball
             {
                 var ret = this.Thinking();
                 if (ret.UsePreviousResult == false)
-                {
-                    ballDirection = ret.BallDirection;
-                    ballVelocity = ret.BallVelocity;
-
-                    this.SetTargetLocation(ret.TargetLocation);
-                    this.SetState(ret.State);
-                }
+                    lastResult = ret;
                 lastThinkTick = curTick;
             }
 
-            this.Action();
+            this.Action(lastResult);
             ++elapsedTick;
         }
 
@@ -212,9 +202,9 @@ namespace bball
             sight = CourtPos.Center;
             currentGame = null;
             currentPosition = Position.Bench;
-            targetLocation = CourtPos.Center;
             elapsedTick = 0;
             awarenessInfo = new AwarenessInfo();
+            lastResult = new PlayerAIResult();
         }
 
         private PlayerAIResult Thinking()
@@ -243,67 +233,27 @@ namespace bball
             return this.AI.Determine(factor);
         }
 
-        private void Action()
+        private void Action(PlayerAIResult ret)
         {
-            switch(currentState)
+            direction = (ret.TargetLocation - playerLocation).Normalize;
+            this.SetState(ret);
+
+            switch (currentState)
             {
                 case PlayerState.Dribble:
-                    this.Move(targetLocation);
+                    this.DoMove(ret);
                     break;
                 case PlayerState.Shoot:
                     break;
                 case PlayerState.Free:
-                    this.Move(targetLocation);
+                    this.DoMove(ret);
                     break;
                 case PlayerState.FindBall:
-                    this.DoFindBall();
-                    break;
-                case PlayerState.Pass:
-                    this.DoPass();
-                    break;
-                case PlayerState.CatchBall:
-                    this.DoCatchBall();
+                    this.DoMove(ret);
                     break;
                 case PlayerState.Move:
-                    this.Move(targetLocation);
+                    this.DoMove(ret);
                     break;
-            }
-        }
-
-        private void DoFindBall()
-        {
-            if (playerLocation.DistanceTo(this.CurrentGame.Ball.Location) < 5)
-            {
-                hasBall = true;
-                SetState(PlayerState.Dribble);
-            }
-            else
-            {
-                this.Move(targetLocation);
-            }
-        }
-
-        private void DoPass()
-        {
-        }
-
-        private void DoCatchBall()
-        {
-            if (hasBall)
-            {
-                SetState(PlayerState.Dribble);
-            }
-            else
-            {
-                if (playerLocation.DistanceTo(this.CurrentGame.Ball.Location) < 5)
-                {
-                    hasBall = true;
-                    SetState(PlayerState.Dribble);
-                }
-                else
-                {
-                    this.Move(targetLocation);
-                }
             }
         }
 
@@ -355,7 +305,7 @@ namespace bball
             }
         }
 
-        public void Move(CourtPos target)
+        public void DoMove(PlayerAIResult ret)
         {
             if ((int)(elapsedTick * playerInfo.GetFactor("Sight")) % 10 == 0)
             {
@@ -364,7 +314,7 @@ namespace bball
                 Seeing();
             }
 
-            if ((target - playerLocation).Length >= 1.0f)
+            if ((ret.TargetLocation - playerLocation).Length >= 1.0f)
                 playerLocation = playerLocation + direction;
             
             if (hasBall)
@@ -374,26 +324,20 @@ namespace bball
             }
         }
 
-        private void SetTargetLocation(CourtPos target)
+        public void SetState(PlayerAIResult ret)
         {
-            targetLocation = target;
-            direction = (target - playerLocation).Normalize;
-        }
-
-        public void SetState(PlayerState playerstate)
-        {
-            if (playerstate != currentState)
+            if (ret.State != currentState)
             {
-                this.EndState(currentState);
-                this.BeginState(playerstate);
+                this.EndState(ret, currentState);
+                this.BeginState(ret);
             }
 
-            currentState = playerstate;
+            currentState = ret.State;
         }
 
-        public void BeginState(PlayerState state)
+        public void BeginState(PlayerAIResult ret)
         {
-            switch(state)
+            switch(ret.State)
             {
                 case PlayerState.Ready:
                     break;
@@ -417,8 +361,8 @@ namespace bball
                     if (this.CurrentGame.Ball.CurrentState != BallState.Passing)
                     {
                         hasBall = false;
-                        this.CurrentGame.Ball.Direction = ballDirection;
-                        this.CurrentGame.Ball.Force = ballVelocity;
+                        this.CurrentGame.Ball.Direction = ret.BallDirection;
+                        this.CurrentGame.Ball.Force = ret.BallVelocity;
                         this.CurrentGame.Ball.Thrower = this;
                         this.CurrentGame.Ball.CurrentState = BallState.Passing;
                         currentState = PlayerState.Free;
@@ -427,7 +371,7 @@ namespace bball
                 case PlayerState.Rebound:
                     break;
                 case PlayerState.Shoot:
-                    this.CurrentGame.Ball.TargetLocation = targetLocation;
+                    this.CurrentGame.Ball.TargetLocation = ret.TargetLocation;
                     this.CurrentGame.Ball.CurrentState = BallState.Shooting;
                     break;
                 case PlayerState.Stand:
@@ -437,9 +381,9 @@ namespace bball
             }
         }
 
-        public void EndState(PlayerState state)
+        public void EndState(PlayerAIResult ret, PlayerState oldState)
         {
-            switch (state)
+            switch (oldState)
             {
                 case PlayerState.Ready:
                     break;
