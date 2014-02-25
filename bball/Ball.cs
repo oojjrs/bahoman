@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 using AI;
@@ -60,6 +61,13 @@ namespace bball
                 default:
                     throw new System.ComponentModel.InvalidEnumArgumentException("공의 상태 정의가 추가로 필요한 지점입니다.");
             }
+        }
+
+        public override bool IsClick(CourtPos location)
+        {
+            var rc = new Rectangle(this.Location.ToPoint(), image.Size);
+            rc.Offset(-image.Size.Width / 2, -image.Size.Height / 2);
+            return rc.Contains(location.ToPoint());
         }
 
         public Ball()

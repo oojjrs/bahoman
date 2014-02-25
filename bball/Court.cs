@@ -23,8 +23,6 @@ namespace bball
         private Ball ball = new Ball();
         private static Random random = new Random();
 
-        #region From IDrawable
-
         public override void OnDraw(IRenderer r)
         {
             ImageArgs ia = new ImageArgs(image);
@@ -35,7 +33,10 @@ namespace bball
         {
         }
 
-        #endregion
+        public override bool IsClick(CourtPos location)
+        {
+            return false;
+        }
 
         #region Methods
         public static CourtPos ToGlobalLocation(CourtPos pos)

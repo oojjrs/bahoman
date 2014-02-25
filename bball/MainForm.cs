@@ -128,5 +128,10 @@ namespace bball
             logWindow.Left = this.Right;
             logWindow.Top = this.Top;
         }
+
+        private void MainForm_MouseClick(object sender, MouseEventArgs e)
+        {
+            var loc = CourtPos.FromCoord(e.X, 0.0f, e.Y);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Core;
 using Physics;
 
@@ -51,6 +52,11 @@ namespace AI
         {
             this.X = (float)(this.X * Math.Cos(radian) - this.Z * Math.Sin(radian));
             this.Z = (float)(this.X * Math.Sin(radian) + this.Z * Math.Cos(radian));
+        }
+
+        public Point ToPoint()
+        {
+            return new Point((int)this.X, (int)this.Y);
         }
 
         public CourtPos Normalize
