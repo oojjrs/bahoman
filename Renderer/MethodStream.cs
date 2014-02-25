@@ -16,6 +16,11 @@ namespace Renderer
             return identifier;
         }
 
+        public System.Drawing.Size Size
+        {
+            get { return new System.Drawing.Size(); }
+        }
+
         public StreamImage(string id)
         {
             identifier = id;

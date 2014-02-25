@@ -8,5 +8,6 @@ namespace Renderer
     public interface IImage
     {
         string GetIdentifier();
+        System.Drawing.Size Size { get; }
     }
 }

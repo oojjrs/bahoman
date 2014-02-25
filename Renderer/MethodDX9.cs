@@ -20,6 +20,15 @@ namespace Renderer
             return texture.DebugName;
         }
 
+        public System.Drawing.Size Size
+        {
+            get
+            {
+                var desc = Texture.GetLevelDescription(0);
+                return new System.Drawing.Size(desc.Width, desc.Height);
+            }
+        }
+
         public DXImage(Texture t, string identifier)
         {
             texture = t;
