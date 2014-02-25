@@ -131,7 +131,7 @@ namespace bball
 
         private void MainForm_MouseClick(object sender, MouseEventArgs e)
         {
-            var loc = CourtPos.FromCoord(e.X, 0.0f, e.Y);
+            InputManager.OnButtonClick(e);
         }
     }
 }

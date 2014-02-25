@@ -173,13 +173,6 @@ namespace bball
             ++elapsedTick;
         }
 
-        public override bool IsClick(CourtPos location)
-        {
-            var rc = new Rectangle(this.Location.ToPoint(), playerInfo.Image.Size);
-            rc.Offset(-playerInfo.Image.Size.Width / 2, -playerInfo.Image.Size.Height / 2);
-            return rc.Contains(location.ToPoint());
-        }
-
         public override bool Equals(object obj)
         {
             var p = obj as Player;

@@ -13,8 +13,6 @@ namespace bball
         public abstract void OnDraw(IRenderer r);
         public abstract void OnUpdate();
 
-        public abstract bool IsClick(CourtPos location);
-
         public bool Visible
         {
             set

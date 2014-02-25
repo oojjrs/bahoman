@@ -27,11 +27,6 @@ namespace bball
         {
         }
 
-        public override bool IsClick(CourtPos location)
-        {
-            return false;
-        }
-
         public bool Initialize(Team home, Team away)
         {
             court.Visible = true;

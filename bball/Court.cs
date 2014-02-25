@@ -33,11 +33,6 @@ namespace bball
         {
         }
 
-        public override bool IsClick(CourtPos location)
-        {
-            return false;
-        }
-
         #region Methods
         public static CourtPos ToGlobalLocation(CourtPos pos)
         {

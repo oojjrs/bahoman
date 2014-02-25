@@ -83,6 +83,8 @@
     <Compile Include="Enumerations.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="ImageFactory.cs" />
+    <Compile Include="IMouseHandler.cs" />
+    <Compile Include="InputManager.cs" />
     <Compile Include="IOutputModel.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="LogWindow.cs">
@@ -97,6 +99,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MouseArgs.cs" />
     <Compile Include="Object.cs" />
     <Compile Include="OutputManager.cs" />
     <Compile Include="PlayerPool.cs" />

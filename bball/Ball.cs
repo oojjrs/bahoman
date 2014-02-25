@@ -63,13 +63,6 @@ namespace bball
             }
         }
 
-        public override bool IsClick(CourtPos location)
-        {
-            var rc = new Rectangle(this.Location.ToPoint(), image.Size);
-            rc.Offset(-image.Size.Width / 2, -image.Size.Height / 2);
-            return rc.Contains(location.ToPoint());
-        }
-
         public Ball()
         {
             this.Image = ImageFactory.Create("res/Ball.png");
