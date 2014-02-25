@@ -21,6 +21,7 @@ namespace bball
         private Player thrower;
         private CourtPos shootingDirection;
         private CourtPos passDirection;
+        private bool isSelected = false;
 
         public override void OnDraw(IRenderer r)
         {
@@ -29,6 +30,13 @@ namespace bball
             ia.Location = Court.ToGlobalLocation(currentPos).Vector;
             ia.Scale = new Vector3f(scaleRate, scaleRate, scaleRate);
             r.PutImage(ia);
+
+            if(isSelected)
+            {
+                var ta = TextArgs.Create("선택됐음. 테스트 문구 출력 중", OutputManager.DefaultFont);
+                ta.Rect = new Rectangle(Court.ToGlobalLocation(currentPos).ToPoint(), new Size(200, 20));
+                r.PutText(ta);
+            }
         }
 
         public override void OnUpdate()
@@ -65,7 +73,8 @@ namespace bball
 
         public virtual bool OnMouse(MouseArgs e)
         {
-            return false;
+            isSelected = !isSelected;
+            return true;
         }
 
         public virtual Rectangle Zone
