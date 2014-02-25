@@ -56,7 +56,7 @@ namespace AI
 
         public Point ToPoint()
         {
-            return new Point((int)this.X, (int)this.Y);
+            return new Point((int)this.X, (int)this.Z);
         }
 
         public CourtPos Normalize
