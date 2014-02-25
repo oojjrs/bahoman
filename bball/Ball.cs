@@ -9,7 +9,7 @@ using Renderer;
 
 namespace bball
 {
-    class Ball : Object
+    class Ball : Object, IMouseHandler
     {
         private CourtPos currentPos;
         private CourtPos beganPos;
@@ -63,11 +63,28 @@ namespace bball
             }
         }
 
+        public virtual bool OnMouse(MouseArgs e)
+        {
+            return false;
+        }
+
+        public virtual Rectangle Zone
+        {
+            get
+            {
+                var rc = new Rectangle(Court.ToGlobalLocation(this.Location).ToPoint(), image.Size);
+                rc.Offset(-image.Size.Width / 2, -image.Size.Height / 2);
+                return rc;
+            }
+        }
+
         public Ball()
         {
             this.Image = ImageFactory.Create("res/Ball.png");
             this.Location = CourtPos.FromCoord(50, 0, 50);
             this.CurrentState = BallState.Bounding;
+
+            InputManager.Add(this);
         }
 
         public void Move()

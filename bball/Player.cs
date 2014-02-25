@@ -101,7 +101,7 @@ namespace bball
         #endregion
     }
 
-    class Player : Object
+    class Player : Object, IMouseHandler
     {
         private readonly PlayerInfo playerInfo;
         private CourtPos playerLocation;
@@ -173,6 +173,21 @@ namespace bball
             ++elapsedTick;
         }
 
+        public virtual bool OnMouse(MouseArgs e)
+        {
+            return false;
+        }
+
+        public virtual Rectangle Zone
+        {
+            get
+            {
+                var rc = new Rectangle(Court.ToGlobalLocation(this.Location).ToPoint(), playerInfo.Image.Size);
+                rc.Offset(-playerInfo.Image.Size.Width / 2, -playerInfo.Image.Size.Height / 2);
+                return rc;
+            }
+        }
+
         public override bool Equals(object obj)
         {
             var p = obj as Player;
@@ -189,6 +204,8 @@ namespace bball
         public Player(PlayerInfo pi)
         {
             playerInfo = pi;
+
+            InputManager.Add(this);
         }
 
         public void Clear()
