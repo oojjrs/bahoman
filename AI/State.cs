@@ -15,7 +15,12 @@ namespace AI
         CatchBall,
         Stand,
     }
-
+    public enum StrategyState
+    {
+        Run,
+        Stop,
+        None
+    }
     public enum BallState
     {
         Bounding,

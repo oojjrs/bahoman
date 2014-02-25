@@ -15,6 +15,17 @@ namespace bball
         Center,
     }
 
+    enum AttackStrategy
+    {
+        MotionOffence
+    }
+
+    enum DefenceStrategy
+    {
+        ManToMan,
+        Box23
+    }
+
     enum TeamState
     {
         Attack,
