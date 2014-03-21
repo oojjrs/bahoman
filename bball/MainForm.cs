@@ -61,7 +61,9 @@ namespace bball
             {
                 playOneFrameUpdate = false;
                 ++totalTickCount;
+                Log.Instance.ClearAITracing();
                 OutputManager.UpdateAll();
+                logWindow.SetAITrace(Log.Instance.TargetLog);
             }
 
             if (renderer.Clear(new MyColor(Color.Blue)))
@@ -110,6 +112,7 @@ namespace bball
         private void StartNewGame()
         {
             OutputManager.RemoveAll();
+            Log.Instance.ClearAITracing();
             game = new Game();
             if (game.Initialize(dataManager.AllTeams[0], dataManager.AllTeams[1]))
             {

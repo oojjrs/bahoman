@@ -18,7 +18,11 @@ namespace bball
 
         private void LogWindow_Load(object sender, EventArgs e)
         {
-            Log.Instance.TargetControl = logText;
+        }
+
+        public void SetAITrace(List<string> traces)
+        {
+            logText.Text = string.Join("\r\n", traces);
         }
     }
 }

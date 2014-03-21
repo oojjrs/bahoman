@@ -13,7 +13,6 @@ namespace Renderer
 {
     class Engine : IRenderer
     {
-        #region Variables
         bool isInit = false;             // 초기화되었는가
         bool isLostDevice = false;
         bool isReadyBuffer = false;      // 그리기 준비가 되었다(BeginDraw에서 활성화, EndDraw에서 비활성화)
@@ -24,9 +23,7 @@ namespace Renderer
         readonly IMethod api = null;
         int tickCount = 0;
         LogHelper log = new LogHelper();
-        #endregion
 
-        #region From IRenderer
         public bool BeginClip(System.Drawing.Rectangle viewport)
         {
             if (isInit == false)
@@ -404,9 +401,7 @@ namespace Renderer
 
             isVisibleFrameRate = bSet;
         }
-        #endregion
 
-        #region From Engine
         public Engine(IMethod method)
         {
             api = method;
@@ -489,9 +484,7 @@ namespace Renderer
             mainWindow = null;
             isInit = false;
         }
-        #endregion
 
-        #region Properties
         public string Identifier
         {
             get { return api.OnGetIdentifier(); }
@@ -501,6 +494,5 @@ namespace Renderer
         {
             get { return isVisibleFrameRate; }
         }
-        #endregion
     }
 }

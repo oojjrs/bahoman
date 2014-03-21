@@ -21,7 +21,6 @@ namespace bball
         private PropertyBag factors;
         private int backNumber;
 
-
         public PlayerInfo(UID id)
         {
             this.id = id;
@@ -107,7 +106,7 @@ namespace bball
         private CourtPos playerLocation;
         private PlayerState currentState;
         private int lastThinkTick;
-        private Boolean hasBall;
+        private bool hasBall;
         private Team team;
         private float speed;
         private double playSightDegree;
@@ -149,6 +148,9 @@ namespace bball
             }
 
             var ta = TextArgs.Create(this.Name, OutputManager.DefaultFont);
+            if (Log.Instance.TargetPlayer == this)
+                ta.TextColor = new MyColor(Color.CadetBlue);
+
             ta.Format = TextFormatFlags.SingleLine | TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter;
             ta.Rect = rc;
             r.PutText(ta);
@@ -160,6 +162,8 @@ namespace bball
 
         public override void OnUpdate()
         {
+            Log.Instance.CurrentPlayer = this;
+
             var curTick = Environment.TickCount;
             if (curTick - lastThinkTick > 10 || lastThinkTick == 0)
             {
@@ -171,11 +175,15 @@ namespace bball
 
             this.Action(lastResult);
             ++elapsedTick;
+
+            Log.Instance.CurrentPlayer = null;
         }
 
         public virtual bool OnMouse(MouseArgs e)
         {
-            return false;
+            Log.Instance.TargetPlayer = this;
+            Log.Instance.ClearAITracing();
+            return true;
         }
 
         public virtual Rectangle Zone
@@ -275,7 +283,7 @@ namespace bball
             }
         }
 
-        private Boolean IsShow(CourtPos began, CourtPos target)
+        private bool IsShow(CourtPos began, CourtPos target)
         {
             var targetDir = (target - began).Normalize;
             var cosineTheta = ((this.Sight.X * targetDir.X) + (this.Sight.Y * targetDir.Y) + (this.Sight.Z * targetDir.Z));
@@ -327,8 +335,7 @@ namespace bball
         {
             if ((int)(elapsedTick * playerInfo.GetFactor("Sight")) % 10 == 0)
             {
-                sight.RotateY((float)MyMath.DegreeToRadian(60.0));
-                sight = sight.Normalize;
+                sight = (currentGame.Ball.Location - playerLocation).Normalize;
                 Seeing();
             }
 
@@ -446,7 +453,7 @@ namespace bball
             set { playerLocation = value; }
         }
 
-        public Boolean HasBall
+        public bool HasBall
         {
             get { return hasBall; }
         }

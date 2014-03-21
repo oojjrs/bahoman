@@ -47,8 +47,8 @@ namespace bball
                 tp.AddPlayer(tid, player);
 
             var fixedRandom = new Random(pid.GetHashCode());
-            player.SetFactor("CatchableReach", 0.5f);   // 최대 픽셀은 10픽셀이므로 0.5f는 5픽셀(기존 catchable 값과 동일)
-            player.SetFactor("Sight", (float)fixedRandom.NextDouble());
+            player.SetFactor("CatchableReach", 1.0f);   // 최대 픽셀은 10픽셀이므로 0.5f는 5픽셀(기존 catchable 값과 동일)
+            player.SetFactor("Sight", 1.0f);
             player.SetFactor("CloseShotAbility", (float)fixedRandom.NextDouble());
             player.SetFactor("MiddleShotAbility", (float)fixedRandom.NextDouble());
             player.SetFactor("ThreePointShotAbility", (float)fixedRandom.NextDouble());

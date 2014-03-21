@@ -83,7 +83,8 @@ namespace AI
                 float ballFloatingTime = 50.0f;
                 ret.State = PlayerState.Pass;
                 ret.BallVelocity = maxTarget.Location.DistanceTo(ploc) / ballFloatingTime;
-                ret.BallDirection = (maxTarget.Location + maxTarget.Direction * ballFloatingTime).Normalize;
+                ret.BallDirection = maxTarget.Location.Normalize;
+                //ret.BallDirection = (maxTarget.Location + maxTarget.Direction * ballFloatingTime).Normalize;
             }
             else
             {

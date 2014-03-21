@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 using Core;
 
@@ -15,9 +14,10 @@ namespace bball
         private static readonly Log instance = new Log();
         private string path = "";
         private List<string> logs = new List<string>();
-        private TextBox logControl = null;
+        private Player currentPlayer = null;
+        private Player targetPlayer = null;
+        private Dictionary<Player, List<string>> aitraces = new Dictionary<Player, List<string>>();
 
-        #region From IReporter
         public void WriteLog(ReportType t, int code, string log)
         {
             var now = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -46,16 +46,24 @@ namespace bball
                     formatted = String.Format("[{0}][WARNING] {1}", now, log);
                     break;
                 case ReportType.AITrace:
-                    formatted = String.Format("[{0}] {1}", now, log);
-                    break;
+                    if (currentPlayer != null)
+                    {
+                        List<string> traces;
+                        if (aitraces.TryGetValue(currentPlayer, out traces) == false)
+                        {
+                            traces = new List<string>();
+                            aitraces[currentPlayer] = traces;
+                        }
+
+                        var str = String.Format("[{0}] {1}", now, log);
+                        traces.Add(str);
+                    }
+                    return;
                 default:
                     throw new Exception("새로운 에러 타입에 대한 동작을 정의해주세요");
             }
 
-            if (logControl != null)
-                logControl.AppendText(formatted + "\r\n");
             logs.Add(formatted);
-
             switch (t)
             {
                 case ReportType.Abort:
@@ -66,11 +74,15 @@ namespace bball
                     break;
             }
         }
-        #endregion
 
         ~Log()
         {
             this.SaveLogs();
+        }
+
+        public void ClearAITracing()
+        {
+            aitraces.Clear();
         }
 
         private void SaveLogs()
@@ -90,10 +102,25 @@ namespace bball
             set { path = value; }
         }
 
-        public TextBox TargetControl
+        public Player CurrentPlayer
         {
-            get { return logControl; }
-            set { logControl = value; }
+            set { currentPlayer = value; }
+        }
+
+        public Player TargetPlayer
+        {
+            get { return targetPlayer; }
+            set { targetPlayer = value; }
+        }
+
+        public List<string> TargetLog
+        {
+            get
+            {
+                if (targetPlayer != null)
+                    return aitraces[targetPlayer];
+                return new List<string>();
+            }
         }
     }
 }
